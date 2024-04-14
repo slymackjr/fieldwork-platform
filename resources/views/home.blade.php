@@ -68,11 +68,8 @@
                             </div>
                             <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                                 <div class="Appointment">
-                                    <div class="phone_num d-none d-xl-block">
-                                        <a href="{{route('login')}}">Post a Fieldwork</a>
-                                    </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn3" href="{{route('login')}}">Post a Job</a>
+                                        <a class="boxed-btn3" href="{{route('login')}}">Post a Job/Field</a>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +96,7 @@
                             <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s">Find your Dream Job and preferred volunteering work</h3>
                             <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">We provide online instant job requests, applications and fieldwork for capable individuals with quick approval that suit your term length</p>
                             <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
-                                <a href="#" class="boxed-btn3">Login</a>
+                                <a href="{{route('student-login')}}" class="boxed-btn3">Field/work Login</a>
                             </div>
                         </div>
                     </div>

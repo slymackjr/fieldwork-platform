@@ -26,9 +26,12 @@
 					<div class="col-lg-9 col-md-12 col-sm-9 col-xs-12 infinity-form">
 						<!-- Company Logo -->
 						<div class="text-center mb-3 mt-5">
-							<img src="{{asset('img/logo-3.png')}}" width="500px">
+							<a href="{{route('home')}}">
+                                <img src="{{asset('img/logo-3.png')}}" width="500px">
+                            </a>
 						</div>
 						<div class="text-center mb-4">
+							<h4 class="text-warning">Welcome! Back</h4>
 							<h4>Login into your account</h4>
 						</div>
 						<!-- Form -->
@@ -59,7 +62,7 @@
 								<a href="reset.html" class="forget-link">Forgot password?</a>
 							</div>
 							<div class="text-center mb-5 text-white">Don't have an account? 
-								<a class="register-link" href="register.html">Register here</a>
+								<a class="register-link" href="{{route('student-register')}}">Register here</a>
 							</div>
 						</form>
 					</div>					
