@@ -35,15 +35,16 @@
 							<h4>Login into your account</h4>
 						</div>
 						<!-- Form -->
-						<form class="px-3">
+						<form class="px-3"   method="POST" action="{{route('login-employer-method')}}">
+							@csrf
 							<!-- Input Box -->
 							<div class="form-input">
 								<span><i class="fa fa-envelope-o"></i></span>
-								<input type="email" name="" placeholder="Email Address" tabindex="10"required>
+								<input type="email" name="email" placeholder="Email Address" tabindex="10"required>
 							</div>
 							<div class="form-input">
 								<span><i class="fa fa-lock"></i></span>
-								<input type="password" name="" placeholder="Password" required>
+								<input type="password" name="password" placeholder="Password" required>
 							</div>
 							<div class="row mb-3">
 									<!-- Remember Checkbox -->
@@ -59,7 +60,7 @@
 								<button type="submit" class="btn btn-block">Login</button>
 							</div>
 							<div class="text-end">
-								<a href="reset.html" class="forget-link">Forgot password?</a>
+								<a href="#" class="forget-link">Forgot password?</a>
 							</div>
 							<div class="text-center mb-5 text-white">Don't have an account? 
 								<a class="register-link" href="{{route('register')}}">Register here</a>

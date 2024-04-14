@@ -36,18 +36,19 @@
                         </div>
                         <!-- Form -->
                         <form class="px-3">
+                            @csrf
                             <!-- Input Box -->
                             <div class="form-input">
                                 <span><i class="fa fa-user-o"></i></span>
-                                <input type="text" name="" placeholder="Full Name" tabindex="10" required>
+                                <input type="text" name="name" placeholder="Full Name" tabindex="10" required>
                             </div>
                             <div class="form-input">
                                 <span><i class="fa fa-envelope-o"></i></span>
-                                <input type="email" name="" placeholder="Email Address" tabindex="10"required>
+                                <input type="email" name="email" placeholder="Email Address" tabindex="10"required>
                             </div>
                             <div class="form-input">
                                 <span><i class="fa fa-lock"></i></span>
-                                <input type="password" name="" placeholder="Password" required>
+                                <input type="password" name="password" placeholder="Password" required>
                             </div>
                             <!-- Register Button -->
                             <div class="mb-3"> 

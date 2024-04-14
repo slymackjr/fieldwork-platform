@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::get('/student-home', function () {return view('student.home');})->name('s
 #admin section
 ------------------------------------------------------------------------------*/
 Route::get('/login', function () {return view('admin.login');})->name('login');
+Route::post('/login', [EmployerController::class, 'login'])->name('login-employer-method');
 Route::get('/register', function () {return view('admin.register');})->name('register');
 Route::get('/home', function () {return view('admin.home');})->name('dashboard');
 
