@@ -47,20 +47,6 @@
                                             <li><a href="{{route('home')}}">home</a></li>
                                             <li><a href="{{route('jobs')}}">Browse Job</a></li>
                                             <li><a href="{{route('fieldworks')}}">Browse Fieldwork</a></li>
-                                            <li><a href="#">pages <i class="ti-angle-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{route('candidate')}}">Candidates </a></li>
-                                                    <li><a href="{{route('job-details')}}">job details </a></li>
-                                                    <li><a href="{{route('fieldwork-details')}}">fieldwork details </a></li>
-                                                    <li><a href="{{route('elements')}}">elements</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">blog <i class="ti-angle-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{route('blog')}}">blog</a></li>
-                                                    <li><a href="{{route('single-blog')}}">single-blog</a></li>
-                                                </ul>
-                                            </li>
                                             <li><a href="{{route('contact')}}">Contact</a></li>
                                         </ul>
                                     </nav>

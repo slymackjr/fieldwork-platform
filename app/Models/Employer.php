@@ -2,59 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employer extends Model implements Authenticatable
+class Employer extends Model
 {
-    use AuthenticatableTrait;
+    use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    // Define the table associated with the model
     protected $table = 'employers';
 
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'email';
+    // Define the primary key for the table
+    protected $primaryKey = 'employerID';
 
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
+    // Indicate if the IDs are auto-incrementing
+    public $incrementing = true;
 
-    /**
-     * The data type of the auto-incrementing ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
+    // Define the data type of the primary key
+    protected $keyType = 'bigint';
 
+    // Define the attributes that are mass assignable
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    protected $casts = [
-        'email' => 'string',
-        'password' => 'string',
-    ];
-
-    public $timestamps = false;
-
-    public static $rules = [
-        'name' => 'required',
-        'email' => 'required|email|unique:staff,email',
-        'password' => 'required|confirmed',
-        // Add more rules as needed
+        'companyName',
+        'officeID',
+        'supervisorName',
+        'supervisorPhone',
+        'supervisorEmail',
+        'supervisorPassword',
+        'supervisorPosition',
+        'supervisorSignature',
+        'Muhuri',
+        'fieldworkTitle',
+        'fieldworkDescription',
     ];
 }

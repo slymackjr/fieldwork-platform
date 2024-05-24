@@ -40,9 +40,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'employers' => [
+        'student' => [
             'driver' => 'session',
-            'provider' => 'employer',
+            'provider' => 'students',
+        ],
+    
+        'employer' => [
+            'driver' => 'session',
+            'provider' => 'employers',
         ],
     ],
     /*
@@ -67,11 +72,15 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'employer' => [
+        'students' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\Employer::class,
-        ]
-
+            'model' => App\Models\Student::class,
+        ],
+    
+        'employers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employer::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -103,6 +112,17 @@ return [
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
+        ],
+        'students' => [
+            'provider' => 'students',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+    
+        'employers' => [
+            'provider' => 'employers',
+            'table' => 'password_resets',
+            'expire' => 60,
         ],
     ],
 

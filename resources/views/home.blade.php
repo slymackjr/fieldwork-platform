@@ -47,20 +47,6 @@
                                             <li><a href="{{route('home')}}">home</a></li>
                                             <li><a href="{{route('jobs')}}">Browse Job</a></li>
                                             <li><a href="{{route('fieldworks')}}">Browse Fieldwork</a></li>
-                                            <li><a href="#">pages <i class="ti-angle-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{route('candidate')}}">Candidates </a></li>
-                                                    <li><a href="{{route('job-details')}}">job details </a></li>
-                                                    <li><a href="{{route('fieldwork-details')}}">fieldwork details </a></li>
-                                                    <li><a href="{{route('elements')}}">elements</a></li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#">blog <i class="ti-angle-down"></i></a>
-                                                <ul class="submenu">
-                                                    <li><a href="{{route('blog')}}">blog</a></li>
-                                                    <li><a href="{{route('single-blog')}}">single-blog</a></li>
-                                                </ul>
-                                            </li>
                                             <li><a href="{{route('contact')}}">Contact</a></li>
                                         </ul>
                                     </nav>
@@ -92,7 +78,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-7 col-md-6">
                         <div class="slider_text">
-                            <h5 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".2s">Get your Jobs {{$username}} and Fieldwork listed</h5>
+                            <h5 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".2s">Get your Jobs and Fieldwork listed</h5>
                             <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s">Find your Dream Job and preferred volunteering work</h3>
                             <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">We provide online instant job requests, applications and fieldwork for capable individuals with quick approval that suit your term length</p>
                             <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
