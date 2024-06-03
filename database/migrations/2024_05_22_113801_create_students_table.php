@@ -25,6 +25,7 @@ class CreateStudentsTable extends Migration
             $table->decimal('currentGPA', 3, 2);
             $table->string('introductionLetter')->nullable();
             $table->string('resultSlip')->nullable();
+            $table->string('university'); 
             $table->timestamps();
         });
     }
