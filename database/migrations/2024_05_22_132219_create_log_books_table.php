@@ -14,7 +14,7 @@ class CreateLogBookTable extends Migration
     public function up()
     {
         Schema::create('log_books', function (Blueprint $table) {
-            $table->id();
+            $table->id('logID');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->foreignId('employer_id')->constrained()->onDelete('cascade');
             // Create columns for each day (40 days for 8 weeks)

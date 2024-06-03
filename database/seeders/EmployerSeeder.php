@@ -16,12 +16,20 @@ class EmployerSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        $employers = [];
+        $companies = [
+            'Tanzania Breweries Limited',
+            'National Microfinance Bank (NMB)',
+            'Tanzania Electric Supply Company (TANESCO)',
+            'Tanzania Ports Authority (TPA)',
+            'Vodacom Tanzania'
+        ];
 
-        for ($i = 0; $i < 100; $i++) {
+        $employers = [];
+        $faker = Faker::create();
+
+        foreach ($companies as $company) {
             $employers[] = [
-                'companyName' => $faker->company,
+                'companyName' => $company,
                 'officeID' => $faker->numberBetween(1, 50),
                 'supervisorName' => $faker->name,
                 'supervisorPhone' => $faker->phoneNumber,

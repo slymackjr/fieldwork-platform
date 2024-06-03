@@ -18,10 +18,11 @@ class FieldworkSeeder extends Seeder
         $faker = Faker::create();
         $fieldworks = [];
 
-        for ($i = 0; $i < 50; $i++) {
+        // Assuming we have 5 students and 5 employers as per the updated seeders
+        for ($i = 0; $i < 5; $i++) {
             $fieldworks[] = [
-                'employerID' => $faker->numberBetween(1, 10),
-                'studentID' => $faker->numberBetween(1, 50),
+                'employerID' => $faker->numberBetween(1, 5), // IDs 1 to 5 for employers
+                'studentID' => $faker->numberBetween(1, 5), // IDs 1 to 5 for students
                 'status' => $faker->randomElement(['pending', 'in-progress', 'completed']),
                 'created_at' => now(),
                 'updated_at' => now(),
