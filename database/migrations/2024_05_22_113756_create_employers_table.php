@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('supervisorName');
             $table->string('supervisorPhone');
             $table->string('supervisorEmail')->unique();
-            $table->string('supervisorPassword');
+            $table->string('password');
             $table->string('supervisorPosition');
             $table->string('supervisorSignature'); // Assuming this will store the path to the image
             $table->string('Muhuri'); // Assuming this will store the path to the image

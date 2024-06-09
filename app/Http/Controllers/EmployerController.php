@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use Illuminate\Http\Request;
 use App\Models\EmployerModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 
 class EmployerController extends Controller
@@ -19,47 +21,67 @@ class EmployerController extends Controller
         return view('admin.register');
     }
 
+    public function register(Request $request)
+    {
+        $request->validate([
+            'companyName' => 'required|string|max:255',
+            'officeID' => 'required|string|max:255|unique:employers',
+            'supervisorName' => 'required|string|max:255',
+            'supervisorPhone' => 'required|string|max:255',
+            'supervisorEmail' => 'required|string|email|max:255|unique:employers',
+            'supervisorPassword' => 'required|string|min:8|confirmed',
+            'supervisorPosition' => 'required|string|max:255',
+            'supervisorSignature' => 'required|string|max:255',
+            'Muhuri' => 'required|string|max:255',
+            'fieldworkTitle' => 'required|string|max:255',
+            'fieldworkDescription' => 'required|string|max:255',
+        ]);
+
+        $employer = Employer::create([
+            'companyName' => $request->companyName,
+            'officeID' => $request->officeID,
+            'supervisorName' => $request->supervisorName,
+            'supervisorPhone' => $request->supervisorPhone,
+            'supervisorEmail' => $request->supervisorEmail,
+            'supervisorPassword' => Hash::make($request->supervisorPassword),
+            'supervisorPosition' => $request->supervisorPosition,
+            'supervisorSignature' => $request->supervisorSignature,
+            'Muhuri' => $request->Muhuri,
+            'fieldworkTitle' => $request->fieldworkTitle,
+            'fieldworkDescription' => $request->fieldworkDescription,
+        ]);
+
+        Auth::guard('employer')->login($employer);
+
+        return redirect()->route('home')->with('success', 'Registration successful.');
+    }
+
     public function showHome()
     {
         return view('admin.index');
     }
-
-    /* public function login(Request $request): RedirectResponse
-    {
-        $email = $request->input('email');
-        $password = $request->input('password');
-
-        $employer = new EmployerModel();
-        $success = $employer->loginEmployer($email, $password);
-
-        // Handle redirection based on success or failure
-        if ($success) {
-            // Login successful
-            session()->flash('success', 'Welcome back.');
-            return redirect()->route('dashboard');
-        } else {
-            // Login failed
-            return redirect()->route('login')->with('error', 'Incorrect email or password');
-        }
-    } */
-
     public function login(Request $request)
     {
         // Validate the form data
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+        $credentials = $request->validate([
+            'supervisorEmail' => ['required', 'email'],
+            'supervisorPassword' => ['required'],
         ]);
-
-        // Attempt to log the employer in
-        if (Auth::guard('employer')->attempt(['supervisorEmail' => $request->email, 'password' => $request->password], $request->remember)) {
-            // If successful, then redirect to their intended location
-            return redirect()->intended(route('employer.dashboard'));
+    
+        // Attempt to authenticate the employer
+        if (Auth::guard('employer')->attempt(['supervisorEmail' => $credentials['supervisorEmail'], 'password' => $credentials['supervisorPassword']])) {
+            // If successful, regenerate the session and redirect to intended location
+            $request->session()->regenerate();
+    
+            return redirect()->intended(route('dashboard'))->with('success', 'You are logged in!');
         }
-
-        // If unsuccessful, then redirect back to the login with the form data
-        return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'These credentials do not match our records.']);
+    
+        // If unsuccessful, redirect back with error message
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->withInput($request->only('email', 'remember'));
     }
+    
 
     /**
      * Log the employer out of the application.

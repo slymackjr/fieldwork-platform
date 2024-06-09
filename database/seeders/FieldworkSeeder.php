@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Faker\Factory as Faker;
 
 class FieldworkSeeder extends Seeder
 {
@@ -15,20 +14,18 @@ class FieldworkSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        $fieldworks = [];
+        // Dummy data
+        $fieldworks = [
+            ['employerID' => 1, 'studentID' => 1, 'status' => 'accepted'],
+            ['employerID' => 2, 'studentID' => 1, 'status' => 'pending'],
+            ['employerID' => 3, 'studentID' => 1, 'status' => 'rejected'],
+            ['employerID' => 4, 'studentID' => 1, 'status' => 'accepted'],
+            ['employerID' => 5, 'studentID' => 1, 'status' => 'pending'],
+        ];
 
-        // Assuming we have 5 students and 5 employers as per the updated seeders
-        for ($i = 0; $i < 5; $i++) {
-            $fieldworks[] = [
-                'employerID' => $faker->numberBetween(1, 5), // IDs 1 to 5 for employers
-                'studentID' => $faker->numberBetween(1, 5), // IDs 1 to 5 for students
-                'status' => $faker->randomElement(['pending', 'in-progress', 'completed']),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+        // Insert dummy data into the fieldworks table
+        foreach ($fieldworks as $fieldwork) {
+            DB::table('fieldworks')->insert($fieldwork);
         }
-
-        DB::table('fieldworks')->insert($fieldworks);
     }
 }

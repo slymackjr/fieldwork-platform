@@ -2,27 +2,61 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LogBook extends Model
 {
-    use HasFactory;
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'log_books';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'logID';
+
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'int';
 
     protected $fillable = [
-        'student_id',
-        'employer_id',
-        // Fillable fields for each day (day_1 to day_40) can be added here if needed
+        'employerID',
+        'studentID',
+        'status',
+        // Add fields for each day if needed
     ];
 
-    // Define relationships
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
+    protected $casts = [
+        'logID' => 'int',
+        'employerID' => 'int',
+        'studentID' => 'int',
+        'status' => 'string',
+    ];
+
+    public $timestamps = true;
 
     public function employer()
     {
-        return $this->belongsTo(Employer::class);
+        return $this->belongsTo(Employer::class, 'employerID', 'employerID');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'studentID', 'studentID');
     }
 }

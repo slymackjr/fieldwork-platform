@@ -142,16 +142,18 @@
       </nav>
     </div><!-- End Page Title -->
 
+    <!-- Alert Message -->
+    <div id="alertMessage" class="alert" role="alert" style="display:none;"></div>
+
     <section class="section profile">
       <div class="row">
         <div class="col-xl-4">
 
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-
-              <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2>Samuel Johnson</h2>
-              <h3>Computer Science</h3>
+              <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+              <h2>{{ $student->studentName }}</h2>
+              <h3>{{ $student->course }}</h3>
             </div>
           </div>
 
@@ -179,71 +181,62 @@
               </ul>
               <div class="tab-content pt-2">
 
+                <!-- Profile Overview -->
                 <div class="tab-pane fade show active profile-overview" id="profile-overview">
                   <h5 class="card-title">Profile Details</h5>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Student Name</div>
-                      <div class="col-lg-9 col-md-8">Samuel Johnson</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->studentName }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Registration ID</div>
-                      <div class="col-lg-9 col-md-8">REG123456</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->registrationID }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Email</div>
-                      <div class="col-lg-9 col-md-8">s.johnson@example.com</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->studentEmail }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Phone</div>
-                      <div class="col-lg-9 col-md-8">0786353826</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->studentPhone }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Course</div>
-                      <div class="col-lg-9 col-md-8">Computer Science</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->course }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Year of Study</div>
-                      <div class="col-lg-9 col-md-8">2</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->studyYear }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Current GPA</div>
-                      <div class="col-lg-9 col-md-8">3.75</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->currentGPA }}</div>
                   </div>
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Introduction Letter</div>
                       <div class="col-lg-9 col-md-8">
-                          <a href="#" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                          <a href="{{ asset('storage/' . $student->introductionLetter) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
                       </div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">Result Slip</div>
                     <div class="col-lg-9 col-md-8">
-                        <a href="#" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                        <a href="{{ asset('storage/' . $student->resultSlip) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
                     </div>
                 </div>                
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Course Name</div>
-                      <div class="col-lg-9 col-md-8">Advanced Computing</div>
-                  </div>
-              
-                  <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Attachment Start Date</div>
-                      <div class="col-lg-9 col-md-8">2023-06-01</div>
-                  </div>
-              
-                  <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Attachment End Date</div>
-                      <div class="col-lg-9 col-md-8">2023-09-30</div>
+                      <div class="col-lg-9 col-md-8">{{ $student->course }}</div>
                   </div>
               
                 </div><!-- End Profile Overview -->
@@ -251,131 +244,117 @@
 
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                   <!-- Profile Edit Form -->
-                  <form>
-                    <div class="row mb-3">
-                      <label for="studentName" class="col-md-4 col-lg-3 col-form-label">Student Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="studentName" type="text" class="form-control" id="studentName" value="Samuel Johnson">
+                  <form method="POST" action="{{ route('student-profile-update') }}" enctype="multipart/form-data">
+                      @csrf
+                      <div class="row mb-3">
+                          <label for="studentName" class="col-md-4 col-lg-3 col-form-label">Student Name</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="studentName" type="text" class="form-control" id="studentName" value="{{ $student->studentName }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="registrationID" class="col-md-4 col-lg-3 col-form-label">Registration ID</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="registrationID" type="text" class="form-control" id="registrationID" value="REG123456">
+              
+                      <div class="row mb-3">
+                          <label for="registrationID" class="col-md-4 col-lg-3 col-form-label">Registration ID</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="registrationID" type="text" class="form-control" id="registrationID" value="{{ $student->registrationID }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="email" type="email" class="form-control" id="email" value="s.johnson@example.com">
+              
+                      <div class="row mb-3">
+                          <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="studentEmail" type="email" class="form-control" id="email" value="{{ $student->studentEmail }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="phone" value="0786353826">
+              
+                      <div class="row mb-3">
+                          <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="studentPhone" type="text" class="form-control" id="phone" value="{{ $student->studentPhone }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="course" class="col-md-4 col-lg-3 col-form-label">Course</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="course" type="text" class="form-control" id="course" value="Computer Science">
+              
+                      <div class="row mb-3">
+                          <label for="course" class="col-md-4 col-lg-3 col-form-label">Course</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="course" type="text" class="form-control" id="course" value="{{ $student->course }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="yearOfStudy" class="col-md-4 col-lg-3 col-form-label">Year of Study</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="yearOfStudy" type="text" class="form-control" id="yearOfStudy" value="2">
+              
+                      <div class="row mb-3">
+                          <label for="yearOfStudy" class="col-md-4 col-lg-3 col-form-label">Year of Study</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="studyYear" type="text" class="form-control" id="yearOfStudy" value="{{ $student->studyYear }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="gpa" class="col-md-4 col-lg-3 col-form-label">Current GPA</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="gpa" type="text" class="form-control" id="gpa" value="3.75">
+              
+                      <div class="row mb-3">
+                          <label for="gpa" class="col-md-4 col-lg-3 col-form-label">Current GPA</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="currentGPA" type="text" class="form-control" id="gpa" value="{{ $student->currentGPA }}">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="introductionLetter" class="col-md-4 col-lg-3 col-form-label">Introduction Letter</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="file" class="form-control" id="introductionLetter">
+              
+                      <div class="row mb-3">
+                          <label for="introductionLetter" class="col-md-4 col-lg-3 col-form-label">Introduction Letter</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="introductionLetter" type="file" class="form-control" id="introductionLetter">
+                          </div>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="resultSlip" class="col-md-4 col-lg-3 col-form-label">Result Slip</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input type="file" class="form-control" id="resultSlip">
+              
+                      <div class="row mb-3">
+                          <label for="resultSlip" class="col-md-4 col-lg-3 col-form-label">Result Slip</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="resultSlip" type="file" class="form-control" id="resultSlip">
+                          </div>
                       </div>
-                  </div>
-                  
-
-
-                    <div class="row mb-3">
-                      <label for="courseName" class="col-md-4 col-lg-3 col-form-label">Course Name</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="courseName" type="text" class="form-control" id="courseName" value="Advanced Computing">
+              
+                      <div class="row mb-3">
+                          <label for="courseName" class="col-md-4 col-lg-3 col-form-label">Course Name</label>
+                          <div class="col-md-8 col-lg-9">
+                              <input name="courseName" type="text" class="form-control" id="courseName" value="{{ $student->course }}">
+                          </div>
                       </div>
-                    </div>
 
-                    <div class="row mb-3">
-                      <label for="attachmentStartDate" class="col-md-4 col-lg-3 col-form-label">Attachment Start Date</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="attachmentStartDate" type="date" class="form-control" id="attachmentStartDate" value="2023-06-01">
+                      <div class="text-center">
+                          <button type="submit" class="btn btn-primary">Save Changes</button>
                       </div>
-                    </div>
-
-                    <div class="row mb-3">
-                      <label for="attachmentEndDate" class="col-md-4 col-lg-3 col-form-label">Attachment End Date</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="attachmentEndDate" type="date" class="form-control" id="attachmentEndDate" value="2023-09-30">
-                      </div>
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
                   </form><!-- End Profile Edit Form -->
+              </div>
+              
 
-                </div>
-
-                <div class="tab-pane fade pt-3" id="profile-change-password">
-                  <!-- Change Password Form -->
-                  <form>
-
+              <div class="tab-pane fade pt-3" id="profile-change-password">
+                <!-- Change Password Form -->
+                <form method="POST" action="{{ route('student-change-password') }}">
+                    @csrf
+            
                     <div class="row mb-3">
-                      <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="password" type="password" class="form-control" id="currentPassword">
-                      </div>
+                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="currentPassword" type="password" class="form-control" id="currentPassword">
+                        </div>
                     </div>
-
+            
                     <div class="row mb-3">
-                      <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="newPassword" type="password" class="form-control" id="newPassword">
-                      </div>
+                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="newPassword" type="password" class="form-control" id="newPassword">
+                        </div>
                     </div>
-
+            
                     <div class="row mb-3">
-                      <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                      <div class="col-md-8 col-lg-9">
-                        <input name="renewPassword" type="password" class="form-control" id="renewPassword">
-                      </div>
+                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="renewPassword" type="password" class="form-control" id="renewPassword">
+                        </div>
                     </div>
-
+            
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Change Password</button>
+                        <button type="submit" class="btn btn-primary">Change Password</button>
                     </div>
-                  </form><!-- End Change Password Form -->
-
-                </div>
+                </form><!-- End Change Password Form -->
+            </div>
+            
 
               </div><!-- End Bordered Tabs -->
 
@@ -416,6 +395,27 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+    // Function to display alert message
+    function showAlert(message, type) {
+      var alertDiv = document.getElementById('alertMessage');
+      alertDiv.classList.remove('alert-success', 'alert-danger');
+      if (type === 'success') {
+        alertDiv.classList.add('alert-success');
+      } else {
+        alertDiv.classList.add('alert-danger');
+      }
+      alertDiv.innerHTML = message;
+      alertDiv.style.display = 'block';
+      setTimeout(function() {
+        alertDiv.style.display = 'none';
+      }, 2000); // Hide after 2 seconds
+    }
+
+    // Example usage:
+    // showAlert('Password changed successfully!', 'success');
+    // showAlert('Error: Please enter a valid password.', 'error');
+  </script>
 
 </body>
 

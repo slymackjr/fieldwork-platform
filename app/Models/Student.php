@@ -2,21 +2,42 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable;
 
-class Student extends Authenticatable
+class Student extends Model implements AuthenticatableContract
 {
-    use HasFactory, Notifiable;
+    use Authenticatable;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'students';
+
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
     protected $primaryKey = 'studentID';
 
     /**
-     * The attributes that are mass assignable.
+     * Indicates if the model's ID is auto-incrementing.
      *
-     * @var array<int, string>
+     * @var bool
      */
+    public $incrementing = true;
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'int';
+
     protected $fillable = [
         'studentName',
         'registrationID',
@@ -28,15 +49,33 @@ class Student extends Authenticatable
         'currentGPA',
         'introductionLetter',
         'resultSlip',
+        'university'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
+    protected $casts = [
+        'studentID' => 'int',
+        'studentName' => 'string',
+        'registrationID' => 'string',
+        'studentEmail' => 'string',
+        'studentPhone' => 'string',
+        'password' => 'string',
+        'course' => 'string',
+        'studyYear' => 'int',
+        'currentGPA' => 'float',
+        'introductionLetter' => 'string',
+        'resultSlip' => 'string',
+        'university' => 'string',
     ];
+
+    public $timestamps = true;
+
+    public function fieldworks()
+    {
+        return $this->hasMany(Fieldwork::class, 'studentID', 'studentID');
+    }
+
+    public function logBooks()
+    {
+        return $this->hasMany(LogBook::class, 'studentID', 'studentID');
+    }
 }

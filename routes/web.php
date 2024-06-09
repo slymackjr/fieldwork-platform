@@ -15,41 +15,44 @@ use App\Http\Controllers\EmployerController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Routes for students
-Route::group(['middleware' => ['auth:student']], function () {
-    Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard');
-    // Other student routes
-});
-
-// Routes for employers
-Route::group(['middleware' => ['auth:employer']], function () {
-    Route::get('/employer/dashboard', [EmployerController::class, 'dashboard'])->name('employer.dashboard');
-    // Other employer routes
-});
-
 
 /*----------------------------------------------------------------------------
 #student section
 ------------------------------------------------------------------------------*/
-Route::get('/student-login', [StudentController::class, 'showLogin'])->name('student-login');
 Route::get('/student-register', [StudentController::class, 'showRegister'])->name('student-register');
-Route::get('/student-home', [StudentController::class, 'showHome'])->name('student-dashboard');
-Route::get('/log-book', [StudentController::class, 'showLogBook'])->name('log-book');
-Route::get('/student-profile', [StudentController::class, 'showStudentProfile'])->name('student-profile');
+Route::post('/student-register', [StudentController::class, 'register'])->name('student-register-post');
+Route::get('/student-login', [StudentController::class, 'showLogin'])->name('student-login');
+Route::post('/student-login', [StudentController::class, 'login'])->name('student-login-post');
+Route::post('/student-logout', [StudentController::class, 'logout'])->name('student-logout');   
+Route::middleware(['student'])->group(function () {
+    Route::get('/student-home', [StudentController::class, 'showHome'])->name('student-dashboard');
+    Route::get('/log-book', [StudentController::class, 'showLogBook'])->name('log-book');
+    Route::get('/student-profile', [StudentController::class, 'showStudentProfile'])->name('student-profile');
+    Route::post('/student-profile', [StudentController::class, 'updateStudentProfile'])->name('student-profile-update');
+    Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');
+    Route::post('/student-home', [StudentController::class, 'confirmApplication'])->name('confirm.application');
+
+});
+
+
 
 /*----------------------------------------------------------------------------
 #admin section
 ------------------------------------------------------------------------------*/
 Route::get('/login', [EmployerController::class, 'showLogin'])->name('login');
-Route::post('/login', [EmployerController::class, 'login'])->name('login-employer-method');
+Route::post('/login', [EmployerController::class, 'login'])->name('login-employer');
 Route::get('/register', [EmployerController::class, 'showRegister'])->name('register');
-Route::get('/home', [EmployerController::class, 'showHome'])->name('dashboard'); 
-Route::get('/attendance', [EmployerController::class, 'showAttendance'])->name('attendance');
-Route::get('/applicant-attendance', [EmployerController::class, 'showApplicantAttendance'])->name('applicant-attendance');
-Route::get('/post', [EmployerController::class, 'showPost'])->name('post');
-Route::get('/profile', [EmployerController::class, 'showUsersProfile'])->name('profile');
-Route::get('/confirm-applications', [EmployerController::class, 'showConfirmApplications'])->name('confirm-applications');
-Route::get('/applicant', [EmployerController::class, 'showApplicant'])->name('applicant');
+Route::post('/register', [EmployerController::class, 'register'])->name('register-employer');
+Route::middleware(['employer'])->group(function () {
+    Route::get('/home', [EmployerController::class, 'showHome'])->name('dashboard'); 
+    Route::get('/attendance', [EmployerController::class, 'showAttendance'])->name('attendance');
+    Route::get('/applicant-attendance', [EmployerController::class, 'showApplicantAttendance'])->name('applicant-attendance');
+    Route::get('/post', [EmployerController::class, 'showPost'])->name('post');
+    Route::get('/profile', [EmployerController::class, 'showUsersProfile'])->name('profile');
+    Route::get('/confirm-applications', [EmployerController::class, 'showConfirmApplications'])->name('confirm-applications');
+    Route::get('/applicant', [EmployerController::class, 'showApplicant'])->name('applicant');
+});
+
 
 /*----------------------------------------------------------------------------
 #home section

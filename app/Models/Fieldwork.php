@@ -2,37 +2,60 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Fieldwork extends Model
 {
-    use HasFactory;
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'fieldworks';
 
     /**
-     * The attributes that are mass assignable.
+     * The primary key associated with the table.
      *
-     * @var array
+     * @var string
      */
+    protected $primaryKey = 'fieldworkID';
+
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'int';
+
     protected $fillable = [
         'employerID',
         'studentID',
-        'status',
+        'status'
     ];
 
-    /**
-     * Get the employer that owns the fieldwork.
-     */
+    protected $casts = [
+        'fieldworkID' => 'int',
+        'employerID' => 'int',
+        'studentID' => 'int',
+        'status' => 'string',
+    ];
+
+    public $timestamps = true;
+
     public function employer()
     {
-        return $this->belongsTo(Employer::class, 'employerID');
+        return $this->belongsTo(Employer::class, 'employerID', 'employerID');
     }
 
-    /**
-     * Get the student that owns the fieldwork.
-     */
     public function student()
     {
-        return $this->belongsTo(Student::class, 'studentID');
+        return $this->belongsTo(Student::class, 'studentID', 'studentID');
     }
 }

@@ -19,6 +19,42 @@
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .message-display {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #4caf50; /* Green */
+  color: white;
+  font-size: 16px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  display: none;
+}
+
+/* Animation */
+.message-display.show {
+  animation: fadeInOut 2s ease;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+  </style>
 </head>
 
 <body>
@@ -130,64 +166,85 @@
       </nav>
     </div>
     <!-- End Page Title -->
+
+    <div id="message-display" class="message-display"></div>
+
     <section class="section dashboard">
       <div class="row">
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
             <!-- Applications Card -->
-            <div class="col-xxl-4 col-md-4">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card sales-card">
-                <div class="card-body">
-                  <h5 class="card-title">Applications</h5>
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-file-earmark-text"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>145</h6>
-                    </div>
+                  <div class="card-body">
+                      <h5 class="card-title">Total Applications</h5>
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-file-earmark-text"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6>{{ $totalApplications }}</h6>
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
             </div>
             <!-- End Applications Card -->
 
             <!-- Accepted Applications Card -->
-            <div class="col-xxl-4 col-md-4">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card revenue-card">
-                <div class="card-body">
-                  <h5 class="card-title">Accepted Applications</h5>
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-star-fill"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>3,264</h6>
-                    </div>
+                  <div class="card-body">
+                      <h5 class="card-title">Accepted Applications</h5>
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-star-fill"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6>{{ $acceptedApplications }}</h6>
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
             </div>
             <!-- End Accepted Applications Card -->
 
-            <!-- Attended Applications Card -->
-            <div class="col-xxl-4 col-md-4">
+            <!-- Rejected Applications Card -->
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card customers-card">
-                <div class="card-body">
-                  <h5 class="card-title">Attended Applications</h5>
-                  <div class="d-flex align-items-center">
-                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-check-circle"></i>
-                    </div>
-                    <div class="ps-3">
-                      <h6>1,244</h6>
-                    </div>
+                  <div class="card-body">
+                      <h5 class="card-title">Rejected Applications</h5>
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-x-circle"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6>{{ $rejectedApplications }}</h6>
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
             </div>
-            <!-- End Attended Applications Card -->
+            <!-- End Rejected Applications Card -->
+
+            <!-- Pending Applications Card -->
+            <div class="col-xxl-3 col-md-6">
+              <div class="card info-card pending-card">
+                  <div class="card-body">
+                      <h5 class="card-title">Pending Applications</h5>
+                      <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-hourglass-split"></i>
+                          </div>
+                          <div class="ps-3">
+                              <h6>{{ $pendingApplications }}</h6>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <!-- End Pending Applications Card -->
 
             <!-- Applications Table -->
             <div class="col-12">
@@ -201,55 +258,32 @@
                           <th scope="col">#</th>
                           <th scope="col">Company Name</th>
                           <th scope="col">Fieldwork Title</th>
+                          <th scope="col">Status</th>
                           <th scope="col">Actions</th>
                         </tr>
                       </thead>
                       <tbody>
+                        @foreach($fieldworks as $fieldwork)
                         <tr>
-                          <th scope="row">1</th>
-                          <td>Google</td>
-                          <td>Software Engineering Internship</td>
+                          <th scope="row">{{ $fieldwork->id }}</th>
+                          <td>{{ $fieldwork->companyName }}</td>
+                          <td>{{ $fieldwork->fieldworkTitle }}</td>
                           <td>
-                            <button class="btn btn-success btn-sm"><i class="bi bi-check"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
+                            <span class="badge {{ $fieldwork->status == 'accepted' ? 'bg-success' : ($fieldwork->status == 'rejected' ? 'bg-danger' : 'bg-warning text-dark') }}">
+                              {{ ucfirst($fieldwork->status) }}
+                            </span>
+                          </td>
+                          <td>
+                            @if ($fieldwork->status == 'accepted')
+                              <form method="POST" action="{{ route('confirm.application') }}">
+                                @csrf
+                                <input type="hidden" name="fieldwork_id" value="{{ $fieldwork->fieldworkID }}">
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check"></i> Confirm</button>
+                              </form>
+                            @endif
                           </td>
                         </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Microsoft</td>
-                          <td>Data Science Internship</td>
-                          <td>
-                            <button class="btn btn-success btn-sm"><i class="bi bi-check"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>Amazon</td>
-                          <td>Web Development Internship</td>
-                          <td>
-                            <button class="btn btn-success btn-sm"><i class="bi bi-check"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">4</th>
-                          <td>Facebook</td>
-                          <td>Machine Learning Internship</td>
-                          <td>
-                            <button class="btn btn-success btn-sm"><i class="bi bi-check"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">5</th>
-                          <td>Apple</td>
-                          <td>iOS Development Internship</td>
-                          <td>
-                            <button class="btn btn-success btn-sm"><i class="bi bi-check"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
+                        @endforeach
                       </tbody>
                     </table>
                   </div>
@@ -258,143 +292,6 @@
             </div>
             <!-- End Applications Table -->
 
-            <!-- Accepted Applications Table -->
-            <div class="col-12">
-              <div class="card top-selling overflow-auto">
-                <div class="card-body pb-0">
-                  <h5 class="card-title">Accepted Applications</h5>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Company Name</th>
-                          <th scope="col">Fieldwork Title</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>IBM</td>
-                          <td>Cloud Computing Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Intel</td>
-                          <td>AI Research Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>Netflix</td>
-                          <td>Data Analytics Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">4</th>
-                          <td>Spotify</td>
-                          <td>Music Data Science Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">5</th>
-                          <td>Adobe</td>
-                          <td>UX Design Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Accepted Applications Table -->
-
-            <!-- Attended Applications Table -->
-            <div class="col-12">
-              <div class="card top-selling overflow-auto">
-                <div class="card-body pb-0">
-                  <h5 class="card-title">Attended Applications</h5>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">#</th>
-                          <th scope="col">Company Name</th>
-                          <th scope="col">Fieldwork Title</th>
-                          <th scope="col">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Tesla</td>
-                          <td>Autonomous Driving Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>SpaceX</td>
-                          <td>Rocket Engineering Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>NVIDIA</td>
-                          <td>GPU Development Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">4</th>
-                          <td>Oracle</td>
-                          <td>Database Management Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">5</th>
-                          <td>Twitter</td>
-                          <td>Social Media Analytics Internship</td>
-                          <td>
-                            <button class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></button>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-x"></i></button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Attended Applications Table -->
 
           </div>
         </div>
@@ -423,6 +320,26 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to show message for 2 seconds
+      function showMessage(message) {
+        var messageDisplay = document.getElementById('message-display');
+        messageDisplay.innerText = message;
+        messageDisplay.classList.add('show');
+        setTimeout(function() {
+          messageDisplay.classList.remove('show');
+        }, 2000);
+      }
+  
+      // Check if there's a success message
+      var successMessage = '{{ session('success') }}';
+      if (successMessage) {
+        showMessage(successMessage);
+      }
+    });
+  </script>
+  
 
 </body>
 

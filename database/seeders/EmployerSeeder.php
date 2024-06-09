@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Faker\Factory as Faker;
 
 class EmployerSeeder extends Seeder
 {
@@ -16,34 +15,83 @@ class EmployerSeeder extends Seeder
      */
     public function run()
     {
-        $companies = [
-            'Tanzania Breweries Limited',
-            'National Microfinance Bank (NMB)',
-            'Tanzania Electric Supply Company (TANESCO)',
-            'Tanzania Ports Authority (TPA)',
-            'Vodacom Tanzania'
-        ];
-
-        $employers = [];
-        $faker = Faker::create();
-
-        foreach ($companies as $company) {
-            $employers[] = [
-                'companyName' => $company,
-                'officeID' => $faker->numberBetween(1, 50),
-                'supervisorName' => $faker->name,
-                'supervisorPhone' => $faker->phoneNumber,
-                'supervisorEmail' => $faker->unique()->safeEmail,
-                'supervisorPassword' => Hash::make('password'), // default password for all entries
-                'supervisorPosition' => $faker->jobTitle,
-                'supervisorSignature' => $faker->imageUrl(200, 100, 'business', true, 'Faker'),
-                'Muhuri' => $faker->imageUrl(200, 100, 'business', true, 'Faker'),
-                'fieldworkTitle' => $faker->sentence,
-                'fieldworkDescription' => $faker->paragraph,
+        $employers = [
+            [
+                'companyName' => 'Tanzania Breweries Limited',
+                'officeID' => 1,
+                'supervisorName' => 'John Doe',
+                'supervisorPhone' => '+255 712 345 678',
+                'supervisorEmail' => 'john.doe@example.com',
+                'password' => Hash::make('password'),
+                'supervisorPosition' => 'HR Manager',
+                'supervisorSignature' => 'https://via.placeholder.com/200x100',
+                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'fieldworkTitle' => 'Fieldwork Title',
+                'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ];
-        }
+            ],
+            [
+                'companyName' => 'National Microfinance Bank (NMB)',
+                'officeID' => 2,
+                'supervisorName' => 'Jane Smith',
+                'supervisorPhone' => '+255 712 987 654',
+                'supervisorEmail' => 'jane.smith@example.com',
+                'password' => Hash::make('password'),
+                'supervisorPosition' => 'Finance Manager',
+                'supervisorSignature' => 'https://via.placeholder.com/200x100',
+                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'fieldworkTitle' => 'Fieldwork Title',
+                'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'companyName' => 'Tanzania Electric Supply Company (TANESCO)',
+                'officeID' => 3,
+                'supervisorName' => 'Alice Johnson',
+                'supervisorPhone' => '+255 712 123 456',
+                'supervisorEmail' => 'alice.johnson@example.com',
+                'password' => Hash::make('password'),
+                'supervisorPosition' => 'Operations Manager',
+                'supervisorSignature' => 'https://via.placeholder.com/200x100',
+                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'fieldworkTitle' => 'Fieldwork Title',
+                'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'companyName' => 'Tanzania Ports Authority (TPA)',
+                'officeID' => 4,
+                'supervisorName' => 'Michael Williams',
+                'supervisorPhone' => '+255 712 987 654',
+                'supervisorEmail' => 'michael.williams@example.com',
+                'password' => Hash::make('password'),
+                'supervisorPosition' => 'Logistics Manager',
+                'supervisorSignature' => 'https://via.placeholder.com/200x100',
+                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'fieldworkTitle' => 'Fieldwork Title',
+                'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'companyName' => 'Vodacom Tanzania',
+                'officeID' => 5,
+                'supervisorName' => 'David Brown',
+                'supervisorPhone' => '+255 712 345 678',
+                'supervisorEmail' => 'david.brown@example.com',
+                'password' => Hash::make('password'),
+                'supervisorPosition' => 'Sales Manager',
+                'supervisorSignature' => 'https://via.placeholder.com/200x100',
+                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'fieldworkTitle' => 'Fieldwork Title',
+                'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
 
         DB::table('employers')->insert($employers);
     }

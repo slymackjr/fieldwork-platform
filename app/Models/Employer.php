@@ -2,37 +2,80 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable;
 
-class Employer extends Model
+class Employer extends Model implements AuthenticatableContract
 {
-    use HasFactory;
+    use Authenticatable;
 
-    // Define the table associated with the model
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'employers';
 
-    // Define the primary key for the table
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
     protected $primaryKey = 'employerID';
 
-    // Indicate if the IDs are auto-incrementing
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
     public $incrementing = true;
 
-    // Define the data type of the primary key
-    protected $keyType = 'bigint';
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'int';
 
-    // Define the attributes that are mass assignable
     protected $fillable = [
         'companyName',
         'officeID',
         'supervisorName',
         'supervisorPhone',
         'supervisorEmail',
-        'supervisorPassword',
+        'password',
         'supervisorPosition',
         'supervisorSignature',
         'Muhuri',
         'fieldworkTitle',
-        'fieldworkDescription',
+        'fieldworkDescription'
     ];
+
+    protected $casts = [
+        'employerID' => 'int',
+        'companyName' => 'string',
+        'officeID' => 'int',
+        'supervisorName' => 'string',
+        'supervisorPhone' => 'string',
+        'supervisorEmail' => 'string',
+        'password' => 'string',
+        'supervisorPosition' => 'string',
+        'supervisorSignature' => 'string',
+        'Muhuri' => 'string',
+        'fieldworkTitle' => 'string',
+        'fieldworkDescription' => 'string',
+    ];
+
+    public $timestamps = true;
+
+    public function fieldworks()
+    {
+        return $this->hasMany(Fieldwork::class, 'employerID', 'employerID');
+    }
+
+    public function logBooks()
+    {
+        return $this->hasMany(LogBook::class, 'employerID', 'employerID');
+    }
 }
