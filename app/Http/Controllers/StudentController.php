@@ -6,9 +6,11 @@ use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Fieldwork;
 use Illuminate\Http\Request;
+use  Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
@@ -169,102 +171,6 @@ class StudentController extends Controller
     }
 
     // Update Student Profile
-   /*  public function updateStudentProfile(Request $request)
-    {
-        // Retrieve the student ID from the session
-        $studentId = $request->session()->get('student_id');
-    
-        // Retrieve the student's data using the student ID
-        $student = Student::find($studentId);
-    
-        // Check if the student exists
-        if (!$student) {
-            return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
-        }
-    
-        // Validate the request data
-        $validated = $request->validate([
-            'studentName' => 'required|string|max:255',
-            'registrationID' => 'required|string|max:255',
-            'studentEmail' => 'required|email|max:255',
-            'studentPhone' => 'required|string|max:255',
-            'course' => 'required|string|max:255',
-            'studyYear' => 'required|integer',
-            'currentGPA' => 'required|numeric',
-            'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
-            'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
-            'attachmentStartDate' => 'required|date',
-            'attachmentEndDate' => 'required|date'
-        ]);
-    
-        // Update the student's data
-        $student->update($validated);
-    
-        // Handle file uploads
-        if ($request->hasFile('introductionLetter')) {
-            $introductionLetterPath = $request->file('introductionLetter')->store('students', 'public');
-            $student->introductionLetter = $introductionLetterPath;
-        }
-    
-        if ($request->hasFile('resultSlip')) {
-            $resultSlipPath = $request->file('resultSlip')->store('students', 'public');
-            $student->resultSlip = $resultSlipPath;
-        }
-    
-        $student->save();
-    
-        return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
-    } */
-    /* public function updateStudentProfile(Request $request)
-{
-    // Retrieve the student ID from the session
-    $studentId = $request->session()->get('student_id');
-
-    // Retrieve the student's data using the student ID
-    $student = Student::find($studentId);
-
-    // Check if the student exists
-    if (!$student) {
-        return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
-    }
-
-    // Validate the request data
-    $validated = $request->validate([
-        'studentName' => 'required|string|max:255',
-        'registrationID' => 'required|string|max:255',
-        'studentEmail' => 'required|email|max:255',
-        'studentPhone' => 'required|string|max:255',
-        'course' => 'required|string|max:255',
-        'studyYear' => 'required|integer',
-        'currentGPA' => 'required|numeric',
-        'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
-        'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
-        'attachmentStartDate' => 'required|date',
-        'attachmentEndDate' => 'required|date'
-    ]);
-
-    // Update the student's data
-    $student->update($validated);
-
-    // Handle file uploads
-    if ($request->hasFile('introductionLetter')) {
-        $introductionLetter = $request->file('introductionLetter');
-        $introductionLetterName = $introductionLetter->getClientOriginalName();
-        $introductionLetter->storeAs('public/students', $introductionLetterName);
-        $student->introductionLetter = $introductionLetterName;
-    }
-
-    if ($request->hasFile('resultSlip')) {
-        $resultSlip = $request->file('resultSlip');
-        $resultSlipName = $resultSlip->getClientOriginalName();
-        $resultSlip->storeAs('public/students', $resultSlipName);
-        $student->resultSlip = $resultSlipName;
-    }
-
-    $student->save();
-
-    return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
-    } */
     public function updateStudentProfile(Request $request)
 {
     // Retrieve the student ID from the session
@@ -314,6 +220,21 @@ class StudentController extends Controller
 
     return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
     }
+
+    public function download($path)
+    {
+        // Sanitize the path to avoid directory traversal attacks
+    
+
+        if (!Storage::disk('public')->exists($path)) {
+            abort(404, 'File not found.');
+        }
+
+        $file = Storage::disk('public')->path($path);
+
+        return response()->download($file);
+    }
+    
 
      // Change Student Password
     public function changePassword(Request $request)

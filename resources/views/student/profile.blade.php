@@ -223,23 +223,23 @@
                   <div class="row mb-3">
                     <div class="col-lg-3 col-md-4 label">Introduction Letter</div>
                     <div class="col-lg-9 col-md-8">
-                        <!-- Conditionally display link to view Introduction Letter -->
+                        <!-- Conditionally display button for downloading Introduction Letter -->
                         @if ($student->introductionLetter)
-                            <a href="{{ asset('storage/' . $student->introductionLetter) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                            <a href="{{ route('pdf.download', ['path' => $student->introductionLetter]) }}" class="btn btn-primary btn-sm">Download Introduction Letter</a>
                         @endif
                     </div>
-                  </div>
-          
-                  <div class="row mb-3">
-                      <div class="col-lg-3 col-md-4 label">Result Slip</div>
-                      <div class="col-lg-9 col-md-8">
-                          <!-- Conditionally display link to view Result Slip -->
-                          @if ($student->resultSlip)
-                              <a href="{{ asset('storage/' . $student->resultSlip) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
-                          @endif
-                      </div>
-                  </div>                
-              
+                </div>
+        
+                <div class="row mb-3">
+                    <div class="col-lg-3 col-md-4 label">Result Slip</div>
+                    <div class="col-lg-9 col-md-8">
+                        <!-- Conditionally display button for downloading Result Slip -->
+                        @if ($student->resultSlip)
+                            <a href="{{ route('pdf.download', ['path' => $student->resultSlip]) }}" class="btn btn-primary btn-sm">Download Result Slip</a>
+                        @endif
+                    </div>
+                </div>
+                     
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Course Name</div>
                       <div class="col-lg-9 col-md-8">{{ $student->course }}</div>

@@ -33,6 +33,7 @@ Route::middleware(['student'])->group(function () {
     Route::post('/student-profile', [StudentController::class, 'updateStudentProfile'])->name('student-profile-update');
     Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');
     Route::post('/student-home', [StudentController::class, 'confirmApplication'])->name('confirm.application');
+    Route::get('/pdf/download/{path}', [StudentController::class, 'download'])->name('pdf.download')->where('path', '.*');
 
 });
 
