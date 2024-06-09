@@ -220,19 +220,25 @@
                       <div class="col-lg-9 col-md-8">{{ $student->currentGPA }}</div>
                   </div>
               
-                  <div class="row">
-                      <div class="col-lg-3 col-md-4 label">Introduction Letter</div>
-                      <div class="col-lg-9 col-md-8">
-                          <a href="{{ asset('storage/' . $student->introductionLetter) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
-                      </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-lg-3 col-md-4 label">Result Slip</div>
+                  <div class="row mb-3">
+                    <div class="col-lg-3 col-md-4 label">Introduction Letter</div>
                     <div class="col-lg-9 col-md-8">
-                        <a href="{{ asset('storage/' . $student->resultSlip) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                        <!-- Conditionally display link to view Introduction Letter -->
+                        @if ($student->introductionLetter)
+                            <a href="{{ asset('storage/' . $student->introductionLetter) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                        @endif
                     </div>
-                </div>                
+                  </div>
+          
+                  <div class="row mb-3">
+                      <div class="col-lg-3 col-md-4 label">Result Slip</div>
+                      <div class="col-lg-9 col-md-8">
+                          <!-- Conditionally display link to view Result Slip -->
+                          @if ($student->resultSlip)
+                              <a href="{{ asset('storage/' . $student->resultSlip) }}" class="btn btn-primary btn-sm" title="Download"><i class="bi bi-download"></i></a>
+                          @endif
+                      </div>
+                  </div>                
               
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Course Name</div>
@@ -245,80 +251,86 @@
                 <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
                   <!-- Profile Edit Form -->
                   <form method="POST" action="{{ route('student-profile-update') }}" enctype="multipart/form-data">
-                      @csrf
-                      <div class="row mb-3">
-                          <label for="studentName" class="col-md-4 col-lg-3 col-form-label">Student Name</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="studentName" type="text" class="form-control" id="studentName" value="{{ $student->studentName }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="registrationID" class="col-md-4 col-lg-3 col-form-label">Registration ID</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="registrationID" type="text" class="form-control" id="registrationID" value="{{ $student->registrationID }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="studentEmail" type="email" class="form-control" id="email" value="{{ $student->studentEmail }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="studentPhone" type="text" class="form-control" id="phone" value="{{ $student->studentPhone }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="course" class="col-md-4 col-lg-3 col-form-label">Course</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="course" type="text" class="form-control" id="course" value="{{ $student->course }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="yearOfStudy" class="col-md-4 col-lg-3 col-form-label">Year of Study</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="studyYear" type="text" class="form-control" id="yearOfStudy" value="{{ $student->studyYear }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="gpa" class="col-md-4 col-lg-3 col-form-label">Current GPA</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="currentGPA" type="text" class="form-control" id="gpa" value="{{ $student->currentGPA }}">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="introductionLetter" class="col-md-4 col-lg-3 col-form-label">Introduction Letter</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="introductionLetter" type="file" class="form-control" id="introductionLetter">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="resultSlip" class="col-md-4 col-lg-3 col-form-label">Result Slip</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="resultSlip" type="file" class="form-control" id="resultSlip">
-                          </div>
-                      </div>
-              
-                      <div class="row mb-3">
-                          <label for="courseName" class="col-md-4 col-lg-3 col-form-label">Course Name</label>
-                          <div class="col-md-8 col-lg-9">
-                              <input name="courseName" type="text" class="form-control" id="courseName" value="{{ $student->course }}">
-                          </div>
-                      </div>
+                    @csrf
+                    <div class="row mb-3">
+                        <label for="studentName" class="col-md-4 col-lg-3 col-form-label">Student Name</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="studentName" type="text" class="form-control" id="studentName" value="{{ $student->studentName }}">
+                        </div>
+                    </div>
 
-                      <div class="text-center">
-                          <button type="submit" class="btn btn-primary">Save Changes</button>
-                      </div>
+                    <div class="row mb-3">
+                        <label for="registrationID" class="col-md-4 col-lg-3 col-form-label">Registration ID</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="registrationID" type="text" class="form-control" id="registrationID" value="{{ $student->registrationID }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="studentEmail" type="email" class="form-control" id="email" value="{{ $student->studentEmail }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="studentPhone" type="text" class="form-control" id="phone" value="{{ $student->studentPhone }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="course" class="col-md-4 col-lg-3 col-form-label">Course</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="course" type="text" class="form-control" id="course" value="{{ $student->course }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="yearOfStudy" class="col-md-4 col-lg-3 col-form-label">Year of Study</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="studyYear" type="text" class="form-control" id="yearOfStudy" value="{{ $student->studyYear }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="gpa" class="col-md-4 col-lg-3 col-form-label">Current GPA</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="currentGPA" type="text" class="form-control" id="gpa" value="{{ $student->currentGPA }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="introductionLetter" class="col-md-4 col-lg-3 col-form-label">Introduction Letter</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="introductionLetter" type="file" class="form-control" id="introductionLetter" required>
+                            @if ($student->introductionLetter)
+                                <a href="{{ asset('storage/' . $student->introductionLetter) }}" target="_blank">View Introduction Letter</a>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="resultSlip" class="col-md-4 col-lg-3 col-form-label">Result Slip</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="resultSlip" type="file" class="form-control" id="resultSlip" required>
+                            @if ($student->resultSlip)
+                                <a href="{{ asset('storage/' . $student->resultSlip) }}" target="_blank">View Result Slip</a>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="courseName" class="col-md-4 col-lg-3 col-form-label">Course Name</label>
+                        <div class="col-md-8 col-lg-9">
+                            <input name="courseName" type="text" class="form-control" id="courseName" value="{{ $student->course }}">
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
                   </form><!-- End Profile Edit Form -->
               </div>
               

@@ -27,6 +27,8 @@ Route::post('/student-logout', [StudentController::class, 'logout'])->name('stud
 Route::middleware(['student'])->group(function () {
     Route::get('/student-home', [StudentController::class, 'showHome'])->name('student-dashboard');
     Route::get('/log-book', [StudentController::class, 'showLogBook'])->name('log-book');
+    Route::post('/log-book/day/{selectedDay}', [StudentController::class, 'saveLog'])->name('log-book.saveLog');
+    Route::post('/log-book/select-day', [StudentController::class, 'selectDay'])->name('log-book.selectDay');
     Route::get('/student-profile', [StudentController::class, 'showStudentProfile'])->name('student-profile');
     Route::post('/student-profile', [StudentController::class, 'updateStudentProfile'])->name('student-profile-update');
     Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');

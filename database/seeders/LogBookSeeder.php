@@ -1,10 +1,6 @@
 <?php
-
 namespace Database\Seeders;
 
-use App\Models\LogBook;
-use App\Models\Student;
-use App\Models\Employer;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -17,24 +13,21 @@ class LogBookSeeder extends Seeder
      */
     public function run()
     {
-       // Generate dummy data for log books
-       for ($week = 1; $week <= 8; $week++) {
-        for ($day = 1; $day <= 5; $day++) {
-            // Calculate the day index for each week
-            $dayIndex = ($week - 1) * 5 + $day;
+        // Dummy data for log book
+        $logBookData = [
+            'employerID' => 1,
+            'studentID' => 1,
+            'status' => 'pending',
+        ];
 
-            DB::table('log_books')->insert([
-                'employerID' => 1,
-                'studentID' => 1,
-                'status' => 'pending',
-                "day_$dayIndex" => $this->generateRandomEvent(), // Generate random event for each day
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        // Generate dummy events for each day
+        for ($day = 1; $day <= 40; $day++) {
+            $logBookData["day_$day"] = $this->generateRandomEvent();
         }
-    }
-}
 
+        // Insert the data into the log_books table
+        DB::table('log_books')->insert($logBookData);
+    }
 
     /**
      * Generate a random event for demonstration purposes.
@@ -43,7 +36,7 @@ class LogBookSeeder extends Seeder
      */
     private function generateRandomEvent()
     {
-        // List of sample events for Tanzania Breweries Limited
+        // List of sample events
         $events = [
             'Visited production facilities',
             'Attended training session on safety protocols',

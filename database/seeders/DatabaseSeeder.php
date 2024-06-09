@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             EmployerSeeder::class,
             FieldworkSeeder::class,
+            LogBookSeeder::class,
         ]);
     }
 }

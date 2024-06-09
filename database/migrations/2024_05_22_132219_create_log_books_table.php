@@ -21,11 +21,14 @@ class CreateLogBooksTable extends Migration
             $table->foreign('employerID')->references('employerID')->on('employers')->onDelete('cascade');
             $table->foreign('studentID')->references('studentID')->on('students')->onDelete('cascade');
             $table->string('status');
+
             // Create columns for each day (40 days for 8 weeks)
-            for ($day = 1; $day <= 40; $day++) {
-                $table->text('day_' . $day)->nullable();
-            }
+            for ($day = 1; $day <= 40; $table->text('day_' . $day)->nullable(), $day++);
+
             $table->timestamps();
+
+            // Add composite unique index
+            $table->unique(['employerID', 'studentID']);
         });
     }
 

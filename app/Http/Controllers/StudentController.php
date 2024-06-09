@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Fieldwork;
 use Illuminate\Http\Request;
@@ -100,10 +101,55 @@ class StudentController extends Controller
     return view('student.index', compact('fieldworks', 'totalApplications', 'acceptedApplications', 'rejectedApplications', 'pendingApplications'));
 }
 
-
-    public function showLogBook()
+    public function showLogBook(Request $request)
     {
-        return view('student.log-book');
+        // Retrieve the selected day from session, default to 1 if not set
+        $selectedDay = $request->session()->get('selectedDay', 1);
+        
+        // Fetch all log book entries for studentID 1 and employerID 1
+        $logBooks = LogBook::where('studentID', 1)
+                            ->where('employerID', 1)
+                            ->first();
+
+        // Pass the log book data and selected day to the view
+        return view('student.log-book', ['logBooks' => $logBooks, 'selectedDay' => $selectedDay]);
+    }
+
+    public function selectDay(Request $request)
+    {
+        // Retrieve and update the selected day in session
+        $selectedDay = $request->input('selectedDay');
+        $request->session()->put('selectedDay', $selectedDay);
+
+        // Redirect back to the log book page
+        return redirect()->route('log-book');
+    }
+
+    public function saveLog(Request $request)
+    {
+        // Retrieve selected day and log from the form submission
+        $selectedDay = $request->input('selectedDay');
+        $log = $request->input('log');
+
+        // Retrieve the log book entry for the selected day
+        $logBook = LogBook::where('studentID', 1)
+                        ->where('employerID', 1)
+                        ->first();
+
+        // If there's no existing log book entry, create a new one
+        if (!$logBook) {
+            $logBook = new LogBook();
+            $logBook->studentID = 1;
+            $logBook->employerID = 1;
+            $logBook->save();
+        }
+
+        // Update or create the log for the selected day
+        $logBook->{"day_$selectedDay"} = $log;
+        $logBook->save();
+
+        // Redirect back to the log book page
+        return redirect()->route('log-book');
     }
 
     public function showStudentProfile()
@@ -122,65 +168,152 @@ class StudentController extends Controller
        return view('student.profile', compact('student'));
     }
 
-     // Update Student Profile
-     public function updateStudentProfile(Request $request)
-     {
-         // Retrieve the student ID from the session
-         $studentId = $request->session()->get('student_id');
- 
-         // Retrieve the student's data using the student ID
-         $student = Student::find($studentId);
- 
-         // Check if the student exists
-         if (!$student) {
+    // Update Student Profile
+   /*  public function updateStudentProfile(Request $request)
+    {
+        // Retrieve the student ID from the session
+        $studentId = $request->session()->get('student_id');
+    
+        // Retrieve the student's data using the student ID
+        $student = Student::find($studentId);
+    
+        // Check if the student exists
+        if (!$student) {
             return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
-         }
- 
-         // Validate the request data
-         $validated = $request->validate([
-             'studentName' => 'required|string|max:255',
-             'registrationID' => 'required|string|max:255',
-             'studentEmail' => 'required|email|max:255',
-             'studentPhone' => 'required|string|max:255',
-             'course' => 'required|string|max:255',
-             'studyYear' => 'required|integer',
-             'currentGPA' => 'required|numeric',
-             'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
-             'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
-             'attachmentStartDate' => 'required|date',
-             'attachmentEndDate' => 'required|date'
-         ]);
- 
-         // Update the student's data
-         $student->studentName = $validated['studentName'];
-         $student->registrationID = $validated['registrationID'];
-         $student->studentEmail = $validated['studentEmail'];
-         $student->studentPhone = $validated['studentPhone'];
-         $student->course = $validated['course'];
-         $student->studyYear = $validated['studyYear'];
-         $student->currentGPA = $validated['currentGPA'];
-         $student->attachmentStartDate = $validated['attachmentStartDate'];
-         $student->attachmentEndDate = $validated['attachmentEndDate'];
- 
-         // Handle file uploads
-         if ($request->hasFile('introductionLetter')) {
-             if ($student->introductionLetter) {
-                 Storage::delete($student->introductionLetter);
-             }
-             $student->introductionLetter = $request->file('introductionLetter')->store('introductionLetters');
-         }
- 
-         if ($request->hasFile('resultSlip')) {
-             if ($student->resultSlip) {
-                 Storage::delete($student->resultSlip);
-             }
-             $student->resultSlip = $request->file('resultSlip')->store('resultSlips');
-         }
- 
-         $student->save();
- 
-         return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
-     }
+        }
+    
+        // Validate the request data
+        $validated = $request->validate([
+            'studentName' => 'required|string|max:255',
+            'registrationID' => 'required|string|max:255',
+            'studentEmail' => 'required|email|max:255',
+            'studentPhone' => 'required|string|max:255',
+            'course' => 'required|string|max:255',
+            'studyYear' => 'required|integer',
+            'currentGPA' => 'required|numeric',
+            'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
+            'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
+            'attachmentStartDate' => 'required|date',
+            'attachmentEndDate' => 'required|date'
+        ]);
+    
+        // Update the student's data
+        $student->update($validated);
+    
+        // Handle file uploads
+        if ($request->hasFile('introductionLetter')) {
+            $introductionLetterPath = $request->file('introductionLetter')->store('students', 'public');
+            $student->introductionLetter = $introductionLetterPath;
+        }
+    
+        if ($request->hasFile('resultSlip')) {
+            $resultSlipPath = $request->file('resultSlip')->store('students', 'public');
+            $student->resultSlip = $resultSlipPath;
+        }
+    
+        $student->save();
+    
+        return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
+    } */
+    /* public function updateStudentProfile(Request $request)
+{
+    // Retrieve the student ID from the session
+    $studentId = $request->session()->get('student_id');
+
+    // Retrieve the student's data using the student ID
+    $student = Student::find($studentId);
+
+    // Check if the student exists
+    if (!$student) {
+        return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
+    }
+
+    // Validate the request data
+    $validated = $request->validate([
+        'studentName' => 'required|string|max:255',
+        'registrationID' => 'required|string|max:255',
+        'studentEmail' => 'required|email|max:255',
+        'studentPhone' => 'required|string|max:255',
+        'course' => 'required|string|max:255',
+        'studyYear' => 'required|integer',
+        'currentGPA' => 'required|numeric',
+        'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
+        'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
+        'attachmentStartDate' => 'required|date',
+        'attachmentEndDate' => 'required|date'
+    ]);
+
+    // Update the student's data
+    $student->update($validated);
+
+    // Handle file uploads
+    if ($request->hasFile('introductionLetter')) {
+        $introductionLetter = $request->file('introductionLetter');
+        $introductionLetterName = $introductionLetter->getClientOriginalName();
+        $introductionLetter->storeAs('public/students', $introductionLetterName);
+        $student->introductionLetter = $introductionLetterName;
+    }
+
+    if ($request->hasFile('resultSlip')) {
+        $resultSlip = $request->file('resultSlip');
+        $resultSlipName = $resultSlip->getClientOriginalName();
+        $resultSlip->storeAs('public/students', $resultSlipName);
+        $student->resultSlip = $resultSlipName;
+    }
+
+    $student->save();
+
+    return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
+    } */
+    public function updateStudentProfile(Request $request)
+{
+    // Retrieve the student ID from the session
+    $studentId = $request->session()->get('student_id');
+
+    // Retrieve the student's data using the student ID
+    $student = Student::find($studentId);
+
+    
+    // Check if the student exists
+    if (!$student) {
+        return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
+    }
+
+    // Validate the request data
+    $validated = $request->validate([
+        'studentName' => 'required|string|max:255',
+        'registrationID' => 'required|string|max:255',
+        'studentEmail' => 'required|email|max:255',
+        'studentPhone' => 'required|string|max:255',
+        'course' => 'required|string|max:255',
+        'studyYear' => 'required|integer',
+        'currentGPA' => 'required|numeric',
+        'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
+        'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
+    ]);
+
+    //dd($request->all(), $student);
+
+    // Update the student's data
+    $student->update($validated);
+
+    // Handle file uploads
+    if ($request->hasFile('introductionLetter')) {
+        $introductionLetterPath = $request->file('introductionLetter')->store('students', 'public');
+        $student->introductionLetter = $introductionLetterPath;
+    }
+    
+    if ($request->hasFile('resultSlip')) {
+        $resultSlipPath = $request->file('resultSlip')->store('students', 'public');
+        $student->resultSlip = $resultSlipPath;
+    }
+
+    
+
+    $student->save();
+
+    return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
+    }
 
      // Change Student Password
     public function changePassword(Request $request)
