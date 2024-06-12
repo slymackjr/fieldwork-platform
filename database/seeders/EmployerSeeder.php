@@ -19,6 +19,7 @@ class EmployerSeeder extends Seeder
         $employers = [
             [
                 'companyName' => 'Tanzania Breweries Limited',
+                'location' => 'Mwanza',
                 'officeID' => 1,
                 'supervisorName' => 'John Doe',
                 'supervisorPhone' => '+255 712 345 678',
@@ -36,6 +37,7 @@ class EmployerSeeder extends Seeder
             ],
             [
                 'companyName' => 'National Microfinance Bank (NMB)',
+                'location' => 'Dar-es-Salaam',
                 'officeID' => 2,
                 'supervisorName' => 'Jane Smith',
                 'supervisorPhone' => '+255 712 987 654',
@@ -53,6 +55,7 @@ class EmployerSeeder extends Seeder
             ],
             [
                 'companyName' => 'Tanzania Electric Supply Company (TANESCO)',
+                'location' => 'Pwani',
                 'officeID' => 3,
                 'supervisorName' => 'Alice Johnson',
                 'supervisorPhone' => '+255 712 123 456',
@@ -70,6 +73,7 @@ class EmployerSeeder extends Seeder
             ],
             [
                 'companyName' => 'Tanzania Ports Authority (TPA)',
+                'location' => 'Dar-es-Salaam',
                 'officeID' => 4,
                 'supervisorName' => 'Michael Williams',
                 'supervisorPhone' => '+255 712 987 654',
@@ -87,6 +91,7 @@ class EmployerSeeder extends Seeder
             ],
             [
                 'companyName' => 'Vodacom Tanzania',
+                'location' => 'Arusha',
                 'officeID' => 5,
                 'supervisorName' => 'David Brown',
                 'supervisorPhone' => '+255 712 345 678',

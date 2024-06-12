@@ -2230,29 +2230,29 @@ h3 {
 
 /* line 10, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */
 .footer .footer_top {
-  padding-top: 145px;
-  padding-bottom: 129px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 @media (max-width: 767px) {
   /* line 10, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */
   .footer .footer_top {
-    padding-top: 60px;
-    padding-bottom: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
 @media (max-width: 767px) {
   /* line 17, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */
   .footer .footer_top .footer_widget {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
   /* line 17, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */
   .footer .footer_top .footer_widget {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
 }
 
@@ -2262,14 +2262,14 @@ h3 {
   font-weight: 500;
   color: #FFFFFF;
   text-transform: capitalize;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   font-family: "Roboto", sans-serif;
 }
 
 @media (max-width: 767px) {
   /* line 24, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */
   .footer .footer_top .footer_widget .footer_title {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 }
 
@@ -2279,13 +2279,13 @@ h3 {
   font-weight: 400;
   color: #FFFFFF;
   text-transform: capitalize;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
 @media (max-width: 767px) {
   /* line 35, ../../Arafath/CL/December/235. Job board/HTML/scss/_footer.scss */
   .footer .footer_top .footer_widget .footer_logo {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 }
 

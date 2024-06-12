@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('employers', function (Blueprint $table) {
             $table->bigIncrements('employerID');
             $table->string('companyName');
+            $table->string('location')->nullable();
             $table->unsignedBigInteger('officeID')->nullable();
             $table->string('supervisorName');
             $table->string('supervisorPhone')->nullable();

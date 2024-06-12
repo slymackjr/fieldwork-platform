@@ -40,6 +40,7 @@ class Employer extends Model implements AuthenticatableContract
 
     protected $fillable = [
         'companyName',
+        'location',
         'officeID',
         'supervisorName',
         'supervisorPhone',
@@ -57,6 +58,7 @@ class Employer extends Model implements AuthenticatableContract
     protected $casts = [
         'employerID' => 'int',
         'companyName' => 'string',
+        'location' => 'string',
         'officeID' => 'int',
         'supervisorName' => 'string',
         'supervisorPhone' => 'string',

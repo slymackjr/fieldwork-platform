@@ -186,6 +186,11 @@
                                 <div class="col-lg-3 col-md-4 label">Company Name</div>
                                 <div class="col-lg-9 col-md-8">{{ $employer->companyName }}</div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Location</div>
+                                <div class="col-lg-9 col-md-8">{{ $employer->location }}</div>
+                            </div>
         
                             <div class="row">
                                 <div class="col-lg-3 col-md-4 label">Supervisor's Position</div>
@@ -251,6 +256,13 @@
                                     <label for="companyName" class="col-md-4 col-lg-3 col-form-label">Company Name</label>
                                     <div class="col-md-8 col-lg-9">
                                         <input name="companyName" type="text" class="form-control" id="companyName" value="{{ $employer->companyName }}">
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="location" class="col-md-4 col-lg-3 col-form-label">Location</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="location" type="text" class="form-control" id="location" value="{{ $employer->location }}">
                                     </div>
                                 </div>
         
