@@ -32,6 +32,23 @@
 						 <h4 class="text-warning">Welcome, Dear Staff Member!</h4>
 						 <h4>Login into your account</h4>
 					 </div>
+					 <!-- Error Message -->
+					 @if(session('error'))
+					 <div id="errorMessage" class="alert alert-danger text-center fs-5" role="alert">
+						 {{ session('error') }}
+					 </div>
+					 @endif
+					 <script>
+						// Hide error message after 2 seconds
+						document.addEventListener('DOMContentLoaded', function () {
+							const errorMessage = document.getElementById('errorMessage');
+							if (errorMessage) {
+								setTimeout(function() {
+									errorMessage.style.display = 'none';
+								}, 3000);
+							}
+						});
+					</script>
 					 <!-- Form -->
 					 <form class="px-3" method="POST" action="{{ route('login-employer') }}">
 						 @csrf

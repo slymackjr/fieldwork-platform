@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Fieldwork extends Model
@@ -37,7 +38,8 @@ class Fieldwork extends Model
     protected $fillable = [
         'employerID',
         'studentID',
-        'status'
+        'status',
+        'confirmed'
     ];
 
     protected $casts = [
@@ -45,6 +47,7 @@ class Fieldwork extends Model
         'employerID' => 'int',
         'studentID' => 'int',
         'status' => 'string',
+        'confirmed' => 'string',
     ];
 
     public $timestamps = true;
@@ -58,4 +61,17 @@ class Fieldwork extends Model
     {
         return $this->belongsTo(Student::class, 'studentID', 'studentID');
     }
+
+    public function studentHasConfirmed()
+{
+    return Fieldwork::where('studentID', $this->studentID)
+        ->where('confirmed', 'yes')
+        ->exists();
+}
+
+    public function isExpired()
+    {
+        return $this->employer->applicationDeadline < Carbon::today() && !$this->studentHasConfirmed();
+    }
+
 }

@@ -52,13 +52,13 @@
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="password" placeholder="Password" required>
+                                    <input type="password" name="password" placeholder="Password" minlength="8" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" minlength="8" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -70,7 +70,7 @@
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-phone"></i></span>
-                                    <input type="text" name="studentPhone" placeholder="Phone Number" required>
+                                    <input type="tel" name="studentPhone" placeholder="Phone Number" maxlength="10" required>
                                 </div>
                             </div>
                             <div class="col-md-6">

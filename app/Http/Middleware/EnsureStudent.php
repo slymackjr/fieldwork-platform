@@ -18,15 +18,17 @@ class EnsureStudent
     public function handle(Request $request, Closure $next)
 {
     if (Auth::guard('student')->check()) {
-        // Retrieve the student ID from the authenticated student
-        $studentId = Auth::guard('student')->id();
-        // Store the student ID in the session
-        $request->session()->put('student_id', $studentId);
+        // Retrieve the authenticated student
+        $student = Auth::guard('student')->user();
+        // Store the student ID and name in the session
+        $request->session()->put('student_id', $student->studentID);
+        $request->session()->put('student_name', $student->studentName);
+        $request->session()->put('course', $student->course);
         // Proceed with the request
         return $next($request);
     }
 
-    return redirect('/student-login')->with('error', 'Please log in as a student to access this section.');
+    return redirect()->route('student-login')->with('error', 'Please log in as a student to access this section.');
 }
 
 }

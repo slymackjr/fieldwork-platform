@@ -4,19 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateAttendanceTable extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('fieldworks', function (Blueprint $table) {
-            $table->bigIncrements('fieldworkID'); // Assuming you want an auto-incrementing ID for this table
+        Schema::create('attendance', function (Blueprint $table) {
+            $table->id('attendanceID');
             $table->unsignedBigInteger('employerID');
-            $table->unsignedBigInteger('studentID');
-            $table->string('status')->default('pending');
-            $table->string('confirmed')->default('no');
+            $table->unsignedBigInteger('studentID')->nullable();
+            for ($i = 1; $i <= 40; $i++) {
+                $table->string('day_' . $i)->default('absent');
+            }
             $table->timestamps();
 
             $table->foreign('employerID')->references('employerID')->on('employers')->onDelete('cascade');
@@ -29,9 +32,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('fieldworks');
+        Schema::dropIfExists('attendance');
     }
-};
+}

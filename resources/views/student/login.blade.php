@@ -29,7 +29,7 @@
 						 </a>
 					 </div>
 					 <div class="text-center mb-4">
-						 <h4 class="text-warning">Welcome! Back</h4>
+						 <h4 class="text-warning">Welcome! Back Student</h4>
 						 <h4>Login into your account</h4>
 					 </div>
 					 <!-- Form -->

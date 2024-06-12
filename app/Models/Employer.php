@@ -49,7 +49,9 @@ class Employer extends Model implements AuthenticatableContract
         'supervisorSignature',
         'Muhuri',
         'fieldworkTitle',
-        'fieldworkDescription'
+        'fieldworkDescription',
+        'applicationDeadline',
+        'TIN' // Add TIN to fillable
     ];
 
     protected $casts = [
@@ -65,6 +67,8 @@ class Employer extends Model implements AuthenticatableContract
         'Muhuri' => 'string',
         'fieldworkTitle' => 'string',
         'fieldworkDescription' => 'string',
+        'applicationDeadline' => 'date',
+        'TIN' => 'string' // Add TIN to casts
     ];
 
     public $timestamps = true;

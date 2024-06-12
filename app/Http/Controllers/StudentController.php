@@ -6,11 +6,9 @@ use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Fieldwork;
 use Illuminate\Http\Request;
-use  Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
@@ -80,13 +78,20 @@ class StudentController extends Controller
 
         Auth::guard('student')->login($student);
 
-        return redirect()->route('home')->with('success', 'Registration successful.');
+        return redirect()->route('student-dashboard')->with('success', 'Registration successful.');
     }
 
     public function showHome()
 {
     // Fetch the authenticated student's ID from the session
     $studentId = session('student_id');
+
+    $student = Student::findOrFail($studentId);
+    $studentName = $student->studentName;
+    $course = $student->course;
+
+    // Check if any required fields are missing
+    $incompleteProfile = $this->checkIncompleteProfile($student);
 
     // Fetch and count the different statuses for the authenticated student
     $totalApplications = Fieldwork::where('studentID', $studentId)->count();
@@ -97,25 +102,54 @@ class StudentController extends Controller
     // Fetch fieldwork data for the authenticated student and join with employers
     $fieldworks = Fieldwork::where('studentID', $studentId)
         ->join('employers', 'fieldworks.employerID', '=', 'employers.employerID')
-        ->select('fieldworks.*', 'employers.companyName', 'employers.fieldworkTitle')
+        ->select('fieldworks.*', 'employers.companyName', 'employers.fieldworkTitle','employers.applicationDeadline')
         ->get();
 
-    return view('student.index', compact('fieldworks', 'totalApplications', 'acceptedApplications', 'rejectedApplications', 'pendingApplications'));
+    return view('student.index', compact('fieldworks', 'totalApplications', 'acceptedApplications', 'rejectedApplications', 'pendingApplications','studentName','course','incompleteProfile'));
 }
+
+    private function checkIncompleteProfile($student)
+    {
+        $requiredFields = ['studentName', 'registrationID', 'studentEmail', 'studentPhone', 'password', 'course', 'studyYear', 'currentGPA', 'introductionLetter', 'resultSlip', 'university'
+];
+
+        foreach ($requiredFields as $field) {
+            if (empty($student->$field)) {
+                return 'Please complete your profile information to apply for fieldworks.';
+            }
+        }
+
+        return false; // Profile is complete
+    }
 
     public function showLogBook(Request $request)
     {
-        // Retrieve the selected day from session, default to 1 if not set
-        $selectedDay = $request->session()->get('selectedDay', 1);
-        
-        // Fetch all log book entries for studentID 1 and employerID 1
-        $logBooks = LogBook::where('studentID', 1)
+        // Retrieve the student ID from the session
+        $studentId = session('student_id');
+    
+        // Check if selectedDay is provided in the request, otherwise use the value in the session or default to 1
+        $selectedDay = $request->input('selectedDay', session('day', 1));
+    
+        // Store the selectedDay value in the session
+        session()->put('day', $selectedDay);
+    
+        // Retrieve the student's data using the student ID
+        $student = Student::findOrFail($studentId);
+        $studentName = $student->studentName;
+        $course = $student->course;
+    
+        // Check if any required fields are missing
+        $incompleteProfile = $this->checkIncompleteProfile($student);
+    
+        // Fetch all log book entries for the student
+        $logBooks = LogBook::where('studentID', $studentId)
                             ->where('employerID', 1)
                             ->first();
-
+    
         // Pass the log book data and selected day to the view
-        return view('student.log-book', ['logBooks' => $logBooks, 'selectedDay' => $selectedDay]);
+        return view('student.log-book', compact('studentName', 'course', 'selectedDay', 'logBooks'));
     }
+
 
     public function selectDay(Request $request)
     {
@@ -129,6 +163,7 @@ class StudentController extends Controller
 
     public function saveLog(Request $request)
     {
+
         // Retrieve selected day and log from the form submission
         $selectedDay = $request->input('selectedDay');
         $log = $request->input('log');
@@ -141,7 +176,7 @@ class StudentController extends Controller
         // If there's no existing log book entry, create a new one
         if (!$logBook) {
             $logBook = new LogBook();
-            $logBook->studentID = 1;
+            $logBook->studentID = session('student_id');
             $logBook->employerID = 1;
             $logBook->save();
         }
@@ -160,14 +195,19 @@ class StudentController extends Controller
        $studentId = session('student_id');
 
        // Retrieve the student's data using the student ID
-       $student = Student::find($studentId);
+       $student = Student::findOrFail($studentId);
+       $studentName = $student->studentName;
+       $course = $student->course;
+
+        // Check if any required fields are missing
+        $incompleteProfile = $this->checkIncompleteProfile($student);
 
        // Check if the student exists
        if (!$student) {
         return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
        }
 
-       return view('student.profile', compact('student'));
+       return view('student.profile', compact('student','studentName','course','incompleteProfile'));
     }
 
     // Update Student Profile
@@ -177,7 +217,7 @@ class StudentController extends Controller
     $studentId = $request->session()->get('student_id');
 
     // Retrieve the student's data using the student ID
-    $student = Student::find($studentId);
+    $student = Student::findOrFail($studentId);
 
     
     // Check if the student exists
@@ -243,7 +283,7 @@ class StudentController extends Controller
         $studentId = $request->session()->get('student_id');
 
         // Retrieve the student's data using the student ID
-        $student = Student::find($studentId);
+        $student = Student::findOrFail($studentId);
 
         // Check if the student exists
         if (!$student) {
@@ -269,24 +309,30 @@ class StudentController extends Controller
     }
 
     public function confirmApplication(Request $request)
-{
-    // Retrieve the fieldwork ID from the request
-    $fieldworkId = $request->input('fieldwork_id');
+    {
+        // Retrieve the fieldwork ID from the request
+        $fieldworkId = $request->fieldworkID;
+        
+        // Find the fieldwork by its ID
+        $application = Fieldwork::findOrFail($fieldworkId);
     
-    // Find all accepted applications for the current student
-    $acceptedApplications = Fieldwork::where('studentID', session('student_id'))
-                                      ->where('status', 'accepted')
-                                      ->get();
-    
-    // Retain the selected application and delete all other accepted applications for the student
-    foreach ($acceptedApplications as $application) {
-        if ($application->fieldworkID != $fieldworkId) {
-            $application->delete();
+        // Check if the application is being confirmed or canceled
+        if ($request->confirmed === 'yes') {
+            // Update the confirmed field to 'yes'
+            $application->confirmed = 'yes';
+            $message = 'Application confirmed successfully.';
+        } else {
+            // Update the confirmed field to 'no'
+            $application->confirmed = 'no';
+            $message = 'Application canceled successfully.';
         }
+    
+        // Save the changes to the application
+        $application->save();
+    
+        // Redirect back with a success message
+        return redirect()->back()->with('success', $message);
     }
-
-    return redirect()->back()->with('success', 'Application confirmed successfully.');
-}
-
+    
 
 }

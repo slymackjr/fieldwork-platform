@@ -16,11 +16,17 @@ class FieldworkSeeder extends Seeder
     {
         // Dummy data
         $fieldworks = [
-            ['employerID' => 1, 'studentID' => 1, 'status' => 'accepted'],
-            ['employerID' => 2, 'studentID' => 1, 'status' => 'pending'],
-            ['employerID' => 3, 'studentID' => 1, 'status' => 'rejected'],
-            ['employerID' => 4, 'studentID' => 1, 'status' => 'accepted'],
-            ['employerID' => 5, 'studentID' => 1, 'status' => 'pending'],
+            ['employerID' => 1, 'studentID' => 1, 'status' => 'accepted', 'confirmed' => 'yes'],
+            ['employerID' => 2, 'studentID' => 1, 'status' => 'pending', 'confirmed' => 'no'],
+            ['employerID' => 3, 'studentID' => 1, 'status' => 'rejected', 'confirmed' => 'no'],
+            ['employerID' => 4, 'studentID' => 1, 'status' => 'accepted', 'confirmed' => 'no'],
+            ['employerID' => 5, 'studentID' => 1, 'status' => 'pending', 'confirmed' => 'no'],
+
+            // New data for employerID 1 with studentIDs from 1 to 5
+            ['employerID' => 1, 'studentID' => 2, 'status' => 'accepted', 'confirmed' => 'no'],
+            ['employerID' => 1, 'studentID' => 3, 'status' => 'pending', 'confirmed' => 'no'],
+            ['employerID' => 1, 'studentID' => 4, 'status' => 'rejected', 'confirmed' => 'no'],
+            ['employerID' => 1, 'studentID' => 5, 'status' => 'accepted', 'confirmed' => 'no'],
         ];
 
         // Insert dummy data into the fieldworks table

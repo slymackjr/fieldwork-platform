@@ -29,11 +29,11 @@
                         </a>
                     </div>
                     <div class="text-center mb-4">
-                        <h4 class="text-warning">Welcome, Join our community</h4>
+                        <h4 class="text-warning">Welcome, Create Opportunities</h4>
                         <h4>Create an account</h4>
                     </div>
                     <!-- Form -->
-                    <form class="px-3" method="POST" action="{{ route('login-employer') }}">
+                    <form class="px-3" method="POST" action="{{ route('register-employer') }}">
                         @csrf
                         <div class="row">
                             <!-- Input Box -->
@@ -46,19 +46,30 @@
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-envelope-o"></i></span>
-                                    <input type="email" name="supervisorEmail" placeholder="Supervisor Email" required>
+                                    <input type="email" name="supervisorEmail" placeholder="Supervisor Email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required >
+                                    @error('supervisorEmail')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
-                                    <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="supervisorPassword" placeholder="Password" required>
+                                    <span><i class="fa fa-user"></i></span>
+                                    <input type="text" name="supervisorName" placeholder="supervisor's Name" required>
+                                    @error('supervisorName')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                            </div>
+                            </div>  
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                                    <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                    title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters" required >
+                                    <small class="form-text text-warning">Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters</small>
+                                    @error('password')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <!-- Add more input fields as needed -->

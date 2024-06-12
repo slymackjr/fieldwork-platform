@@ -23,18 +23,16 @@ Route::get('/student-register', [StudentController::class, 'showRegister'])->nam
 Route::post('/student-register', [StudentController::class, 'register'])->name('student-register-post');
 Route::get('/student-login', [StudentController::class, 'showLogin'])->name('student-login');
 Route::post('/student-login', [StudentController::class, 'login'])->name('student-login-post');
-Route::post('/student-logout', [StudentController::class, 'logout'])->name('student-logout');   
 Route::middleware(['student'])->group(function () {
     Route::get('/student-home', [StudentController::class, 'showHome'])->name('student-dashboard');
+    Route::post('/student-home', [StudentController::class, 'confirmApplication'])->name('confirm.application');
     Route::get('/log-book', [StudentController::class, 'showLogBook'])->name('log-book');
-    Route::post('/log-book/day/{selectedDay}', [StudentController::class, 'saveLog'])->name('log-book.saveLog');
-    Route::post('/log-book/select-day', [StudentController::class, 'selectDay'])->name('log-book.selectDay');
+    Route::post('/log-book', [StudentController::class, 'saveLog'])->name('log-book.saveLog');
     Route::get('/student-profile', [StudentController::class, 'showStudentProfile'])->name('student-profile');
     Route::post('/student-profile', [StudentController::class, 'updateStudentProfile'])->name('student-profile-update');
     Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');
-    Route::post('/student-home', [StudentController::class, 'confirmApplication'])->name('confirm.application');
     Route::get('/pdf/download/{path}', [StudentController::class, 'download'])->name('pdf.download')->where('path', '.*');
-
+    Route::get('/student-logout', [StudentController::class, 'logout'])->name('student-logout');   
 });
 
 
@@ -48,12 +46,19 @@ Route::get('/register', [EmployerController::class, 'showRegister'])->name('regi
 Route::post('/register', [EmployerController::class, 'register'])->name('register-employer');
 Route::middleware(['employer'])->group(function () {
     Route::get('/home', [EmployerController::class, 'showHome'])->name('dashboard'); 
-    Route::get('/attendance', [EmployerController::class, 'showAttendance'])->name('attendance');
+    Route::post('/home', [EmployerController::class, 'updateStatus'])->name('admin.updateStatus');
+    Route::get('/attendance/{studentID}', [EmployerController::class, 'showAttendance'])->name('attendance.show');
+    Route::post('/attendance', [EmployerController::class, 'submitAttendance'])->name('attendance.save');
     Route::get('/applicant-attendance', [EmployerController::class, 'showApplicantAttendance'])->name('applicant-attendance');
     Route::get('/post', [EmployerController::class, 'showPost'])->name('post');
+    Route::get('/post-edit', [EmployerController::class, 'editPost'])->name('fieldwork-post.edit');
+    Route::post('/post-edit', [EmployerController::class, 'updatePost'])->name('fieldwork-post.update');
     Route::get('/profile', [EmployerController::class, 'showUsersProfile'])->name('profile');
+    Route::post('/profile/update', [EmployerController::class, 'updateProfile'])->name('employer.profile.update');
+    Route::post('/profile/password', [EmployerController::class, 'changePassword'])->name('employer.password.update');
     Route::get('/confirm-applications', [EmployerController::class, 'showConfirmApplications'])->name('confirm-applications');
     Route::get('/applicant', [EmployerController::class, 'showApplicant'])->name('applicant');
+    Route::get('/logout', [EmployerController::class, 'logout'])->name('logout');   
 });
 
 

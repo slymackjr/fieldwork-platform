@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -24,10 +25,12 @@ class EmployerSeeder extends Seeder
                 'supervisorEmail' => 'john.doe@example.com',
                 'password' => Hash::make('password'),
                 'supervisorPosition' => 'HR Manager',
-                'supervisorSignature' => 'https://via.placeholder.com/200x100',
-                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'supervisorSignature' => '',
+                'Muhuri' => '',
                 'fieldworkTitle' => 'Fieldwork Title',
                 'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'applicationDeadline' => '2024-06-12',
+                'TIN' => '123456789', // Add TIN
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -39,10 +42,12 @@ class EmployerSeeder extends Seeder
                 'supervisorEmail' => 'jane.smith@example.com',
                 'password' => Hash::make('password'),
                 'supervisorPosition' => 'Finance Manager',
-                'supervisorSignature' => 'https://via.placeholder.com/200x100',
-                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'supervisorSignature' => '',
+                'Muhuri' => '',
                 'fieldworkTitle' => 'Fieldwork Title',
                 'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'applicationDeadline' => '2024-07-01',
+                'TIN' => '987654321', // Add TIN
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -54,10 +59,12 @@ class EmployerSeeder extends Seeder
                 'supervisorEmail' => 'alice.johnson@example.com',
                 'password' => Hash::make('password'),
                 'supervisorPosition' => 'Operations Manager',
-                'supervisorSignature' => 'https://via.placeholder.com/200x100',
-                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'supervisorSignature' => '',
+                'Muhuri' => '',
                 'fieldworkTitle' => 'Fieldwork Title',
                 'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'applicationDeadline' => '2024-07-02',
+                'TIN' => '123123123', // Add TIN
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -69,10 +76,12 @@ class EmployerSeeder extends Seeder
                 'supervisorEmail' => 'michael.williams@example.com',
                 'password' => Hash::make('password'),
                 'supervisorPosition' => 'Logistics Manager',
-                'supervisorSignature' => 'https://via.placeholder.com/200x100',
-                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'supervisorSignature' => '',
+                'Muhuri' => '',
                 'fieldworkTitle' => 'Fieldwork Title',
                 'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'applicationDeadline' => '2024-07-04',
+                'TIN' => '321321321', // Add TIN
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -84,10 +93,12 @@ class EmployerSeeder extends Seeder
                 'supervisorEmail' => 'david.brown@example.com',
                 'password' => Hash::make('password'),
                 'supervisorPosition' => 'Sales Manager',
-                'supervisorSignature' => 'https://via.placeholder.com/200x100',
-                'Muhuri' => 'https://via.placeholder.com/200x100',
+                'supervisorSignature' => '',
+                'Muhuri' => '',
                 'fieldworkTitle' => 'Fieldwork Title',
                 'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                'applicationDeadline' => '2024-07-05',
+                'TIN' => '456456456', // Add TIN
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

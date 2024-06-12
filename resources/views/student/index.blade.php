@@ -8,51 +8,52 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
   <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
   <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+
   <style>
     .message-display {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #4caf50; /* Green */
-  color: white;
-  font-size: 16px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  display: none;
-}
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #4caf50; /* Green */
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: none;
+  }
 
-/* Animation */
-.message-display.show {
-  animation: fadeInOut 2s ease;
-}
+  /* Animation */
+  .message-display.show {
+    animation: fadeInOut 2s ease;
+  }
 
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
-  25% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 
   </style>
 </head>
@@ -61,8 +62,8 @@
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="logo">
+      <a href="{{route('student-dashboard')}}" class="logo d-flex align-items-center">
+        <img src="{{asset('assets/img/logo.png')}}" alt="logo">
         <span class="d-none d-lg-block">FIELDWORK</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -72,47 +73,20 @@
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+            <img src="{{asset('assets/img/profile-img.jpg')}}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{$studentName}}</span>
           </a>
           <!-- End Profile Image Icon -->
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
+              <h6>{{$studentName}}</h6>
+              <span>{{$course}}</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{{route('student-logout')}}">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -160,7 +134,6 @@
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -173,6 +146,46 @@
       <div class="row">
         <!-- Left side columns -->
         <div class="col-lg-12">
+          <!-- Show message if employer profile is incomplete -->
+          @if($incompleteProfile)
+          <div class="alert alert-warning text-center" role="alert">
+            {{$incompleteProfile}}
+          </div>
+          @endif
+          
+          <!-- Display the success message -->
+          @if(session('success'))
+          <div class="alert alert-success text-center" id="success-alert">
+            {{ session('success') }}
+          </div>
+        @endif
+
+        <!-- Display the error message -->
+        @if(session('error'))
+          <div class="alert alert-danger text-center" id="error-alert">
+            {{ session('error') }}
+          </div>
+        @endif
+
+        <!-- Custom JS to hide success and error messages after 2 seconds -->
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const successAlert = document.getElementById('success-alert');
+            const errorAlert = document.getElementById('error-alert');
+
+            if (successAlert) {
+              setTimeout(() => {
+                successAlert.style.display = 'none';
+              }, 2000);
+            }
+
+            if (errorAlert) {
+              setTimeout(() => {
+                errorAlert.style.display = 'none';
+              }, 2000);
+            }
+          });
+        </script>
           <div class="row">
             <!-- Applications Card -->
             <div class="col-xxl-3 col-md-6">
@@ -258,7 +271,9 @@
                           <th scope="col">#</th>
                           <th scope="col">Company Name</th>
                           <th scope="col">Fieldwork Title</th>
+                          <th scope="col">Application Deadline</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Confirmed</th>
                           <th scope="col">Actions</th>
                         </tr>
                       </thead>
@@ -268,18 +283,40 @@
                           <th scope="row">{{ $fieldwork->id }}</th>
                           <td>{{ $fieldwork->companyName }}</td>
                           <td>{{ $fieldwork->fieldworkTitle }}</td>
+                          <td>{{ $fieldwork->applicationDeadline }}</td>
                           <td>
                             <span class="badge {{ $fieldwork->status == 'accepted' ? 'bg-success' : ($fieldwork->status == 'rejected' ? 'bg-danger' : 'bg-warning text-dark') }}">
                               {{ ucfirst($fieldwork->status) }}
                             </span>
                           </td>
                           <td>
+                            <span class="badge {{ $fieldwork->confirmed == 'yes' ? 'bg-success' : ($fieldwork->confirmed == 'no' ? 'bg-danger' : 'bg-warning text-dark') }}">
+                              {{ ucfirst($fieldwork->confirmed) }}
+                            </span>
+                          </td>
+                          <td>
                             @if ($fieldwork->status == 'accepted')
-                              <form method="POST" action="{{ route('confirm.application') }}">
-                                @csrf
-                                <input type="hidden" name="fieldwork_id" value="{{ $fieldwork->fieldworkID }}">
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-check"></i> Confirm</button>
-                              </form>
+                              @if ($fieldwork->confirmed == 'no')
+                                @if (!$fieldwork->studentHasConfirmed())
+                                  <form method="POST" action="{{ route('confirm.application') }}">
+                                    @csrf
+                                    <input type="hidden" name="fieldworkID" value="{{ $fieldwork->fieldworkID }}">
+                                    <input type="hidden" name="confirmed" value="yes">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                      <i class="bi bi-check-circle-fill"></i> Confirm
+                                    </button>
+                                  </form>
+                                @endif
+                              @else
+                                <form method="POST" action="{{ route('confirm.application') }}">
+                                  @csrf
+                                  <input type="hidden" name="fieldworkID" value="{{ $fieldwork->fieldworkID }}">
+                                  <input type="hidden" name="confirmed" value="no">
+                                  <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-x-circle-fill"></i> Cancel
+                                  </button>
+                                </form>
+                              @endif
                             @endif
                           </td>
                         </tr>
@@ -293,6 +330,8 @@
             <!-- End Applications Table -->
 
 
+
+
           </div>
         </div>
         <!-- End Left side columns -->
@@ -301,46 +340,14 @@
   </main>
   <!-- End #main -->
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </footer>
-  <!-- End Footer -->
-
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Function to show message for 2 seconds
-      function showMessage(message) {
-        var messageDisplay = document.getElementById('message-display');
-        messageDisplay.innerText = message;
-        messageDisplay.classList.add('show');
-        setTimeout(function() {
-          messageDisplay.classList.remove('show');
-        }, 2000);
-      }
-  
-      // Check if there's a success message
-      var successMessage = '{{ session('success') }}';
-      if (successMessage) {
-        showMessage(successMessage);
-      }
-    });
-  </script>
-  
-
+  <script src="{{ asset('assets/js/main.js') }}"></script>
 </body>
 
 </html>
