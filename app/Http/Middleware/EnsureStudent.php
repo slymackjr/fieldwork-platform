@@ -18,12 +18,6 @@ class EnsureStudent
     public function handle(Request $request, Closure $next)
 {
     if (Auth::guard('student')->check()) {
-        // Retrieve the authenticated student
-        $student = Auth::guard('student')->user();
-        // Store the student ID and name in the session
-        $request->session()->put('student_id', $student->studentID);
-        $request->session()->put('student_name', $student->studentName);
-        $request->session()->put('course', $student->course);
         // Proceed with the request
         return $next($request);
     }

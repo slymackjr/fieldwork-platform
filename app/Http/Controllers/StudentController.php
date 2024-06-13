@@ -27,7 +27,15 @@ class StudentController extends Controller
         if (Auth::guard('student')->attempt(['studentEmail' => $credentials['studentEmail'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('student-dashboard'))->with('success', 'You are logged in!');
+            // Retrieve the authenticated student
+            $student = Auth::guard('student')->user();
+            // Store the student ID and name in the session
+            $request->session()->put('student_id', $student->studentID);
+            $request->session()->put('user_type', 'student');
+            $request->session()->put('student_name', $student->studentName);
+            $request->session()->put('course', $student->course);
+
+            return redirect()->intended(route('home'))->with('success', 'You are logged in!');
         }
 
         return back()->withErrors([
@@ -37,12 +45,27 @@ class StudentController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('student')->logout();
+         // Check if the student is logged in
+         if (Auth::guard('student')->check()) {
+            // Logout the student
+            Auth::guard('student')->logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            // Unset session variables
+            $request->session()->forget('user_type');
+            $request->session()->forget('student_id');
+            $request->session()->forget('student_name');
+            $request->session()->forget('course');
 
-        return redirect(route('student-login'))->with('success', 'You are logged out!');
+            // Destroy the session
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            // Redirect to the home page or any other page after logout
+            return redirect()->route('home')->with('success', 'You have been logged out.');
+        }
+
+        // If user is not logged in, just redirect them to the home page
+        return redirect()->route('home');
     }
 
     public function showRegister()
@@ -78,7 +101,7 @@ class StudentController extends Controller
 
         Auth::guard('student')->login($student);
 
-        return redirect()->route('student-dashboard')->with('success', 'Registration successful.');
+        return redirect()->route('home')->with('success', 'Registration successful.');
     }
 
     public function showHome()

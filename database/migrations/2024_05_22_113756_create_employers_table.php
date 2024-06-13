@@ -21,12 +21,13 @@ return new class extends Migration
             $table->string('supervisorEmail')->unique();
             $table->string('password');
             $table->string('supervisorPosition')->nullable();
-            $table->string('supervisorSignature')->nullable(); // Assuming this will store the path to the image
-            $table->string('Muhuri')->nullable(); // Assuming this will store the path to the image
+            $table->string('supervisorSignature')->nullable(); 
+            $table->string('Muhuri')->nullable(); 
+            $table->string('companyLogo')->nullable(); 
             $table->string('fieldworkTitle')->nullable();
             $table->text('fieldworkDescription')->nullable();
             $table->date('applicationDeadline')->nullable();
-            $table->string('TIN', 9)->nullable(); // Add TIN field with 9 character limit
+            $table->string('TIN', 9)->nullable(); 
             $table->timestamps();
         });
     }

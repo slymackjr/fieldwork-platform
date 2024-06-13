@@ -25,27 +25,102 @@
     <link rel="stylesheet" href="{{asset('css/slicknav.css')}}">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
+    <style>
+        /* Profile Icon Dropdown */
+        .profile-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+        }
+
+        .profile-dropdown a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .profile-dropdown a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 
 <body>
-    <header>
-        <div class="header-area ">
+    <style>
+        .profile-icon {
+            position: relative;
+            cursor: pointer;
+        }
+    
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px; /* Adjust as needed */
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+    
+        .profile-dropdown a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+    
+        .profile-dropdown a:hover {
+            background-color: #f5f5f5;
+        }
+    
+        .profile-dropdown p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+    
+        .profile-icon img {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+    
+        .profile-icon:hover img {
+            transform: scale(1.1);
+        }
+    </style>    
+     <!-- header-start -->
+     <header>
+        <div class="header-area">
             <div id="sticky-header" class="main-header-area">
-                <div class="container-fluid ">
+                <div class="container-fluid">
                     <div class="header_bottom_border">
                         <div class="row align-items-center">
                             <div class="col-xl-3 col-lg-2">
                                 <div class="logo">
-                                    <a href="{{route('home')}}">
-                                        <img src="{{asset('img/logo-3.png')}}" alt="" width="300px">
+                                    <a href="{{ route('home') }}">
+                                        <img src="{{ asset('img/logo-3.png') }}" alt="" width="300px">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-7">
-                                <div class="main-menu  d-none d-lg-block">
+                                <div class="main-menu d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="{{route('home')}}">home</a></li>
-                                            <li><a href="{{route('contact')}}">Contact</a></li>
+                                            <li><a href="{{ route('home') }}">Home</a></li>
+                                            <li><a href="{{ route('contact') }}">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -53,11 +128,37 @@
                             <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                                 <div class="Appointment">
                                     <div class="phone_num d-none d-xl-block">
-                                        <a href="{{route('student-login')}}">Apply Fieldwork</a>
+                                        <!-- Apply Fieldwork Link -->
+                                        @if (!session('user_type'))
+                                            <a href="{{ route('student-login') }}" id="apply-fieldwork">Apply Fieldwork</a>
+                                        @endif
                                     </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn3" href="{{route('login')}}">Post Fieldwork</a>
+                                        <!-- Post Fieldwork Link -->
+                                        @if (!session('user_type'))
+                                            <a class="boxed-btn3" href="{{ route('login') }}" id="post-fieldwork">Post Fieldwork</a>
+                                        @endif
                                     </div>
+                                    <!-- Profile Icon Dropdown -->
+                                    @if (session('user_type'))
+                                        <div class="profile-icon" id="profile-icon">
+                                            <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle" width="40" onclick="toggleDropdown()">
+                                            <div class="profile-dropdown" id="profile-dropdown">
+                                                @if (session('user_type') == 'student')
+                                                    <p>Name: {{ session('student_name') }}</p>
+                                                    <p>Course: {{ session('course') }}</p>
+                                                    <a href="{{ route('student-dashboard') }}">Dashboard</a>
+                                                    <a href="{{ route('student-logout') }}">Logout</a>
+                                                @elseif (session('user_type') == 'employer')
+                                                    <p>Name: {{ session('employer_name') }}</p>
+                                                    <p>Company Name: {{ session('employer_company') }}</p>
+                                                    <a href="{{ route('dashboard') }}">Dashboard</a>
+                                                    <a href="{{ route('logout') }}">Logout</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <!-- End Profile Icon Dropdown -->
                                 </div>
                             </div>
                             <div class="col-12">
@@ -65,23 +166,35 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </header>
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById('profile-dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+    
+        document.addEventListener('click', function(event) {
+            var isClickInside = document.getElementById('profile-icon').contains(event.target);
+            if (!isClickInside) {
+                document.getElementById('profile-dropdown').style.display = 'none';
+            }
+        });
+    </script>
     <!-- header-end -->
-
+        
     <!-- slider_area_start -->
     <div class="slider_area">
-        <div class="single_slider  d-flex align-items-center slider_bg_1">
+        <div class="single_slider d-flex align-items-center slider_bg_1">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-7 col-md-6">
                         <div class="slider_text">
                             <h5 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".2s">Get your Fieldwork listed</h5>
                             <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s">Find your preferred volunteering work</h3>
-                            <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">We provide online  applications and fieldwork for capable individuals with quick approval that suit your term length</p>
+                            <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">We provide online applications and fieldwork for capable individuals with quick approval that suit your term length in <script>document.write(new Date().getFullYear());</script></p>
                         </div>
                     </div>
                 </div>
@@ -109,7 +222,7 @@
                             <option value="1">Dhaka</option>
                             <option value="2">Rangpur</option>
                             <option value="4">Sylet</option>
-                          </select>
+                        </select>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-12">
@@ -337,6 +450,7 @@
     </div>
     <!-- job_searcing_wrap end  -->
 
+    <!-- link that opens popup -->
     <!-- JS here -->
     <script src="{{asset('js/vendor/modernizr-3.5.0.min.js')}}"></script>
     <script src="{{asset('js/vendor/jquery-1.12.4.min.js')}}"></script>
@@ -355,7 +469,6 @@
     <script src="{{asset('js/jquery.slicknav.min.js')}}"></script>
     <script src="{{asset('js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('js/plugins.js')}}"></script>
-    <script src="{{asset('js/gijgo.min.js')}}"></script>
 
     <!--contact js-->
     <script src="{{asset('js/contact.js')}}"></script>

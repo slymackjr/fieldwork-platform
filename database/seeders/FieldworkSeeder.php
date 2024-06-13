@@ -16,7 +16,7 @@ class FieldworkSeeder extends Seeder
     {
         // Dummy data
         $fieldworks = [
-            ['employerID' => 1, 'studentID' => 1, 'status' => 'accepted', 'confirmed' => 'yes'],
+            ['employerID' => 1, 'studentID' => 1, 'status' => 'accepted', 'confirmed' => 'no'],
             ['employerID' => 2, 'studentID' => 1, 'status' => 'pending', 'confirmed' => 'no'],
             ['employerID' => 3, 'studentID' => 1, 'status' => 'rejected', 'confirmed' => 'no'],
             ['employerID' => 4, 'studentID' => 1, 'status' => 'accepted', 'confirmed' => 'no'],

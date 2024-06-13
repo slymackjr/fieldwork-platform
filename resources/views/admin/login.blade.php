@@ -45,7 +45,7 @@
 							if (errorMessage) {
 								setTimeout(function() {
 									errorMessage.style.display = 'none';
-								}, 3000);
+								}, 2000);
 							}
 						});
 					</script>

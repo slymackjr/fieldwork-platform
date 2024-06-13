@@ -91,7 +91,7 @@ class EmployerController extends Controller
 
 private function checkIncompleteProfile($employer)
 {
-    $requiredFields = ['companyName', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail', 'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri', 'fieldworkTitle', 'fieldworkDescription','applicationDeadline','TIN'];
+    $requiredFields = ['companyName', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail', 'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri','CompanyLogo', 'fieldworkTitle', 'fieldworkDescription','applicationDeadline','TIN'];
 
     foreach ($requiredFields as $field) {
         if (empty($employer->$field)) {
@@ -125,6 +125,14 @@ private function checkIncompleteProfile($employer)
         if (Auth::guard('employer')->attempt(['supervisorEmail' => $credentials['supervisorEmail'], 'password' => $credentials['supervisorPassword']])) {
             // If successful, regenerate the session and redirect to intended location
             $request->session()->regenerate();
+
+            // Retrieve the authenticated employer
+            $employer = Auth::guard('employer')->user();
+            // Store the employer ID and name in the session
+            $request->session()->put('employer_id', $employer->employerID);
+            $request->session()->put('user_type', 'employer');
+            $request->session()->put('employer_name', $employer->supervisorName);
+            $request->session()->put('employer_company', $employer->companyName);
     
             return redirect()->intended(route('dashboard'))->with('success', 'You are logged in!');
         }
@@ -133,10 +141,29 @@ private function checkIncompleteProfile($employer)
         return back()->with('error', 'The provided credentials do not match our records.');
     }
     
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::guard('employer')->logout();
-        return redirect()->route('login');
+         // Check if the employer is logged in
+         if (Auth::guard('employer')->check()) {
+            // Logout the employer
+            Auth::guard('employer')->logout();
+
+            // Unset session variables
+            $request->session()->forget('user_type');
+            $request->session()->forget('employer_id');
+            $request->session()->forget('employer_name');
+            $request->session()->forget('employer_company');
+
+            // Destroy the session
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            // Redirect to the home page or any other page after logout
+            return redirect()->route('home')->with('success', 'You have been logged out.');
+        }
+
+        // If user is not logged in, just redirect them to the home page
+        return redirect()->route('home');
     }
 
     public function showAttendance(Request $request, $studentID)
@@ -268,6 +295,10 @@ private function checkIncompleteProfile($employer)
             $this->validateImage($request->file('supervisorSignature'));
         }
 
+        if ($request->hasFile('CompanyLogo')) {
+            $this->validateImage($request->file('CompanyLogo'));
+        }
+
         if ($request->hasFile('Muhuri')) {
             $this->validateImage($request->file('Muhuri'));
         }
@@ -295,6 +326,17 @@ private function checkIncompleteProfile($employer)
             // Store the new Muhuri
             $muhuriPath = $request->file('Muhuri')->store('employer/muhuris', 'public');
             $employer->Muhuri = $muhuriPath;
+        }
+
+        // Handle Company Logo upload
+        if ($request->hasFile('CompanyLogo')) {
+            // Delete the old Company Logo if it exists
+            if ($employer->CompanyLogo) {
+                Storage::disk('public')->delete($employer->CompanyLogo);
+            }
+            // Store the new Company Logo
+            $CompanyLogoPath = $request->file('CompanyLogo')->store('employer/CompanyLogos', 'public');
+            $employer->CompanyLogo = $CompanyLogoPath;
         }
 
         $employer->save();

@@ -54,7 +54,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="{{route('dashboard')}}" class="logo d-flex align-items-center">
+      <a href="{{route('home')}}" class="logo d-flex align-items-center">
         <img src="{{asset('assets/img/logo.png')}}" alt="">
         <span class="d-none d-lg-block">FIELDWORK</span>
       </a>
@@ -238,6 +238,17 @@
                                     @endif
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 label">Company Logo</div>
+                                <div class="col-lg-9 col-md-8">
+                                    @if($employer->companyLogo)
+                                        <img src="{{ asset('storage/' . $employer->companyLogo) }}" alt="CompanyLogo" class="img-thumbnail" style="max-width: 200px;">
+                                    @else
+                                        <p>No Company Logo uploaded.</p>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
         
                         <div class="tab-pane fade pt-3" id="profile-edit">
@@ -317,6 +328,16 @@
                                         <input name="Muhuri" type="file" class="form-control" id="Muhuri" accept="image/*">
                                         @if($employer->Muhuri)
                                             <img src="{{ asset('storage/' . $employer->Muhuri) }}" alt="Muhuri" class="img-thumbnail mt-3" style="max-width: 200px;">
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label for="CompanyLogo" class="col-md-4 col-lg-3 col-form-label">Company Logo (width 300px)</label>
+                                    <div class="col-md-8 col-lg-9">
+                                        <input name="CompanyLogo" type="file" class="form-control" id="CompanyLogo" accept="image/*">
+                                        @if($employer->CompanyLogo)
+                                            <img src="{{ asset('storage/' . $employer->CompanyLogo) }}" alt="CompanyLogo" class="img-thumbnail mt-3" style="max-width: 200px;">
                                         @endif
                                     </div>
                                 </div>
