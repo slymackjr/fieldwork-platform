@@ -167,76 +167,7 @@
                   }
                 });
               </script>
-          {{-- <div class="row">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-4">
-              <!-- Overall Applicants Card -->
-              <div class="col">
-                  <div class="card info-card sales-card">
-                      <div class="card-body">
-                          <h5 class="card-title">Overall Applicants</h5>
-                          <div class="d-flex align-items-center">
-                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                  <i class="bi bi-people"></i>
-                              </div>
-                              <div class="ps-3">
-                                  <h6>{{ $rejectedCount + $pendingCount + $acceptedCount }}</h6>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div><!-- End Overall Applicants Card -->
-          
-              <!-- Accepted Applicants Card -->
-              <div class="col">
-                  <div class="card info-card revenue-card">
-                      <div class="card-body">
-                          <h5 class="card-title">Accepted Applicants</h5>
-                          <div class="d-flex align-items-center">
-                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                  <i class="bi bi-check-circle"></i>
-                              </div>
-                              <div class="ps-3">
-                                  <h6>{{ $acceptedCount }}</h6>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div><!-- End Accepted Applicants Card -->
-          
-              <!-- Pending Applicants Card -->
-              <div class="col">
-                  <div class="card info-card customers-card">
-                      <div class="card-body">
-                          <h5 class="card-title">Pending Applicants</h5>
-                          <div class="d-flex align-items-center">
-                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                  <i class="bi bi-clock"></i>
-                              </div>
-                              <div class="ps-3">
-                                  <h6>{{ $pendingCount }}</h6>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div><!-- End Pending Applicants Card -->
-          
-              <!-- Rejected Applicants Card -->
-              <div class="col">
-                  <div class="card info-card customers-card">
-                      <div class="card-body">
-                          <h5 class="card-title">Rejected Applicants</h5>
-                          <div class="d-flex align-items-center">
-                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                  <i class="bi bi-x-circle"></i>
-                              </div>
-                              <div class="ps-3">
-                                  <h6>{{ $rejectedCount }}</h6>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div><!-- End Rejected Applicants Card -->
-          </div> --}}
+
           <div class="row">
             <div class="col-md-3">
                 <!-- Overall Applicants Card -->

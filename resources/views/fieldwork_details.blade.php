@@ -27,25 +27,72 @@
 </head>
 
 <body>
-    <header>
-        <div class="header-area ">
+    <!-- header-start -->
+    <style>
+        .profile-icon {
+            position: relative;
+            cursor: pointer;
+        }
+    
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px; /* Adjust as needed */
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+    
+        .profile-dropdown a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+    
+        .profile-dropdown a:hover {
+            background-color: #f5f5f5;
+        }
+    
+        .profile-dropdown p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+    
+        .profile-icon img {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+    
+        .profile-icon:hover img {
+            transform: scale(1.1);
+        }
+    </style>
+     <header>
+        <div class="header-area">
             <div id="sticky-header" class="main-header-area">
-                <div class="container-fluid ">
+                <div class="container-fluid">
                     <div class="header_bottom_border">
                         <div class="row align-items-center">
                             <div class="col-xl-3 col-lg-2">
                                 <div class="logo">
-                                    <a href="{{route('home')}}">
-                                        <img src="{{asset('img/logo-3.png')}}" alt="" width="300px">
+                                    <a href="{{ route('home') }}">
+                                        <img src="{{ asset('img/logo-3.png') }}" alt="" width="300px">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-7">
-                                <div class="main-menu  d-none d-lg-block">
+                                <div class="main-menu d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="{{route('home')}}">home</a></li>
-                                            <li><a href="{{route('contact')}}">Contact</a></li>
+                                            <li><a href="{{ route('home') }}">Home</a></li>
+                                            <li><a href="{{ route('contact') }}">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -53,11 +100,37 @@
                             <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                                 <div class="Appointment">
                                     <div class="phone_num d-none d-xl-block">
-                                        <a href="{{route('login')}}">Post a Fieldwork</a>
+                                        <!-- Apply Fieldwork Link -->
+                                        @if (!session('user_type'))
+                                            <a href="{{ route('student-login') }}" id="apply-fieldwork">Apply Fieldwork</a>
+                                        @endif
                                     </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn3" href="{{route('login')}}">Post a Job</a>
+                                        <!-- Post Fieldwork Link -->
+                                        @if (!session('user_type'))
+                                            <a class="boxed-btn3" href="{{ route('login') }}" id="post-fieldwork">Post Fieldwork</a>
+                                        @endif
                                     </div>
+                                    <!-- Profile Icon Dropdown -->
+                                    @if (session('user_type'))
+                                        <div class="profile-icon" id="profile-icon">
+                                            <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle" width="40" onclick="toggleDropdown()">
+                                            <div class="profile-dropdown" id="profile-dropdown">
+                                                @if (session('user_type') == 'student')
+                                                    <p>Name: {{ session('student_name') }}</p>
+                                                    <p>Course: {{ session('course') }}</p>
+                                                    <a href="{{ route('student-dashboard') }}">Dashboard</a>
+                                                    <a href="{{ route('student-logout') }}">Logout</a>
+                                                @elseif (session('user_type') == 'employer')
+                                                    <p>Name: {{ session('employer_name') }}</p>
+                                                    <p>Company Name: {{ session('employer_company') }}</p>
+                                                    <a href="{{ route('dashboard') }}">Dashboard</a>
+                                                    <a href="{{ route('logout') }}">Logout</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <!-- End Profile Icon Dropdown -->
                                 </div>
                             </div>
                             <div class="col-12">
@@ -65,12 +138,82 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </header>
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById('profile-dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+    
+        document.addEventListener('click', function(event) {
+            var isClickInside = document.getElementById('profile-icon').contains(event.target);
+            if (!isClickInside) {
+                document.getElementById('profile-dropdown').style.display = 'none';
+            }
+        });
+    </script>
     <!-- header-end -->
+
+    <!-- Display the success message -->
+    @if(session('success'))
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{ session('success') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
+
+  <!-- Display the error message -->
+  @if(session('error'))
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="errorModalLabel">Error</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {{ session('error') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
+
+  <!-- Custom JS to show modals and hide them after 2 seconds -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const successModalElement = document.getElementById('successModal');
+      const errorModalElement = document.getElementById('errorModal');
+      
+      if (successModalElement) {
+        const successModal = new bootstrap.Modal(successModalElement);
+        successModal.show();
+        setTimeout(() => {
+          successModal.hide();
+        }, 2000);
+      }
+
+      if (errorModalElement) {
+        const errorModal = new bootstrap.Modal(errorModalElement);
+        errorModal.show();
+        setTimeout(() => {
+          errorModal.hide();
+        }, 2000);
+      }
+    });
+  </script>
 
     <!-- bradcam_area  -->
     <div class="bradcam_area bradcam_bg_1">
@@ -78,7 +221,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="bradcam_text">
-                        <h3>Software Engineer</h3>
+                        <h3>{{$employer->fieldworkTitle}}</h3>
                     </div>
                 </div>
             </div>
@@ -94,23 +237,18 @@
                         <div class="single_jobs white-bg d-flex justify-content-between">
                             <div class="jobs_left d-flex align-items-center">
                                 <div class="thumb">
-                                    <img src="{{asset('img/svg_icon/1.svg')}}" alt="">
+                                    <img src="{{ asset('storage/' . $employer->companyLogo) }}" alt="Company Logo" style="width: 80px;">
                                 </div>
                                 <div class="jobs_conetent">
-                                    <a href="#"><h4>Software Engineer</h4></a>
+                                    <h4>{{$employer->fieldworkTitle}}</h4>
                                     <div class="links_locat d-flex align-items-center">
                                         <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
+                                            <p> <i class="fa fa-map-marker"></i>{{$employer->location}}</p>
                                         </div>
                                         <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
+                                            <p> <i class="fa fa-clock-o"></i> Field Placement </p>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
                                 </div>
                             </div>
                         </div>
@@ -118,70 +256,17 @@
                     <div class="descript_wrap white-bg">
                         <div class="single_wrap">
                             <h4>Fieldwork description</h4>
-                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing.</p>
-                            <p>Variations of passages of lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing.</p>
-                        </div>
-                        <div class="single_wrap">
-                            <h4>Responsibility</h4>
-                            <ul>
-                                <li>The applicants should have experience in the following areas.
-                                </li>
-                                <li>Have sound knowledge of commercial activities.</li>
-                                <li>Leadership, analytical, and problem-solving abilities.</li>
-                                <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
-                            </ul>
-                        </div>
-                        <div class="single_wrap">
-                            <h4>Qualifications</h4>
-                            <ul>
-                                <li>The applicants should have experience in the following areas.
-                                </li>
-                                <li>Have sound knowledge of commercial activities.</li>
-                                <li>Leadership, analytical, and problem-solving abilities.</li>
-                                <li>Should have vast knowledge in IAS/ IFRS, Company Act, Income Tax, VAT.</li>
-                            </ul>
-                        </div>
-                        <div class="single_wrap">
-                            <h4>Benefits</h4>
-                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing.</p>
+                            <p>{{$employer->fieldworkDescription}}</p>
                         </div>
                     </div>
                     <div class="apply_job_form white-bg">
                         <h4>Apply for the Fieldwork</h4>
-                        <form action="#">
+                        @if(session('user_type') == 'student')
+                        <form action="{{ route('apply') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="employerID" value="{{ $employer->employerID }}">
+                            <input type="hidden" name="studentID" value="{{ session('student_id') }}">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input_field">
-                                        <input type="text" placeholder="Your name">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input_field">
-                                        <input type="text" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="input_field">
-                                        <input type="text" placeholder="Website/Portfolio link">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                          </button>
-                                        </div>
-                                        <div class="custom-file">
-                                          <input type="file" class="custom-file-input" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03">
-                                          <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
-                                        </div>
-                                      </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="input_field">
-                                        <textarea name="#" id="" cols="30" rows="10" placeholder="Coverletter"></textarea>
-                                    </div>
-                                </div>
                                 <div class="col-md-12">
                                     <div class="submit_btn">
                                         <button class="boxed-btn3 w-100" type="submit">Apply Now</button>
@@ -189,170 +274,36 @@
                                 </div>
                             </div>
                         </form>
+                        @else
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="submit_btn">
+                                    <a href="{{route('student-login')}}" class="boxed-btn3 w-100">Apply Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="job_sumary">
                         <div class="summery_header">
-                            <h3>Fieldwork Summery</h3>
+                            <h3>Supervisor's Details</h3>
                         </div>
                         <div class="job_content">
                             <ul>
-                                <li>Published on: <span>12 Nov, 2019</span></li>
-                                <li>Vacancy: <span>2 Position</span></li>
-                                <li>Salary: <span>50k - 120k/y</span></li>
-                                <li>Location: <span>California, USA</span></li>
-                                <li>Job Nature: <span> Full-time</span></li>
+                                <li>Supervisor's Name: <span>{{$employer->supervisorName}}</span></li>
+                                <li>Supervisor's Position: <span>{{$employer->supervisorPosition}}</span></li>
+                                <li>Supervisor's Email <span>{{$employer->supervisorEmail}}</span></li>
+                                <li>Deadline: <span>{{$employer->applicationDeadline}}</span></li>
+                                <li>Company Name: <span>{{$employer->companyName}}</span></li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="share_wrap d-flex">
-                        <span>Share at:</span>
-                        <ul>
-                            <li><a href="#"> <i class="fa fa-facebook"></i></a> </li>
-                            <li><a href="#"> <i class="fa fa-google-plus"></i></a> </li>
-                            <li><a href="#"> <i class="fa fa-twitter"></i></a> </li>
-                            <li><a href="#"> <i class="fa fa-envelope"></i></a> </li>
-                        </ul>
-                    </div>
-                    <div class="job_location_wrap">
-                        <div class="job_lok_inner">
-                            <div id="map" style="height: 200px;"></div>
-                            <script>
-                              function initMap() {
-                                var uluru = {lat: -25.363, lng: 131.044};
-                                var grayStyles = [
-                                  {
-                                    featureType: "all",
-                                    stylers: [
-                                      { saturation: -90 },
-                                      { lightness: 50 }
-                                    ]
-                                  },
-                                  {elementType: 'labels.text.fill', stylers: [{color: '#ccdee9'}]}
-                                ];
-                                var map = new google.maps.Map(document.getElementById('map'), {
-                                  center: {lat: -31.197, lng: 150.744},
-                                  zoom: 9,
-                                  styles: grayStyles,
-                                  scrollwheel:  false
-                                });
-                              }
-                              
-                            </script>
-                            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&callback=initMap"></script>
-                            
-                          </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- footer start -->
-    <footer class="footer">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3 col-md-6 col-lg-3">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1s" data-wow-delay=".3s">
-                            <div class="footer_logo">
-                                <a href="#">
-                                    <img src="{{asset('img/logo-3.png')}}" alt="logo" width="220px">
-                                </a>
-                            </div>
-                            <p>
-                                fieldwork@support.com <br>
-                                +255 767 413 968 <br>
-                                Samora Street, Posta, Dar-es-Salaam
-                            </p>
-                            <div class="socail_links">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-google-plus"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-twitter"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-md-6 col-lg-2">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1.1s" data-wow-delay=".4s">
-                            <h3 class="footer_title">
-                                Company
-                            </h3>
-                            <ul>
-                                <li><a href="#">About </a></li>
-                                <li><a href="#"> Pricing</a></li>
-                                <li><a href="#">Carrier Tips</a></li>
-                                <li><a href="#">FAQ</a></li>
-                            </ul>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-3">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1.2s" data-wow-delay=".5s">
-                            <h3 class="footer_title">
-                                Category
-                            </h3>
-                            <ul>
-                                <li><a href="#">Design & Art</a></li>
-                                <li><a href="#">Engineering</a></li>
-                                <li><a href="#">Sales & Marketing</a></li>
-                                <li><a href="#">Finance</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6 col-lg-4">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1.3s" data-wow-delay=".6s">
-                            <h3 class="footer_title">
-                                Subscribe
-                            </h3>
-                            <form action="#" class="newsletter_form">
-                                <input type="text" placeholder="Enter your mail">
-                                <button type="submit">Subscribe</button>
-                            </form>
-                            <p class="newsletter_text">Esteem spirit temper too say adieus who direct esteem esteems
-                                luckily.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copy-right_text wow fadeInUp" data-wow-duration="1.4s" data-wow-delay=".3s">
-            <div class="container">
-                <div class="footer_border"></div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <p class="copy_right text-center">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Fieldwork Platform <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">JERRYCODE TEAM</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--/ footer end  -->
-
 
     <!-- JS here -->
     <script src="{{asset('js/vendor/modernizr-3.5.0.min.js')}}"></script>

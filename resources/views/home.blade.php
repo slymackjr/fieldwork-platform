@@ -25,37 +25,11 @@
     <link rel="stylesheet" href="{{asset('css/slicknav.css')}}">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
-    <style>
-        /* Profile Icon Dropdown */
-        .profile-icon {
-            position: relative;
-            display: inline-block;
-        }
+    
 
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            right: 0;
-        }
-
-        .profile-dropdown a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .profile-dropdown a:hover {
-            background-color: #f1f1f1;
-        }
-    </style>
-
-<body>
-    <style>
+<body>    
+     <!-- header-start -->
+     <style>
         .profile-icon {
             position: relative;
             cursor: pointer;
@@ -100,8 +74,7 @@
         .profile-icon:hover img {
             transform: scale(1.1);
         }
-    </style>    
-     <!-- header-start -->
+    </style>
      <header>
         <div class="header-area">
             <div id="sticky-header" class="main-header-area">
@@ -184,7 +157,64 @@
         });
     </script>
     <!-- header-end -->
-        
+     <!-- Display the success message -->
+     @if(session('success'))
+     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="successModalLabel">Success</h5>
+             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">
+             {{ session('success') }}
+           </div>
+         </div>
+       </div>
+     </div>
+   @endif
+
+   <!-- Display the error message -->
+   @if(session('error'))
+     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+           <div class="modal-header">
+             <h5 class="modal-title" id="errorModalLabel">Error</h5>
+             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+           </div>
+           <div class="modal-body">
+             {{ session('error') }}
+           </div>
+         </div>
+       </div>
+     </div>
+   @endif
+
+   <!-- Custom JS to show modals and hide them after 2 seconds -->
+   <script>
+     document.addEventListener('DOMContentLoaded', function () {
+       const successModalElement = document.getElementById('successModal');
+       const errorModalElement = document.getElementById('errorModal');
+       
+       if (successModalElement) {
+         const successModal = new bootstrap.Modal(successModalElement);
+         successModal.show();
+         setTimeout(() => {
+           successModal.hide();
+         }, 2000);
+       }
+
+       if (errorModalElement) {
+         const errorModal = new bootstrap.Modal(errorModalElement);
+         errorModal.show();
+         setTimeout(() => {
+           errorModal.hide();
+         }, 2000);
+       }
+     });
+   </script>
+   
     <!-- slider_area_start -->
     <div class="slider_area">
         <div class="single_slider d-flex align-items-center slider_bg_1">
@@ -235,197 +265,6 @@
     </div>
     <!--/ catagory_area -->
 
-    {{-- <!-- fieldwork_listing_area_start  -->
-    <div class="job_listing_area">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="section_title">
-                        <h3>Field Listing</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="job_lists">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    <img src="img/svg_icon/1.svg" alt="">
-                                </div>
-                                <div class="jobs_conetent">
-                                    <a href="job_details.html"><h4>Software Engineer</h4></a>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
-                                    <a href="job_details.html" class="boxed-btn3">Apply Now</a>
-                                </div>
-                                <div class="date">
-                                    <p>Date line: 31 Jan 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    <img src="img/svg_icon/2.svg" alt="">
-                                </div>
-                                <div class="jobs_conetent">
-                                    <a href="job_details.html"><h4>Digital Marketer</h4></a>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
-                                    <a href="job_details.html" class="boxed-btn3">Apply Now</a>
-                                </div>
-                                <div class="date">
-                                    <p>Date line: 31 Jan 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    <img src="img/svg_icon/3.svg" alt="">
-                                </div>
-                                <div class="jobs_conetent">
-                                    <a href="job_details.html"><h4>Wordpress Developer</h4></a>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
-                                    <a href="job_details.html" class="boxed-btn3">Apply Now</a>
-                                </div>
-                                <div class="date">
-                                    <p>Date line: 31 Jan 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    <img src="img/svg_icon/4.svg" alt="">
-                                </div>
-                                <div class="jobs_conetent">
-                                    <a href="job_details.html"><h4>Visual Designer</h4></a>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
-                                    <a href="job_details.html" class="boxed-btn3">Apply Now</a>
-                                </div>
-                                <div class="date">
-                                    <p>Date line: 31 Jan 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    <img src="img/svg_icon/5.svg" alt="">
-                                </div>
-                                <div class="jobs_conetent">
-                                    <a href="job_details.html"><h4>Software Engineer</h4></a>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
-                                    <a href="job_details.html" class="boxed-btn3">Apply Now</a>
-                                </div>
-                                <div class="date">
-                                    <p>Date line: 31 Jan 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-md-12">
-                        <div class="single_jobs white-bg d-flex justify-content-between">
-                            <div class="jobs_left d-flex align-items-center">
-                                <div class="thumb">
-                                    <img src="img/svg_icon/1.svg" alt="">
-                                </div>
-                                <div class="jobs_conetent">
-                                    <a href="job_details.html"><h4>Creative Designer</h4></a>
-                                    <div class="links_locat d-flex align-items-center">
-                                        <div class="location">
-                                            <p> <i class="fa fa-map-marker"></i> California, USA</p>
-                                        </div>
-                                        <div class="location">
-                                            <p> <i class="fa fa-clock-o"></i> Part-time</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="jobs_right">
-                                <div class="apply_now">
-                                    <a class="heart_mark" href="#"> <i class="ti-heart"></i> </a>
-                                    <a href="job_details.html" class="boxed-btn3">Apply Now</a>
-                                </div>
-                                <div class="date">
-                                    <p>Date line: 31 Jan 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- job_listing_area_end  --> --}}
     <!-- fieldwork_listing_area_start  -->
 <div class="job_listing_area">
     <div class="container">
@@ -446,7 +285,7 @@
                                 <img src="{{ asset('storage/' . $employer->companyLogo) }}" alt="Company Logo" style="width: 80px;">
                             </div>
                             <div class="jobs_conetent">
-                                <a href="job_details.html"><h4>{{ $employer->fieldworkTitle }}</h4></a>
+                                <a href="{{ route('fieldwork-details', ['employerID' => $employer->employerID]) }}"><h4>{{ $employer->fieldworkTitle }}</h4></a>
                                 <div class="links_locat d-flex align-items-center">
                                     <div class="location">
                                         <p><i class="fa fa-map-marker"></i> {{ $employer->location }}</p>
@@ -459,7 +298,16 @@
                         </div>
                         <div class="jobs_right">
                             <div class="apply_now">
-                                <a href="job_details.html" class="boxed-btn3">Apply Now</a>
+                                @if (session('user_type') == 'student')
+                                <form action="{{ route('apply') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="employerID" value="{{ $employer->employerID }}">
+                                    <input type="hidden" name="studentID" value="{{ session('student_id') }}">
+                                    <button class="boxed-btn3" type="submit">Apply Now</button>
+                                @else
+                                <a href="{{route('student-login')}}" class="boxed-btn3">Apply Now</a>    
+                                </form>
+                                @endif
                             </div>
                             <div class="date">
                                 <p>Deadline: {{ $employer->applicationDeadline->format('d M Y') }}</p>

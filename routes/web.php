@@ -35,7 +35,7 @@ Route::middleware(['student'])->group(function () {
     Route::get('/generate-report/{studentID}/{employerID}', [StudentController::class, 'generateReport'])->name('generateReport');
     Route::get('/report', [StudentController::class, 'report'])->name('generateReport');
     Route::get('/test', [StudentController::class, 'testView'])->name('test.view');
-    Route::get('/student-logout', [StudentController::class, 'logout'])->name('student-logout');   
+    Route::get('/student-logout', [StudentController::class, 'logout'])->name('student-logout');
 });
 
 
@@ -70,5 +70,6 @@ Route::middleware(['employer'])->group(function () {
 ------------------------------------------------------------------------------*/
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::get('/fieldwork-details', [HomeController::class, 'fieldworkDetails'])->name('fieldwork-details');
+Route::get('/fieldwork-details/{employerID}', [HomeController::class, 'fieldworkDetails'])->name('fieldwork-details'); 
+Route::post('/', [HomeController::class, 'applyField'])->name('apply');   
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employer;
+use App\Models\Fieldwork;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -14,48 +16,43 @@ class HomeController extends Controller
         return view('home', compact('employers'));
     }
 
-    public function blog()
-    {
-        return view('blog');
-    }
-
-    public function candidate()
-    {
-        return view('candidate');
-    }
-
     public function contact()
     {
         return view('contact');
     }
 
-    public function elements()
+    public function fieldworkDetails($employerID)
     {
-        return view('elements');
+        $employer = Employer::findOrFail($employerID);
+        return view('fieldwork_details', compact('employer'));
     }
 
-    public function fieldworkDetails()
+    public function applyField(Request $request)
     {
-        return view('fieldwork_details');
-    }
+        $employerID = $request->input('employerID');
+        $studentID = $request->input('studentID'); 
+        // Dump the inputs for debugging purposes
+         //dd($employerID, $studentID);
+        if (Auth::guard('student')->check())
+        {
+            
+            // Check if the student has already applied
+            if (Fieldwork::hasApplied($employerID, $studentID)) {
+                // Handle the case where the student has already applied
+                return redirect()->back()->with('error', 'You have already applied for this fieldwork.');
+            }
+        
+            // Create a new Fieldwork entry
+            Fieldwork::create([
+                'employerID' => $employerID,
+                'studentID' => $studentID,
+                'status' => 'pending', // Set initial status as pending
+                'confirmed' => 'no' // Set confirmed status as no initially
+            ]);
 
-    public function fieldworks()
-    {
-        return view('fieldworks');
-    }
-
-    public function jobDetails()
-    {
-        return view('job_details');
-    }
-
-    public function jobs()
-    {
-        return view('jobs');
-    }
-
-    public function singleBlog()
-    {
-        return view('single-blog');
+        
+            // Redirect or return a response after successful application
+            return redirect()->back()->with('success', 'Application submitted successfully!');   
+        }
     }
 }

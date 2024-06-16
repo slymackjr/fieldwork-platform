@@ -52,6 +52,20 @@ class Fieldwork extends Model
 
     public $timestamps = true;
 
+    /**
+     * Check if a student has already applied for a specific employer.
+     *
+     * @param int $employerID
+     * @param int $studentID
+     * @return bool
+     */
+    public static function hasApplied($employerID, $studentID)
+    {
+        return static::where('employerID', $employerID)
+            ->where('studentID', $studentID)
+            ->exists();
+    }
+
     public function employer()
     {
         return $this->belongsTo(Employer::class, 'employerID', 'employerID');
