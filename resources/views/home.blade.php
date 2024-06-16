@@ -237,33 +237,40 @@
     <!-- slider_area_end -->
 
     <!-- catagory_area -->
+    <style>
+        .search-form {
+            display: flex;
+            align-items: center;
+        }
+    
+        .search-form input[type="text"] {
+            margin-right: 10px;
+            flex: 1;
+        }
+    
+        .search-form button {
+            white-space: nowrap;
+        }
+    </style>
+    
     <div class="catagory_area">
         <div class="container">
             <div class="row cat_search">
-                <div class="col-lg-3 col-md-4">
+                <div class="col-lg-6 col-md-8">
                     <div class="single_input">
-                        <input type="text" placeholder="Search keyword">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4">
-                    <div class="single_input">
-                        <select class="wide" >
-                            <option data-display="Location">Location</option>
-                            <option value="1">Dhaka</option>
-                            <option value="2">Rangpur</option>
-                            <option value="4">Sylet</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-12">
-                    <div class="job_btn">
-                        <a href="#" class="boxed-btn3">Find Fieldwork</a>
+                        <form action="{{ route('home') }}" method="GET" class="search-form">
+                            <input type="text" name="keyword" placeholder="Search FieldWork">
+                            <input type="text" name="location" placeholder="Search Location">
+                            <button type="submit" class="boxed-btn3">Find Fieldwork</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!--/ catagory_area -->
+
+
 
     <!-- fieldwork_listing_area_start  -->
 <div class="job_listing_area">

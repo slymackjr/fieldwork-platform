@@ -9,12 +9,28 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        $employers = Employer::select('employerID','companyName', 'location', 'fieldworkTitle', 'applicationDeadline', 'companyLogo')
-        ->get();
-        return view('home', compact('employers'));
+    public function index(Request $request)
+{
+    $keyword = $request->input('keyword');
+    $location = $request->input('location');
+
+    // Perform search query based on $keyword and $location
+    $query = Employer::query();
+
+    if (!empty($keyword)) {
+        $query->whereRaw('LOWER(fieldworkTitle) LIKE ?', ['%' . strtolower($keyword) . '%']);
     }
+
+    if (!empty($location)) {
+        $query->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($location) . '%']);
+    }
+
+    $employers = $query->select('employerID', 'companyName', 'location', 'fieldworkTitle', 'applicationDeadline', 'companyLogo')
+        ->get();
+
+    return view('home', compact('employers'));
+}
+
 
     public function contact()
     {
@@ -55,4 +71,26 @@ class HomeController extends Controller
             return redirect()->back()->with('success', 'Application submitted successfully!');   
         }
     }
+
+    /* public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $location = $request->input('location');
+
+        // Perform search query based on $keyword and $location
+        $query = Employer::query();
+
+        if (!empty($keyword)) {
+            $query->where('fieldworkTitle', 'like', "%$keyword%");
+        }
+
+        if (!empty($location)) {
+            $query->where('location', $location);
+        }
+
+        $employers = $query->get();
+
+        // Return the view with search results
+        return view('home', compact('employers'));
+    } */
 }

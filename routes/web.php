@@ -71,5 +71,6 @@ Route::middleware(['employer'])->group(function () {
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/fieldwork-details/{employerID}', [HomeController::class, 'fieldworkDetails'])->name('fieldwork-details'); 
-Route::post('/', [HomeController::class, 'applyField'])->name('apply');   
+Route::post('/', [HomeController::class, 'applyField'])->name('apply');  
+//Route::get('/search', [HomeController::class, 'search'])->name('search'); 
 
