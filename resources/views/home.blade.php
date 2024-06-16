@@ -235,7 +235,7 @@
     </div>
     <!--/ catagory_area -->
 
-    <!-- fieldwork_listing_area_start  -->
+    {{-- <!-- fieldwork_listing_area_start  -->
     <div class="job_listing_area">
         <div class="container">
             <div class="row align-items-center">
@@ -425,7 +425,55 @@
             </div>
         </div>
     </div>
-    <!-- job_listing_area_end  -->
+    <!-- job_listing_area_end  --> --}}
+    <!-- fieldwork_listing_area_start  -->
+<div class="job_listing_area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="section_title">
+                    <h3>Field Listing</h3>
+                </div>
+            </div>
+        </div>
+        <div class="job_lists">
+            <div class="row">
+                @foreach($employers as $employer)
+                <div class="col-lg-12 col-md-12">
+                    <div class="single_jobs white-bg d-flex justify-content-between">
+                        <div class="jobs_left d-flex align-items-center">
+                            <div class="thumb">
+                                <img src="{{ asset('storage/' . $employer->companyLogo) }}" alt="Company Logo" style="width: 80px;">
+                            </div>
+                            <div class="jobs_conetent">
+                                <a href="job_details.html"><h4>{{ $employer->fieldworkTitle }}</h4></a>
+                                <div class="links_locat d-flex align-items-center">
+                                    <div class="location">
+                                        <p><i class="fa fa-map-marker"></i> {{ $employer->location }}</p>
+                                    </div>
+                                    <div class="location">
+                                        <p><i class="fa fa-building"></i> Company Name: {{ $employer->companyName }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jobs_right">
+                            <div class="apply_now">
+                                <a href="job_details.html" class="boxed-btn3">Apply Now</a>
+                            </div>
+                            <div class="date">
+                                <p>Deadline: {{ $employer->applicationDeadline->format('d M Y') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+<!-- job_listing_area_end  -->
+
 
     <!-- job_searcing_wrap  -->
     <div class="job_searcing_wrap overlay">

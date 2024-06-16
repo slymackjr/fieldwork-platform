@@ -89,18 +89,22 @@ class EmployerController extends Controller
     return view('admin.index', compact('fieldworks','employerName','employerCompany','rejectedCount', 'pendingCount', 'acceptedCount', 'incompleteProfile'));
 }
 
-private function checkIncompleteProfile($employer)
-{
-    $requiredFields = ['companyName', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail', 'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri','CompanyLogo', 'fieldworkTitle', 'fieldworkDescription','applicationDeadline','TIN'];
+    private function checkIncompleteProfile($employer)
+    {
+        $requiredFields = [
+            'companyName','location', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail', 
+            'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri', 'companyLogo', 
+            'fieldworkTitle', 'fieldworkDescription', 'applicationDeadline', 'TIN'
+        ];
 
-    foreach ($requiredFields as $field) {
-        if (empty($employer->$field)) {
-            return 'Please complete your profile information to post fieldworks.';
+        foreach ($requiredFields as $field) {
+            if (empty($employer->$field)) {
+                return 'Please complete your profile and field details to post fieldwork.';
+            }
         }
-    }
 
-    return false; // Profile is complete
-}
+        return false; // Profile is complete
+    }
 
 
     public function updateStatus(Request $request)

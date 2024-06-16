@@ -188,10 +188,10 @@
         </script>
           <div class="row">
             <!-- Applications Card -->
-            <div class="col-xxl-3 col-md-6">
+            <div class="col">
               <div class="card info-card sales-card">
                   <div class="card-body">
-                      <h5 class="card-title">Total Applications</h5>
+                      <h5 class="card-title">Applications</h5>
                       <div class="d-flex align-items-center">
                           <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                               <i class="bi bi-file-earmark-text"></i>
@@ -206,10 +206,10 @@
             <!-- End Applications Card -->
 
             <!-- Accepted Applications Card -->
-            <div class="col-xxl-3 col-md-6">
+            <div class="col">
               <div class="card info-card revenue-card">
                   <div class="card-body">
-                      <h5 class="card-title">Accepted Applications</h5>
+                      <h5 class="card-title">Accepted</h5>
                       <div class="d-flex align-items-center">
                           <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                               <i class="bi bi-star-fill"></i>
@@ -224,10 +224,10 @@
             <!-- End Accepted Applications Card -->
 
             <!-- Rejected Applications Card -->
-            <div class="col-xxl-3 col-md-6">
+            <div class="col">
               <div class="card info-card customers-card">
                   <div class="card-body">
-                      <h5 class="card-title">Rejected Applications</h5>
+                      <h5 class="card-title">Rejected</h5>
                       <div class="d-flex align-items-center">
                           <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                               <i class="bi bi-x-circle"></i>
@@ -242,10 +242,10 @@
             <!-- End Rejected Applications Card -->
 
             <!-- Pending Applications Card -->
-            <div class="col-xxl-3 col-md-6">
+            <div class="col">
               <div class="card info-card pending-card">
                   <div class="card-body">
-                      <h5 class="card-title">Pending Applications</h5>
+                      <h5 class="card-title">Pending</h5>
                       <div class="d-flex align-items-center">
                           <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                               <i class="bi bi-hourglass-split"></i>

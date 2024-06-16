@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Report;
 use App\Models\LogBook;
 use App\Models\Student;
+use App\Models\Employer;
 use App\Models\Fieldwork;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf; 
 
 class StudentController extends Controller
 {
@@ -38,9 +42,9 @@ class StudentController extends Controller
             return redirect()->intended(route('home'))->with('success', 'You are logged in!');
         }
 
-        return back()->withErrors([
-            'studentEmail' => 'The provided credentials do not match our records.',
-        ])->onlyInput('studentEmail');
+        return back()->with(
+            'error', 'The provided credentials do not match our records.',
+        )->onlyInput('studentEmail');
     }
 
     public function logout(Request $request)
@@ -356,6 +360,79 @@ class StudentController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', $message);
     }
+
+   /*  public function generateReport($studentID, $employerID)
+    {
+        $student = Student::find($studentID);
+        $employer = Employer::find($employerID);
+        $logBooks = LogBook::where('studentID', $studentID)
+            ->where('employerID', $employerID)
+            ->get();
+        $attendance = Attendance::where('studentID', $studentID)
+            ->where('employerID', $employerID)
+            ->first();
+
+        $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logBooks', 'attendance'));
+
+        $fileName = 'logbook_report_' . $studentID . '_' . $employerID . '.pdf';
+        $filePath = storage_path('app/public/reports/' . $fileName);
+
+        Storage::disk('public')->put('reports/' . $fileName, $pdf->output());
+
+        Report::create([
+            'studentID' => $studentID,
+            'employerID' => $employerID,
+            'file_path' => 'reports/' . $fileName,
+        ]);
+
+        return $pdf->download($fileName);
+    } */
+
+    public function generateReport($studentID, $employerID)
+{
+    $student = Student::find($studentID);
+    $employer = Employer::find($employerID);
+    $logBooks = LogBook::where('studentID', $studentID)
+        ->where('employerID', $employerID)
+        ->get();
+    $attendance = Attendance::where('studentID', $studentID)
+        ->where('employerID', $employerID)
+        ->first();
+
+    // Create an array to hold log data for each day
+    $logs = [];
+    foreach ($logBooks as $logBook) {
+        for ($day = 1; $day <= 40; $day++) {
+            $dayField = 'day_' . $day;
+            if (!empty($logBook->$dayField)) {
+                $logs[$day] = $logBook->$dayField;
+            }
+        }
+    }
+
+    $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attendance'));
+
+    $fileName = 'logbook_report_' . $studentID . '_' . $employerID . '.pdf';
+
+    return $pdf->download($fileName);
+}
+    public function report()
+{
+
+    $pdf = PDF::loadView('reports.test1');
+
+    $fileName = 'logbook_report'.'.pdf';
+
+    //Storage::disk('public')->put('reports/' . $fileName, $pdf->output());
+
+    return $pdf->download($fileName);
+}
+
+    public function testView()
+    {
+        return view('reports.test1');
+    }
+
     
 
 }

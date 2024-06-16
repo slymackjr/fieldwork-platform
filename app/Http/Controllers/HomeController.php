@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $employers = Employer::select('employerID','companyName', 'location', 'fieldworkTitle', 'applicationDeadline', 'companyLogo')
+        ->get();
+        return view('home', compact('employers'));
     }
 
     public function blog()

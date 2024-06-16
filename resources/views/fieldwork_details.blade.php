@@ -45,8 +45,6 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a href="{{route('home')}}">home</a></li>
-                                            <li><a href="{{route('jobs')}}">Browse Job</a></li>
-                                            <li><a href="{{route('fieldworks')}}">Browse Fieldwork</a></li>
                                             <li><a href="{{route('contact')}}">Contact</a></li>
                                         </ul>
                                     </nav>

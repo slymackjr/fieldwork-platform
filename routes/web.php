@@ -31,7 +31,10 @@ Route::middleware(['student'])->group(function () {
     Route::get('/student-profile', [StudentController::class, 'showStudentProfile'])->name('student-profile');
     Route::post('/student-profile', [StudentController::class, 'updateStudentProfile'])->name('student-profile-update');
     Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');
-    Route::get('/pdf/download/{path}', [StudentController::class, 'download'])->name('pdf.download')->where('path', '.*');
+    Route::get('/download/{path}', [StudentController::class, 'download'])->name('pdf.download')->where('path', '.*');
+    Route::get('/generate-report/{studentID}/{employerID}', [StudentController::class, 'generateReport'])->name('generateReport');
+    Route::get('/report', [StudentController::class, 'report'])->name('generateReport');
+    Route::get('/test', [StudentController::class, 'testView'])->name('test.view');
     Route::get('/student-logout', [StudentController::class, 'logout'])->name('student-logout');   
 });
 
@@ -68,6 +71,4 @@ Route::middleware(['employer'])->group(function () {
 Route::get('/', [HomeController::class,'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/fieldwork-details', [HomeController::class, 'fieldworkDetails'])->name('fieldwork-details');
-Route::get('/fieldworks', [HomeController::class, 'fieldworks'])->name('fieldworks');
-Route::get('/job-details', [HomeController::class, 'jobDetails'])->name('job-details');
-Route::get('/jobs', [HomeController::class, 'jobs'])->name('jobs');
+

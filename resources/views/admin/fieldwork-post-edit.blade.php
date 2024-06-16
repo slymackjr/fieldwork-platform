@@ -175,29 +175,31 @@
                 });
               </script>
 
-              <form action="{{ route('fieldwork-post.update') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                  <label for="companyName" class="form-label">Company Name</label>
-                  <input type="text" name="companyName" class="form-control" id="companyName" value="{{ $employer->companyName }}" required>
-                </div>
-                <div class="mb-3">
-                  <label for="fieldworkTitle" class="form-label">Fieldwork Title</label>
-                  <input type="text" name="fieldworkTitle" class="form-control" id="fieldworkTitle" value="{{ $employer->fieldworkTitle }}" required>
-                </div>
-                <div class="mb-3">
-                  <label for="fieldworkDescription" class="form-label">Fieldwork Description</label>
-                  <textarea name="fieldworkDescription" class="form-control" id="fieldworkDescription" rows="5" required>{{ $employer->fieldworkDescription }}</textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="applicationDeadline" class="form-label">Application Deadline</label>
-                  <input type="date" name="applicationDeadline" class="form-control" id="applicationDeadline" value="{{ $employer->applicationDeadline ? $employer->applicationDeadline->format('Y-m-d') : '' }}" required>
-                </div>
-              
-                <div class="d-flex justify-content-center">
-                  <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save Changes</button>
-                </div>
-              </form>
+              <div class="container">
+                <form action="{{ route('fieldwork-post.update') }}" method="POST">
+                  @csrf
+                  <div class="mb-3">
+                    <label for="companyName" class="form-label">Company Name</label>
+                    <input type="text" name="companyName" class="form-control" id="companyName" value="{{ $employer->companyName }}" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="fieldworkTitle" class="form-label">Fieldwork Title</label>
+                    <input type="text" name="fieldworkTitle" class="form-control" id="fieldworkTitle" value="{{ $employer->fieldworkTitle }}" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="fieldworkDescription" class="form-label">Fieldwork Description</label>
+                    <textarea name="fieldworkDescription" class="form-control" id="fieldworkDescription" rows="5" required>{{ $employer->fieldworkDescription }}</textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="applicationDeadline" class="form-label">Application Deadline</label>
+                    <input type="date" name="applicationDeadline" class="form-control" id="applicationDeadline" value="{{ $employer->applicationDeadline ? $employer->applicationDeadline->format('Y-m-d') : '' }}" required>
+                  </div>
+                
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save Changes</button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>

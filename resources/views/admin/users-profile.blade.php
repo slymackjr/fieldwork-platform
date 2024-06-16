@@ -336,8 +336,8 @@
                                     <label for="CompanyLogo" class="col-md-4 col-lg-3 col-form-label">Company Logo (width 300px)</label>
                                     <div class="col-md-8 col-lg-9">
                                         <input name="CompanyLogo" type="file" class="form-control" id="CompanyLogo" accept="image/*">
-                                        @if($employer->CompanyLogo)
-                                            <img src="{{ asset('storage/' . $employer->CompanyLogo) }}" alt="CompanyLogo" class="img-thumbnail mt-3" style="max-width: 200px;">
+                                        @if($employer->companyLogo)
+                                        <img src="{{ asset('storage/' . $employer->companyLogo) }}" alt="CompanyLogo" class="img-thumbnail mt-3" style="max-width: 200px;">
                                         @endif
                                     </div>
                                 </div>

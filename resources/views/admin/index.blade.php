@@ -167,7 +167,7 @@
                   }
                 });
               </script>
-          <div class="row">
+          {{-- <div class="row">
             <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-4">
               <!-- Overall Applicants Card -->
               <div class="col">
@@ -236,7 +236,77 @@
                       </div>
                   </div>
               </div><!-- End Rejected Applicants Card -->
-          </div>
+          </div> --}}
+          <div class="row">
+            <div class="col-md-3">
+                <!-- Overall Applicants Card -->
+                <div class="card info-card sales-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Overall Applications</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $rejectedCount + $pendingCount + $acceptedCount }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Overall Applicants Card -->
+        
+            <div class="col-md-3">
+                <!-- Accepted Applicants Card -->
+                <div class="card info-card revenue-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Accepted</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $acceptedCount }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Accepted Applicants Card -->
+        
+            <div class="col-md-3">
+                <!-- Pending Applicants Card -->
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pending</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $pendingCount }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Pending Applicants Card -->
+        
+            <div class="col-md-3">
+                <!-- Rejected Applicants Card -->
+                <div class="card info-card customers-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Rejected</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-x-circle"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>{{ $rejectedCount }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Rejected Applicants Card -->
+        </div>
+        
           
             <!-- Overall Applicants Table -->
             <div class="col-12">
@@ -247,13 +317,13 @@
                     <table class="table">
                       <thead>
                         <tr>
-                          <th scope="col">StudentName</th>
-                          <th scope="col">University</th>
+                          <th scope="col">Student Name</th>
+                          <th scope="col">Student University</th>
                           <th scope="col">Course</th>
-                          <th scope="col">StudyYear</th>
+                          <th scope="col">Study Year</th>
                           <th scope="col">GPA</th>
-                          <th scope="col">IntroductionLetter</th>
-                          <th scope="col">ResultSlip</th>
+                          <th scope="col">Introduction Letter</th>
+                          <th scope="col">Result Slip</th>
                           <th scope="col">Status</th>
                           <th scope="col">Actions</th>
                         </tr>
