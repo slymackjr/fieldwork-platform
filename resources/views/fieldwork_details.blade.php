@@ -31,7 +31,12 @@
     <style>
         .profile-icon {
             position: relative;
-            cursor: pointer;
+        }
+    
+        .profile-icon img {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            cursor: pointer; /* Added cursor pointer here */
         }
     
         .profile-dropdown {
@@ -64,17 +69,8 @@
             font-size: 14px;
             color: #666;
         }
-    
-        .profile-icon img {
-            border-radius: 50%;
-            transition: transform 0.3s ease;
-        }
-    
-        .profile-icon:hover img {
-            transform: scale(1.1);
-        }
     </style>
-     <header>
+    <header>
         <div class="header-area">
             <div id="sticky-header" class="main-header-area">
                 <div class="container-fluid">
@@ -117,13 +113,13 @@
                                             <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle" width="40" onclick="toggleDropdown()">
                                             <div class="profile-dropdown" id="profile-dropdown">
                                                 @if (session('user_type') == 'student')
-                                                    <p>Name: {{ session('student_name') }}</p>
-                                                    <p>Course: {{ session('course') }}</p>
-                                                    <a href="{{ route('student-dashboard') }}">Dashboard</a>
-                                                    <a href="{{ route('student-logout') }}">Logout</a>
+                                                    <p class="font-weight-bold">{{ session('student_name') }}</p>
+                                                    <p class="font-weight-bold">{{ session('course') }}</p>
+                                                    <a class="font-weight-bold" href="{{ route('student-dashboard') }}">Dashboard</a>
+                                                    <a class="font-weight-bold" href="{{ route('student-logout') }}">Logout</a>
                                                 @elseif (session('user_type') == 'employer')
-                                                    <p>Name: {{ session('employer_name') }}</p>
-                                                    <p>Company Name: {{ session('employer_company') }}</p>
+                                                    <p>{{ session('employer_name') }}</p>
+                                                    <p>{{ session('employer_company') }}</p>
                                                     <a href="{{ route('dashboard') }}">Dashboard</a>
                                                     <a href="{{ route('logout') }}">Logout</a>
                                                 @endif

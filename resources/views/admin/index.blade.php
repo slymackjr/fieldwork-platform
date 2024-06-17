@@ -86,19 +86,23 @@
         </a>
       </li><!-- End Dashboard Nav -->
       
+      @if (!$incompleteProfile)
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ route('fieldwork-post.edit') }}">
           <i class="bi bi-credit-card"></i>
           <span>Fieldwork Post</span>
         </a>
       </li><!-- End Payment Nav -->
+      @endif
       
+      @if ($deadline)
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('applicant-attendance')}}">
           <i class="bi bi-person-check"></i>
           <span>Applicant Attendance</span>
         </a>
       </li><!-- End Confirm Registered Drivers Nav -->
+      @endif
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('profile')}}">
@@ -130,7 +134,7 @@
           <!-- Show message if employer profile is incomplete -->
           @if($incompleteProfile)
           <div class="alert alert-warning text-center" role="alert">
-            {{$incompleteProfile}}
+            Please complete your profile and field details to post fieldwork.
           </div>
           @endif
 
@@ -204,38 +208,38 @@
             </div><!-- End Accepted Applicants Card -->
         
             <div class="col-md-3">
-                <!-- Pending Applicants Card -->
+                <!-- Confirmed Applicants Card -->
                 <div class="card info-card customers-card">
                     <div class="card-body">
-                        <h5 class="card-title">Pending</h5>
+                        <h5 class="card-title">Confirmed</h5>
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-clock"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>{{ $pendingCount }}</h6>
+                                <h6>{{ $confirmedCount }}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- End Pending Applicants Card -->
+            </div><!-- End Confirmed Applicants Card -->
         
             <div class="col-md-3">
-                <!-- Rejected Applicants Card -->
+                <!-- Not Confirmed Applicants Card -->
                 <div class="card info-card customers-card">
                     <div class="card-body">
-                        <h5 class="card-title">Rejected</h5>
+                        <h5 class="card-title">Not Confirmed</h5>
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-x-circle"></i>
                             </div>
                             <div class="ps-3">
-                                <h6>{{ $rejectedCount }}</h6>
+                                <h6>{{ $notConfirmedCount }}</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- End Rejected Applicants Card -->
+            </div><!-- End Not Confirmed Applicants Card -->
         </div>
         
           
@@ -285,6 +289,7 @@
                               @endif
                             </td>
                             <td>
+                              @if (!$deadline)
                               <div style="display: flex; gap: 10px;">
                                 <form action="{{ route('admin.updateStatus') }}" method="POST">
                                   @csrf
@@ -303,6 +308,7 @@
                                   </button>
                                 </form>
                               </div>
+                              @endif
                             </td>                           
                           </tr>
                         @endforeach
@@ -313,6 +319,58 @@
               </div>
             </div>
             <!-- End Overall Applicants Table -->
+
+            <!-- Confirmed Applicants Table -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                  <h5 class="card-title">Confirmed Applicants</h5>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Student Name</th>
+                          <th scope="col">Student University</th>
+                          <th scope="col">Course</th>
+                          <th scope="col">Study Year</th>
+                          <th scope="col">GPA</th>
+                          <th scope="col">Introduction Letter</th>
+                          <th scope="col">Result Slip</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Confirmed</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($confirmedFieldworks as $fieldwork)
+                          <tr>
+                            <td>{{ $fieldwork->student->studentName }}</td>
+                            <td>{{ $fieldwork->student->university }}</td>
+                            <td>{{ $fieldwork->student->course }}</td>
+                            <td>{{ $fieldwork->student->studyYear }}</td>
+                            <td>{{ $fieldwork->student->currentGPA }}</td>
+                            <td>@if ($fieldwork->student->introductionLetter)
+                              <a href="{{ asset('storage/' . $fieldwork->student->introductionLetter) }}" target="_blank">View Introduction Letter</a>
+                                @endif
+                            </td>
+                            <td> @if ($fieldwork->student->resultSlip)
+                              <a href="{{ asset('storage/' . $fieldwork->student->resultSlip) }}" target="_blank">View Result Slip</a>
+                                @endif
+                            </td>
+                            <td>
+                                <span class="badge bg-success">{{$fieldwork->status}}</span>
+                            </td>
+                            <td>
+                              <span class="badge bg-success">{{$fieldwork->confirmed}}</span>
+                            </td>                           
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Confirmed Applicants Table -->
 
           </div>
         </div><!-- End Left side columns -->

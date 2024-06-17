@@ -73,18 +73,23 @@
           <span>Dashboard</span>
         </a>
       </li>
+      @if (!$incompleteProfile)
       <li class="nav-item">
-        <a class="nav-link active" href="{{ route('fieldwork-post.edit') }}">
+        <a class="nav-link collapsed" href="{{ route('fieldwork-post.edit') }}">
           <i class="bi bi-credit-card"></i>
           <span>Fieldwork Post</span>
         </a>
-      </li>
+      </li><!-- End Payment Nav -->
+      @endif
+      
+      @if ($deadline)
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('applicant-attendance')}}">
           <i class="bi bi-person-check"></i>
           <span>Applicant Attendance</span>
         </a>
-      </li>
+      </li><!-- End Confirm Registered Drivers Nav -->
+      @endif
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('profile')}}">
           <i class="bi bi-person"></i>
@@ -107,12 +112,6 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-12">
-          <!-- Show message if employer profile is incomplete -->
-          @if($incompleteProfile)
-          <div class="alert alert-warning text-center" role="alert">
-            {{$incompleteProfile}}
-          </div>
-          @endif
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Edit Fieldwork Post</h5>
@@ -179,20 +178,25 @@
                 <form action="{{ route('fieldwork-post.update') }}" method="POST">
                   @csrf
                   <div class="mb-3">
-                    <label for="companyName" class="form-label">Company Name</label>
-                    <input type="text" name="companyName" class="form-control" id="companyName" value="{{ $employer->companyName }}" required>
-                  </div>
-                  <div class="mb-3">
                     <label for="fieldworkTitle" class="form-label">Fieldwork Title</label>
                     <input type="text" name="fieldworkTitle" class="form-control" id="fieldworkTitle" value="{{ $employer->fieldworkTitle }}" required>
+                    @error('fieldworkTitle')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                   </div>
                   <div class="mb-3">
                     <label for="fieldworkDescription" class="form-label">Fieldwork Description</label>
                     <textarea name="fieldworkDescription" class="form-control" id="fieldworkDescription" rows="5" required>{{ $employer->fieldworkDescription }}</textarea>
+                    @error('fieldworkDescription')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                   </div>
                   <div class="mb-3">
                     <label for="applicationDeadline" class="form-label">Application Deadline</label>
                     <input type="date" name="applicationDeadline" class="form-control" id="applicationDeadline" value="{{ $employer->applicationDeadline ? $employer->applicationDeadline->format('Y-m-d') : '' }}" required>
+                    @error('applicationDeadline')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                   </div>
                 
                   <div class="d-flex justify-content-center">

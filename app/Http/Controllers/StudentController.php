@@ -412,7 +412,7 @@ class StudentController extends Controller
 
     $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attendance'));
 
-    $fileName = 'logbook_report_' . $studentID . '_' . $employerID . '.pdf';
+    $fileName = 'logbook_report'.'.pdf';
 
     return $pdf->download($fileName);
 }

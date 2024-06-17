@@ -302,8 +302,8 @@
                                     @csrf
                                     <input type="hidden" name="fieldworkID" value="{{ $fieldwork->fieldworkID }}">
                                     <input type="hidden" name="confirmed" value="yes">
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                      <i class="bi bi-check-circle-fill"></i> Confirm
+                                    <button type="submit" class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                                      <i class="bi bi-check-circle-fill me-1"></i> Confirm
                                     </button>
                                   </form>
                                 @endif
@@ -312,8 +312,8 @@
                                   @csrf
                                   <input type="hidden" name="fieldworkID" value="{{ $fieldwork->fieldworkID }}">
                                   <input type="hidden" name="confirmed" value="no">
-                                  <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-x-circle-fill"></i> Cancel
+                                  <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center">
+                                    <i class="bi bi-x-circle-fill me-1"></i> Cancel
                                   </button>
                                 </form>
                               @endif

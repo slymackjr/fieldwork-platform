@@ -9,7 +9,9 @@ use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class EmployerController extends Controller
@@ -73,20 +75,29 @@ class EmployerController extends Controller
 
     public function showHome()
 {
+     // Inside any method or function in your Laravel application
+    //Debugbar::info(now()->format('Y-m-d H:i:s'));
     $employer = Employer::findOrFail(session('employer_id'));
+    $deadline = $employer->hasPassedDeadline();
     $employerName = $employer->supervisorName;
     $employerCompany = $employer->companyName;
     $fieldworks = Fieldwork::where('employerID', session('employer_id'))->with('student')->get();
-
+    $confirmedFieldworks = Fieldwork::where('employerID', session('employer_id'))
+    ->where('confirmed', 'yes')
+    ->where('status', 'accepted')
+    ->with('student')
+    ->get();
     // Check if any required fields are missing
     $incompleteProfile = $this->checkIncompleteProfile($employer);
 
     // Fetching the count of rejected, pending, and accepted students for the employer with ID
+    $notConfirmedCount = Fieldwork::where('employerID', session('employer_id'))->where('status', 'accepted')->where('confirmed', 'no')->count();
+    $confirmedCount = Fieldwork::where('employerID', session('employer_id'))->where('status', 'accepted')->where('confirmed', 'yes')->count();
+    $acceptedCount = Fieldwork::where('employerID', session('employer_id'))->where('status', 'accepted')->count();
     $rejectedCount = Fieldwork::where('employerID', session('employer_id'))->where('status', 'rejected')->count();
     $pendingCount = Fieldwork::where('employerID', session('employer_id'))->where('status', 'pending')->count();
-    $acceptedCount = Fieldwork::where('employerID', session('employer_id'))->where('status', 'accepted')->count();
 
-    return view('admin.index', compact('fieldworks','employerName','employerCompany','rejectedCount', 'pendingCount', 'acceptedCount', 'incompleteProfile'));
+    return view('admin.index', compact('fieldworks','confirmedFieldworks','deadline','employerName','employerCompany','confirmedCount', 'notConfirmedCount', 'acceptedCount','rejectedCount','pendingCount', 'incompleteProfile'));
 }
 
     private function checkIncompleteProfile($employer)
@@ -94,12 +105,29 @@ class EmployerController extends Controller
         $requiredFields = [
             'companyName','location', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail', 
             'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri', 'companyLogo', 
-            'fieldworkTitle', 'fieldworkDescription', 'applicationDeadline', 'TIN'
+             'TIN'
         ];
 
         foreach ($requiredFields as $field) {
             if (empty($employer->$field)) {
-                return 'Please complete your profile and field details to post fieldwork.';
+                return true;
+            }
+        }
+
+        return false; // Profile is complete
+    }
+
+    private function profileComplete($employer)
+    {
+        $requiredFields = [
+            'companyName','location', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail', 
+            'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri', 'companyLogo', 
+             'fieldworkTitle', 'fieldworkDescription', 'applicationDeadline', 'TIN'
+        ];
+
+        foreach ($requiredFields as $field) {
+            if (empty($employer->$field)) {
+                return true;
             }
         }
 
@@ -170,10 +198,19 @@ class EmployerController extends Controller
         return redirect()->route('home');
     }
 
-    public function showAttendance(Request $request, $studentID)
+    public function showAttendance(Request $request)
     {
         $employerID = session('employer_id');
+        $studentID = $request->studentID;
         $employer = Employer::findOrFail($employerID);
+        $deadline = $employer->hasPassedDeadline();
+        if(!$deadline)
+        {
+            if (empty($studentID)) {
+                return redirect()->back();
+            }
+            return redirect()->back();
+        }
         $employerName = $employer->supervisorName;
         $employerCompany = $employer->companyName;
 
@@ -213,9 +250,18 @@ class EmployerController extends Controller
         $employer = Employer::findOrFail($employerID);
         $employerName = $employer->supervisorName;
         $employerCompany = $employer->companyName;
-
+        $deadline = $employer->hasPassedDeadline();
+        if(!$deadline)
+        {
+            return redirect()->back();
+        }
         // Fetch all fieldworks for the given employer
-        $fieldworks = Fieldwork::where('employerID', $employerID)->with('student')->get();
+        $fieldworks = Fieldwork::where('employerID', $employerID)
+        ->where('confirmed', 'yes')
+        ->where('status', 'accepted')
+        ->with('student')
+        ->get();
+
 
         return view('admin.applicant-attendance', compact('fieldworks','employerName','employerCompany'));
     }
@@ -227,34 +273,53 @@ class EmployerController extends Controller
         $employer = Employer::findOrFail($employerID);
         $employerName = $employer->supervisorName;
         $employerCompany = $employer->companyName;
-        // Fetch the employer with employerID 1
-        $employer = Employer::findOrFail($employerID);
-
+        $deadline = $employer->hasPassedDeadline();
+        // Check if anll required fields are filled
+        $profileComplete = $this->profileComplete($employer);
+        if($profileComplete)
+        {
+            return redirect()->back();
+        }
+         // Check if any required fields are missing
+        $incompleteProfile = $this->checkIncompleteProfile($employer);
         // Return the view with the fetched data
-        return view('admin.fieldwork-post', compact('employer','employerName','employerCompany'));
+        return view('admin.fieldwork-post', compact('employer','employerName','employerCompany','deadline','incompleteProfile'));
     }
 
     public function editPost()
     {
+
         $employerID = session('employer_id');
         $employer = Employer::findOrFail($employerID);
+        $deadline = $employer->hasPassedDeadline();
         $employerName = $employer->supervisorName;
         $employerCompany = $employer->companyName;
-        $employer = Employer::findOrFail($employerID);
-
         // Check if any required fields are missing
         $incompleteProfile = $this->checkIncompleteProfile($employer);
+        if($incompleteProfile)
+        {
+            return redirect()->back();
+        }
 
-        return view('admin.fieldwork-post-edit', compact('employer','employerName','employerCompany','incompleteProfile'));
+        return view('admin.fieldwork-post-edit', compact('employer','employerName','employerCompany','deadline','incompleteProfile'));
     }
 
     public function updatePost(Request $request)
     {
-        $request->validate([
-            'companyName' => 'required|string|max:255',
-            'fieldworkTitle' => 'required|string|max:255',
-            'fieldworkDescription' => 'required|string',
-        ]);
+        // Validate the incoming request data
+    $validator = Validator::make($request->all(), [
+        'fieldworkTitle' => 'required|string|max:255',
+        'fieldworkDescription' => 'required|string',
+        'applicationDeadline' => 'required|date', // Ensure applicationDeadline is a valid date
+    ]);
+
+    // If validation fails, redirect back with errors
+    if ($validator->fails()) {
+        return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
 
         $employerID = session('employer_id');
         $employer = Employer::findOrFail($employerID);
@@ -267,7 +332,7 @@ class EmployerController extends Controller
     {
         $employerID = session('employer_id');
         $employer = Employer::findOrFail($employerID);
-
+        $deadline = $employer->hasPassedDeadline();
         $employerName = $employer->supervisorName;
         $employerCompany = $employer->companyName;
 
@@ -286,7 +351,7 @@ class EmployerController extends Controller
             },
         ])->findOrFail($employerID);
 
-        return view('admin.users-profile', compact('employer', 'employerName', 'employerCompany','incompleteProfile'));
+        return view('admin.users-profile', compact('employer', 'employerName', 'employerCompany','incompleteProfile','deadline'));
     }
 
     public function updateProfile(Request $request)

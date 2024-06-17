@@ -41,12 +41,15 @@
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-user-o"></i></span>
                                     <input type="text" name="companyName" placeholder="Company Name" required>
+                                    @error('companyName')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-envelope-o"></i></span>
-                                    <input type="email" name="supervisorEmail" placeholder="Supervisor Email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required >
+                                    <input type="email" name="supervisorEmail" placeholder="Supervisor Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required title="Please enter a valid email address (e.g., example@domain.com)">
                                     @error('supervisorEmail')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -66,7 +69,6 @@
                                     <span><i class="fa fa-lock"></i></span>
                                     <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                     title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters" required >
-                                    <small class="form-text text-warning">Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters</small>
                                     @error('password')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror

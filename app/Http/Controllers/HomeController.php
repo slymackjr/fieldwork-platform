@@ -6,6 +6,7 @@ use App\Models\Employer;
 use App\Models\Fieldwork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class HomeController extends Controller
 {
@@ -13,7 +14,11 @@ class HomeController extends Controller
 {
     $keyword = $request->input('keyword');
     $location = $request->input('location');
-
+    // Add a custom message to the Debugbar
+    //Debugbar::info('Hello from Debugbar!');
+     // Add data to the Debugbar
+     //$data = ['foo' => 'bar'];
+     //Debugbar::addMessage($data, 'Data');
     // Perform search query based on $keyword and $location
     $query = Employer::query();
 
@@ -70,27 +75,8 @@ class HomeController extends Controller
             // Redirect or return a response after successful application
             return redirect()->back()->with('success', 'Application submitted successfully!');   
         }
+        // Redirect to login if student is not authenticated
+        return redirect()->route('student-login')->with('error', 'Please log in to apply for fieldwork.');
     }
 
-    /* public function search(Request $request)
-    {
-        $keyword = $request->input('keyword');
-        $location = $request->input('location');
-
-        // Perform search query based on $keyword and $location
-        $query = Employer::query();
-
-        if (!empty($keyword)) {
-            $query->where('fieldworkTitle', 'like', "%$keyword%");
-        }
-
-        if (!empty($location)) {
-            $query->where('location', $location);
-        }
-
-        $employers = $query->get();
-
-        // Return the view with search results
-        return view('home', compact('employers'));
-    } */
 }

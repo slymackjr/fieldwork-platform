@@ -163,7 +163,14 @@
                                         <td>{{ $fieldwork->student->course }}</td>
                                         <td>{{ $fieldwork->student->studyYear }} Year</td>
                                         <td>{{ $fieldwork->student->currentGPA }}</td>
-                                        <td><a href="{{ route('attendance.show', ['studentID' => $fieldwork->studentID]) }}"><i class="bi bi-pencil-square action-icon"></i></a></td>
+                                        <td>
+                                          <form action="{{ route('attendance.show') }}" method="GET" class="d-inline">
+                                              <input type="hidden" name="studentID" value="{{$fieldwork->studentID}}">
+                                              <button type="submit" class="btn btn-link p-0 m-0" style="border: none; background-color: transparent;">
+                                                  <i class="bi bi-pencil-square action-icon"></i>
+                                              </button>
+                                          </form>
+                                      </td>                                      
                                     </tr>
                                 @endforeach
                                 <!-- Add more rows as needed -->

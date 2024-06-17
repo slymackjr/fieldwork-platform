@@ -27,27 +27,68 @@
 </head>
 
 <body>
-    <header>
-        <div class="header-area ">
+    <!-- header-start -->
+    <style>
+        .profile-icon {
+            position: relative;
+        }
+    
+        .profile-icon img {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            cursor: pointer; /* Added cursor pointer here */
+        }
+    
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px; /* Adjust as needed */
+            right: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+    
+        .profile-dropdown a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+    
+        .profile-dropdown a:hover {
+            background-color: #f5f5f5;
+        }
+    
+        .profile-dropdown p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+     <header>
+        <div class="header-area">
             <div id="sticky-header" class="main-header-area">
-                <div class="container-fluid ">
+                <div class="container-fluid">
                     <div class="header_bottom_border">
                         <div class="row align-items-center">
                             <div class="col-xl-3 col-lg-2">
                                 <div class="logo">
-                                    <a href="{{route('home')}}">
-                                        <img src="{{asset('img/logo-3.png')}}" alt="" width="300px">
+                                    <a href="{{ route('home') }}">
+                                        <img src="{{ asset('img/logo-3.png') }}" alt="" width="300px">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-7">
-                                <div class="main-menu  d-none d-lg-block">
+                                <div class="main-menu d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="{{route('home')}}">home</a></li>
-                                            <li><a href="{{route('jobs')}}">Browse Job</a></li>
-                                            <li><a href="{{route('fieldworks')}}">Browse Fieldwork</a></li>
-                                            <li><a href="{{route('contact')}}">Contact</a></li>
+                                            <li><a href="{{ route('home') }}">Home</a></li>
+                                            <li><a href="{{ route('contact') }}">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -55,11 +96,37 @@
                             <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                                 <div class="Appointment">
                                     <div class="phone_num d-none d-xl-block">
-                                        <a href="{{route('login')}}">Post a Fieldwork</a>
+                                        <!-- Apply Fieldwork Link -->
+                                        @if (!session('user_type'))
+                                            <a href="{{ route('student-login') }}" id="apply-fieldwork">Apply Fieldwork</a>
+                                        @endif
                                     </div>
                                     <div class="d-none d-lg-block">
-                                        <a class="boxed-btn3" href="{{route('login')}}">Post a Job</a>
+                                        <!-- Post Fieldwork Link -->
+                                        @if (!session('user_type'))
+                                            <a class="boxed-btn3" href="{{ route('login') }}" id="post-fieldwork">Post Fieldwork</a>
+                                        @endif
                                     </div>
+                                    <!-- Profile Icon Dropdown -->
+                                    @if (session('user_type'))
+                                        <div class="profile-icon" id="profile-icon">
+                                            <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle" width="40" onclick="toggleDropdown()">
+                                            <div class="profile-dropdown" id="profile-dropdown">
+                                                @if (session('user_type') == 'student')
+                                                    <p class="font-weight-bold">{{ session('student_name') }}</p>
+                                                    <p class="font-weight-bold">{{ session('course') }}</p>
+                                                    <a class="font-weight-bold" href="{{ route('student-dashboard') }}">Dashboard</a>
+                                                    <a class="font-weight-bold" href="{{ route('student-logout') }}">Logout</a>
+                                                @elseif (session('user_type') == 'employer')
+                                                    <p>{{ session('employer_name') }}</p>
+                                                    <p>{{ session('employer_company') }}</p>
+                                                    <a href="{{ route('dashboard') }}">Dashboard</a>
+                                                    <a href="{{ route('logout') }}">Logout</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <!-- End Profile Icon Dropdown -->
                                 </div>
                             </div>
                             <div class="col-12">
@@ -67,11 +134,23 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </header>
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById('profile-dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+    
+        document.addEventListener('click', function(event) {
+            var isClickInside = document.getElementById('profile-icon').contains(event.target);
+            if (!isClickInside) {
+                document.getElementById('profile-dropdown').style.display = 'none';
+            }
+        });
+    </script>
     <!-- header-end -->
     
     <!-- bradcam_area  -->
@@ -90,35 +169,6 @@
   <!-- ================ contact section start ================= -->
   <section class="contact-section section_padding">
     <div class="container">
-      <div class="d-none d-sm-block mb-5 pb-4">
-        <div id="map" style="height: 480px;"></div>
-        <script>
-          function initMap() {
-            var uluru = {lat: -25.363, lng: 131.044};
-            var grayStyles = [
-              {
-                featureType: "all",
-                stylers: [
-                  { saturation: -90 },
-                  { lightness: 50 }
-                ]
-              },
-              {elementType: 'labels.text.fill', stylers: [{color: '#ccdee9'}]}
-            ];
-            var map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: -31.197, lng: 150.744},
-              zoom: 9,
-              styles: grayStyles,
-              scrollwheel:  false
-            });
-          }
-          
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&callback=initMap"></script>
-        
-      </div>
-
-
       <div class="row">
         <div class="col-12">
           <h2 class="contact-title">Get in Touch</h2>
@@ -180,110 +230,6 @@
     </div>
   </section>
   <!-- ================ contact section end ================= -->
-    <!-- footer start -->
-    <footer class="footer">
-        <div class="footer_top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-3 col-md-6 col-lg-3">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1s" data-wow-delay=".3s">
-                            <div class="footer_logo">
-                                <a href="#">
-                                    <img src="{{asset('img/logo-3.png')}}" alt="logo" width="220px">
-                                </a>
-                            </div>
-                            <p>
-                                fieldwork@support.com <br>
-                                +255 767 413 968 <br>
-                                Samora Street, Posta, Dar-es-Salaam
-                            </p>
-                            <div class="socail_links">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-google-plus"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-twitter"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-md-6 col-lg-2">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1.1s" data-wow-delay=".4s">
-                            <h3 class="footer_title">
-                                Company
-                            </h3>
-                            <ul>
-                                <li><a href="#">About </a></li>
-                                <li><a href="#"> Pricing</a></li>
-                                <li><a href="#">Carrier Tips</a></li>
-                                <li><a href="#">FAQ</a></li>
-                            </ul>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-3">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1.2s" data-wow-delay=".5s">
-                            <h3 class="footer_title">
-                                Category
-                            </h3>
-                            <ul>
-                                <li><a href="#">Design & Art</a></li>
-                                <li><a href="#">Engineering</a></li>
-                                <li><a href="#">Sales & Marketing</a></li>
-                                <li><a href="#">Finance</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6 col-lg-4">
-                        <div class="footer_widget wow fadeInUp" data-wow-duration="1.3s" data-wow-delay=".6s">
-                            <h3 class="footer_title">
-                                Subscribe
-                            </h3>
-                            <form action="#" class="newsletter_form">
-                                <input type="text" placeholder="Enter your mail">
-                                <button type="submit">Subscribe</button>
-                            </form>
-                            <p class="newsletter_text">Esteem spirit temper too say adieus who direct esteem esteems
-                                luckily.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="copy-right_text wow fadeInUp" data-wow-duration="1.4s" data-wow-delay=".3s">
-            <div class="container">
-                <div class="footer_border"></div>
-                <div class="row">
-                    <div class="col-xl-12">
-                        <p class="copy_right text-center">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Fieldwork Platform <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">JERRYCODE TEAM</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!--/ footer end  -->
-
 
     <!-- JS here -->
     <script src="{{asset('js/vendor/modernizr-3.5.0.min.js')}}"></script>

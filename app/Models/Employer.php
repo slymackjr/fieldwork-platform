@@ -86,4 +86,18 @@ class Employer extends Model implements AuthenticatableContract
     {
         return $this->hasMany(LogBook::class, 'employerID', 'employerID');
     }
+
+    /**
+     * Check if the current date has passed the application deadline.
+     *
+     * @return bool
+     */
+    public function hasPassedDeadline()
+    {
+        // Get the current date
+        $currentDate = now();
+
+        // Compare the application deadline with the current date
+        return $this->applicationDeadline < $currentDate;
+    }
 }

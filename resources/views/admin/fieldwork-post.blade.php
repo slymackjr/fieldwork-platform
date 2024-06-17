@@ -111,18 +111,23 @@
           <span>Dashboard</span>
         </a>
       </li>
+      @if (!$incompleteProfile)
       <li class="nav-item">
-        <a class="nav-link active" href="{{ route('fieldwork-post.edit') }}">
+        <a class="nav-link collapsed" href="{{ route('fieldwork-post.edit') }}">
           <i class="bi bi-credit-card"></i>
           <span>Fieldwork Post</span>
         </a>
-      </li>
+      </li><!-- End Payment Nav -->
+      @endif
+      
+      @if ($deadline)
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('applicant-attendance')}}">
           <i class="bi bi-person-check"></i>
           <span>Applicant Attendance</span>
         </a>
-      </li>
+      </li><!-- End Confirm Registered Drivers Nav -->
+      @endif
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('profile')}}">
           <i class="bi bi-person"></i>
