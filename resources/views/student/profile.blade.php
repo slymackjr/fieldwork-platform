@@ -79,12 +79,15 @@
         </a>
       </li><!-- End Dashboard Nav -->
       
+      @if ($deadlineNotPassed)
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ route('log-book') }}">
-          <i class="bi bi-credit-card"></i>
+        <a class="nav-link collapsed" href="{{route('log-book')}}">
+          <i class="bi bi-book"></i>
           <span>Log Book</span>
         </a>
-      </li><!-- End Payment Nav -->
+      </li>
+      <!-- End Log Book Nav -->
+      @endif
 
       <li class="nav-item">
         <a class="nav-link" href="{{ route('profile') }}">
@@ -114,7 +117,7 @@
           <!-- Show message if employer profile is incomplete -->
           @if($incompleteProfile)
           <div class="alert alert-warning text-center" role="alert">
-            {{$incompleteProfile}}
+            Please complete your profile information to apply for fieldworks.
           </div>
           @endif
           
@@ -228,6 +231,8 @@
                         <!-- Conditionally display button for downloading Introduction Letter -->
                         @if ($student->introductionLetter)
                             <a href="{{ route('pdf.download', ['path' => $student->introductionLetter]) }}" class="btn btn-primary btn-sm">Download Introduction Letter</a>
+                        @else
+                            <p>No Introduction Letter uploaded.</p>    
                         @endif
                     </div>
                 </div>
@@ -238,10 +243,23 @@
                         <!-- Conditionally display button for downloading Result Slip -->
                         @if ($student->resultSlip)
                             <a href="{{ route('pdf.download', ['path' => $student->resultSlip]) }}" class="btn btn-primary btn-sm">Download Result Slip</a>
+                        @else
+                            <p>No Result Slip uploaded.</p>
                         @endif
                     </div>
                 </div>
-                     
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">University Logo</div>
+                  <div class="col-lg-9 col-md-8">
+                    @if($student->universityLogo)
+                      <img src="{{ asset('storage/' . $student->universityLogo) }}" alt="universityLogo" class="img-thumbnail mt-3" style="max-width: 200px;">
+                      @else
+                          <p>No University Logo uploaded.</p>
+                      @endif
+                  </div>
+              </div>
+
                   <div class="row">
                       <div class="col-lg-3 col-md-4 label">Course Name</div>
                       <div class="col-lg-9 col-md-8">{{ $student->course }}</div>
@@ -257,56 +275,56 @@
                     <div class="row mb-3">
                         <label for="studentName" class="col-md-4 col-lg-3 col-form-label">Student Name</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="studentName" type="text" class="form-control" id="studentName" value="{{ $student->studentName }}">
+                            <input name="studentName" type="text" class="form-control" id="studentName" value="{{ $student->studentName }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="registrationID" class="col-md-4 col-lg-3 col-form-label">Registration ID</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="registrationID" type="text" class="form-control" id="registrationID" value="{{ $student->registrationID }}">
+                            <input name="registrationID" type="text" class="form-control" id="registrationID" value="{{ $student->registrationID }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="studentEmail" type="email" class="form-control" id="email" value="{{ $student->studentEmail }}">
+                            <input name="studentEmail" type="email" class="form-control" id="email" value="{{ $student->studentEmail }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="studentPhone" type="text" class="form-control" id="phone" value="{{ $student->studentPhone }}">
+                            <input name="studentPhone" type="tel" class="form-control" id="phone" value="{{ $student->studentPhone }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="course" class="col-md-4 col-lg-3 col-form-label">Course</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="course" type="text" class="form-control" id="course" value="{{ $student->course }}">
+                            <input name="course" type="text" class="form-control" id="course" value="{{ $student->course }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="yearOfStudy" class="col-md-4 col-lg-3 col-form-label">Year of Study</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="studyYear" type="text" class="form-control" id="yearOfStudy" value="{{ $student->studyYear }}">
+                            <input name="studyYear" type="number" class="form-control" id="yearOfStudy" value="{{ $student->studyYear }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="gpa" class="col-md-4 col-lg-3 col-form-label">Current GPA</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="currentGPA" type="text" class="form-control" id="gpa" value="{{ $student->currentGPA }}">
+                            <input name="currentGPA" type="number" class="form-control" id="gpa" value="{{ $student->currentGPA }}" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <label for="introductionLetter" class="col-md-4 col-lg-3 col-form-label">Introduction Letter</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="introductionLetter" type="file" class="form-control" id="introductionLetter">
+                            <input name="introductionLetter" type="file" class="form-control" id="introductionLetter" accept=".pdf">
                             @if ($student->introductionLetter)
                                 <a href="{{ asset('storage/' . $student->introductionLetter) }}" target="_blank">View Introduction Letter</a>
                             @endif
@@ -316,7 +334,7 @@
                     <div class="row mb-3">
                         <label for="resultSlip" class="col-md-4 col-lg-3 col-form-label">Result Slip</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="resultSlip" type="file" class="form-control" id="resultSlip">
+                            <input name="resultSlip" type="file" class="form-control" id="resultSlip" accept=".pdf">
                             @if ($student->resultSlip)
                                 <a href="{{ asset('storage/' . $student->resultSlip) }}" target="_blank">View Result Slip</a>
                             @endif
@@ -324,9 +342,19 @@
                     </div>
 
                     <div class="row mb-3">
+                      <label for="universityLogo" class="col-md-4 col-lg-3 col-form-label">universityLogo (width 300px)</label>
+                      <div class="col-md-8 col-lg-9">
+                          <input name="universityLogo" type="file" class="form-control" id="universityLogo" accept="image/*">
+                          @if($student->universityLogo)
+                              <img src="{{ asset('storage/' . $student->universityLogo) }}" alt="universityLogo" class="img-thumbnail mt-3" style="max-width: 200px;">
+                          @endif
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
                         <label for="courseName" class="col-md-4 col-lg-3 col-form-label">Course Name</label>
                         <div class="col-md-8 col-lg-9">
-                            <input name="courseName" type="text" class="form-control" id="courseName" value="{{ $student->course }}">
+                            <input name="courseName" type="text" class="form-control" id="courseName" value="{{ $student->course }}" required>
                         </div>
                     </div>
 

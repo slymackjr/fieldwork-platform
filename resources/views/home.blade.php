@@ -27,19 +27,25 @@
 </head>
     
 
-<body>    
-     <!-- header-start -->
+<body>
+    <!-- Incomplete Profile Message -->
+    @if(session('incompleteProfile'))
+    <div class="d-flex justify-content-center p-2 bg-warning font-weight-bold text-white">
+        Please complete your profile information to apply for fieldworks.
+    </div>
+    @endif    
+    <!-- header-start -->
     <style>
         .profile-icon {
             position: relative;
         }
-    
+
         .profile-icon img {
             border-radius: 50%;
             transition: transform 0.3s ease;
             cursor: pointer; /* Added cursor pointer here */
         }
-    
+
         .profile-dropdown {
             display: none;
             position: absolute;
@@ -52,7 +58,7 @@
             border-radius: 5px;
             min-width: 150px;
         }
-    
+
         .profile-dropdown a {
             display: block;
             padding: 8px 16px;
@@ -60,11 +66,11 @@
             color: #333;
             transition: background-color 0.3s ease;
         }
-    
+
         .profile-dropdown a:hover {
             background-color: #f5f5f5;
         }
-    
+
         .profile-dropdown p {
             margin: 5px 0;
             font-size: 14px;
@@ -72,7 +78,7 @@
         }
     </style>
      <header>
-        <div class="header-area">
+        <div class="header-area mt-4">
             <div id="sticky-header" class="main-header-area">
                 <div class="container-fluid">
                     <div class="header_bottom_border">
@@ -138,7 +144,7 @@
                 </div>
             </div>
         </div>
-    </header>
+     </header>
     <script>
         function toggleDropdown() {
             var dropdown = document.getElementById('profile-dropdown');
@@ -210,7 +216,7 @@
        }
      });
    </script>
-   
+ 
     <!-- slider_area_start -->
     <div class="slider_area">
         <div class="single_slider d-flex align-items-center slider_bg_1">
@@ -300,14 +306,19 @@
                             <div class="jobs_right">
                                 <div class="apply_now">
                                     @if (session('user_type') == 'student')
-                                    <form action="{{ route('apply') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="employerID" value="{{ $employer->employerID }}">
-                                        <input type="hidden" name="studentID" value="{{ session('student_id') }}">
-                                        <button class="boxed-btn3" type="submit">Apply Now</button>
+                                        @if (!session('incompleteProfile'))
+                                        <form action="{{ route('apply') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="employerID" value="{{ $employer->employerID }}">
+                                            <input type="hidden" name="studentID" value="{{ session('student_id') }}">
+                                            <button class="boxed-btn3" type="submit">Apply Now</button>
+                                        </form>
+                                        @else
+                                        <a href="{{route('home')}}" class="boxed-btn3">Apply Now</a>
+                                        @endif
                                     @else
                                     <a href="{{route('student-login')}}" class="boxed-btn3">Apply Now</a>    
-                                    </form>
+                                    
                                     @endif
                                 </div>
                                 <div class="date">

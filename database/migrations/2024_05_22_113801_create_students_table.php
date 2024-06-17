@@ -26,6 +26,7 @@ class CreateStudentsTable extends Migration
             $table->string('introductionLetter')->nullable();
             $table->string('resultSlip')->nullable();
             $table->string('university'); 
+            $table->string('universityLogo')->nullable(); 
             $table->timestamps();
         });
     }

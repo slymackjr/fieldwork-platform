@@ -71,6 +71,20 @@ class Fieldwork extends Model
         return $this->belongsTo(Employer::class, 'employerID', 'employerID');
     }
 
+    /**
+     * Check if the current date has passed the application deadline of the associated employer.
+     *
+     * @return bool
+     */
+    public function hasPassedDeadline()
+    {
+        // Get the current date
+        $currentDate = now();
+
+        // Compare the application deadline of the associated employer with the current date
+        return $this->employer->applicationDeadline < $currentDate;
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'studentID', 'studentID');
@@ -86,6 +100,22 @@ class Fieldwork extends Model
     public function isExpired()
     {
         return $this->employer->applicationDeadline < Carbon::today() && !$this->studentHasConfirmed();
+    }
+
+    /**
+     * Check if the fieldwork is confirmed, accepted, and the deadline has passed.
+     *
+     * @return bool
+     */
+    public function meetsCriteria()
+    {
+        // Check if the status is accepted and confirmed is yes
+        if ($this->status === 'accepted' && $this->confirmed === 'yes') {
+            // Use the hasPassedDeadline method from the employer model
+            return $this->employer->hasPassedDeadline();
+        }
+
+        return false;
     }
 
 }

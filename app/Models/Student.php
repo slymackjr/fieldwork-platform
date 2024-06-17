@@ -49,7 +49,8 @@ class Student extends Model implements AuthenticatableContract
         'currentGPA',
         'introductionLetter',
         'resultSlip',
-        'university'
+        'university',
+        'universityLogo',
     ];
 
     protected $casts = [
@@ -65,6 +66,7 @@ class Student extends Model implements AuthenticatableContract
         'introductionLetter' => 'string',
         'resultSlip' => 'string',
         'university' => 'string',
+        'universityLogo' => 'string',
     ];
 
     public $timestamps = true;

@@ -9,10 +9,11 @@ use App\Models\Employer;
 use App\Models\Fieldwork;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Barryvdh\DomPDF\Facade\Pdf; 
+use Illuminate\Validation\ValidationException;
 
 class StudentController extends Controller
 {
@@ -38,6 +39,9 @@ class StudentController extends Controller
             $request->session()->put('user_type', 'student');
             $request->session()->put('student_name', $student->studentName);
             $request->session()->put('course', $student->course);
+            // Check if any required fields are missing
+            $incompleteProfile = $this->checkIncompleteProfile($student);
+            $request->session()->put('incompleteProfile',  $incompleteProfile);
 
             return redirect()->intended(route('home'))->with('success', 'You are logged in!');
         }
@@ -59,6 +63,7 @@ class StudentController extends Controller
             $request->session()->forget('student_id');
             $request->session()->forget('student_name');
             $request->session()->forget('course');
+            $request->session()->forget('incompleteProfile');
 
             // Destroy the session
             $request->session()->invalidate();
@@ -108,41 +113,58 @@ class StudentController extends Controller
         return redirect()->route('home')->with('success', 'Registration successful.');
     }
 
-    public function showHome()
-{
-    // Fetch the authenticated student's ID from the session
-    $studentId = session('student_id');
+        public function showHome()
+    {
+        // Fetch the authenticated student's ID from the session
+        $studentId = session('student_id');
 
-    $student = Student::findOrFail($studentId);
-    $studentName = $student->studentName;
-    $course = $student->course;
+        $student = Student::findOrFail($studentId);
+        $studentName = $student->studentName;
+        $course = $student->course;
 
-    // Check if any required fields are missing
-    $incompleteProfile = $this->checkIncompleteProfile($student);
+        // Check if any required fields are missing
+        $incompleteProfile = $this->checkIncompleteProfile($student);
 
-    // Fetch and count the different statuses for the authenticated student
-    $totalApplications = Fieldwork::where('studentID', $studentId)->count();
-    $acceptedApplications = Fieldwork::where('studentID', $studentId)->where('status', 'accepted')->count();
-    $rejectedApplications = Fieldwork::where('studentID', $studentId)->where('status', 'rejected')->count();
-    $pendingApplications = Fieldwork::where('studentID', $studentId)->where('status', 'pending')->count();
+        // Fetch and count the different statuses for the authenticated student
+        $totalApplications = Fieldwork::where('studentID', $studentId)->count();
+        $acceptedApplications = Fieldwork::where('studentID', $studentId)->where('status', 'accepted')->count();
+        $rejectedApplications = Fieldwork::where('studentID', $studentId)->where('status', 'rejected')->count();
+        $pendingApplications = Fieldwork::where('studentID', $studentId)->where('status', 'pending')->count();
 
-    // Fetch fieldwork data for the authenticated student and join with employers
-    $fieldworks = Fieldwork::where('studentID', $studentId)
-        ->join('employers', 'fieldworks.employerID', '=', 'employers.employerID')
-        ->select('fieldworks.*', 'employers.companyName', 'employers.fieldworkTitle','employers.applicationDeadline')
-        ->get();
+        // Fetch fieldwork data for the authenticated student and join with employers
+        $fieldworks = Fieldwork::where('studentID', $studentId)
+            ->join('employers', 'fieldworks.employerID', '=', 'employers.employerID')
+            ->select('fieldworks.*', 'employers.companyName', 'employers.fieldworkTitle','employers.applicationDeadline')
+            ->get();
 
-    return view('student.index', compact('fieldworks', 'totalApplications', 'acceptedApplications', 'rejectedApplications', 'pendingApplications','studentName','course','incompleteProfile'));
-}
+        // Check if there is at least one fieldwork that meets the criteria
+        $deadlineNotPassed = $this->deadlineNotPassed($studentId);
+
+        return view('student.index', compact('fieldworks', 'totalApplications', 'acceptedApplications', 'rejectedApplications', 'pendingApplications','studentName','course','incompleteProfile','deadlineNotPassed'));
+    }
+
+    private function deadlineNotPassed($studentId)
+    {
+        // Check if there is at least one fieldwork that meets the criteria
+        return Fieldwork::where('studentID', $studentId)
+            ->where('confirmed', 'yes')
+            ->where('status', 'accepted')
+            ->with('employer')
+            ->get()
+            ->contains(function ($fieldwork) {
+                return $fieldwork->meetsCriteria();
+            });
+    }
+
 
     private function checkIncompleteProfile($student)
     {
-        $requiredFields = ['studentName', 'registrationID', 'studentEmail', 'studentPhone', 'password', 'course', 'studyYear', 'currentGPA', 'introductionLetter', 'resultSlip', 'university'
-];
+        $requiredFields = ['studentName', 'registrationID', 'studentEmail', 'studentPhone', 'password', 'course', 'studyYear', 'currentGPA', 'introductionLetter', 'resultSlip', 'university','universityLogo'
+        ];
 
         foreach ($requiredFields as $field) {
             if (empty($student->$field)) {
-                return 'Please complete your profile information to apply for fieldworks.';
+                return true;
             }
         }
 
@@ -153,6 +175,11 @@ class StudentController extends Controller
     {
         // Retrieve the student ID from the session
         $studentId = session('student_id');
+        // Check if there is at least one fieldwork that meets the criteria
+        $deadlineNotPassed = $this->deadlineNotPassed($studentId);
+        if (!$deadlineNotPassed) {
+            return redirect()->back();
+        }
     
         // Check if selectedDay is provided in the request, otherwise use the value in the session or default to 1
         $selectedDay = $request->input('selectedDay', session('day', 1));
@@ -228,13 +255,15 @@ class StudentController extends Controller
 
         // Check if any required fields are missing
         $incompleteProfile = $this->checkIncompleteProfile($student);
+         // Check if there is at least one fieldwork that meets the criteria
+         $deadlineNotPassed = $this->deadlineNotPassed($studentId);
 
        // Check if the student exists
        if (!$student) {
         return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
        }
 
-       return view('student.profile', compact('student','studentName','course','incompleteProfile'));
+       return view('student.profile', compact('student','studentName','course','incompleteProfile','deadlineNotPassed'));
     }
 
     // Update Student Profile
@@ -246,12 +275,6 @@ class StudentController extends Controller
     // Retrieve the student's data using the student ID
     $student = Student::findOrFail($studentId);
 
-    
-    // Check if the student exists
-    if (!$student) {
-        return redirect('/student-login')->withErrors(['error' => 'Student not found.']);
-    }
-
     // Validate the request data
     $validated = $request->validate([
         'studentName' => 'required|string|max:255',
@@ -261,11 +284,10 @@ class StudentController extends Controller
         'course' => 'required|string|max:255',
         'studyYear' => 'required|integer',
         'currentGPA' => 'required|numeric',
-        'introductionLetter' => 'nullable|file|mimes:pdf,doc,docx',
-        'resultSlip' => 'nullable|file|mimes:pdf,doc,docx',
+        'introductionLetter' => 'nullable|file|mimes:pdf',
+        'resultSlip' => 'nullable|file|mimes:pdf',
+        'universityLogo' => 'nullable|file|mimes:jpeg,png,jpg',
     ]);
-
-    //dd($request->all(), $student);
 
     // Update the student's data
     $student->update($validated);
@@ -281,11 +303,54 @@ class StudentController extends Controller
         $student->resultSlip = $resultSlipPath;
     }
 
-    
+    // Validate and handle university Logo upload
+    if ($request->hasFile('universityLogo')) {
+        $this->validateImage($request->file('universityLogo'));
 
+        // Delete the old universityLogo if it exists
+        if ($student->universityLogo) {
+            Storage::disk('public')->delete($student->universityLogo);
+        }
+
+        // Store the new universityLogo
+        $universityLogoPath = $request->file('universityLogo')->store('student/universityLogos', 'public');
+        $student->universityLogo = $universityLogoPath;
+    }
+
+    // Save changes to the student model
     $student->save();
+    // Check if any required fields are missing
+    $incompleteProfile = $this->checkIncompleteProfile($student);
+
+    if (!$incompleteProfile) {
+        session()->put('incompleteProfile', false);
+    } else {
+        session()->put('incompleteProfile', true); // Set to true if the profile is incomplete
+    }
+
 
     return redirect()->route('student-profile')->with('success', 'Profile updated successfully.')->with('message_type', 'success');
+}
+
+    private function validateImage($image)
+    {
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif','image/jpg'];
+        $maxWidth = 300;
+
+        $imageMimeType = $image->getMimeType();
+        $imageSize = getimagesize($image);
+
+        if (!in_array($imageMimeType, $allowedMimeTypes)) {
+            throw ValidationException::withMessages([
+                'image' => 'Only JPEG, PNG, JPG and GIF images are allowed.'
+            ]);
+        }
+
+        if ($imageSize[0] != $maxWidth) {
+            throw ValidationException::withMessages([
+                'image' => 'Image dimensions must be 300 pixels wide.'
+            ]);
+        }
     }
 
     public function download($path)
@@ -339,6 +404,7 @@ class StudentController extends Controller
     {
         // Retrieve the fieldwork ID from the request
         $fieldworkId = $request->fieldworkID;
+        $employerId = $request->employerID;
         
         // Find the fieldwork by its ID
         $application = Fieldwork::findOrFail($fieldworkId);
@@ -348,10 +414,22 @@ class StudentController extends Controller
             // Update the confirmed field to 'yes'
             $application->confirmed = 'yes';
             $message = 'Application confirmed successfully.';
+            // Create a new LogBook entry
+            LogBook::create([
+                'employerID' => $employerId,
+                'studentID' => $application->studentID,
+                'status' => 'confirmed', // You can set a default status or adjust as needed
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         } else {
             // Update the confirmed field to 'no'
             $application->confirmed = 'no';
             $message = 'Application canceled successfully.';
+            // Delete the existing LogBook entry if it exists
+            LogBook::where('employerID', $employerId)
+            ->where('studentID', $application->studentID)
+            ->delete();
         }
     
         // Save the changes to the application

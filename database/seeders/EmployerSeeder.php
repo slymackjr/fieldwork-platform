@@ -31,7 +31,7 @@ class EmployerSeeder extends Seeder
                 'companyLogo' => '',
                 'fieldworkTitle' => 'Fieldwork Title',
                 'fieldworkDescription' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                'applicationDeadline' => '2024-06-30',
+                'applicationDeadline' => '2024-06-16',
                 'TIN' => '123456789', // Add TIN
                 'created_at' => now(),
                 'updated_at' => now(),

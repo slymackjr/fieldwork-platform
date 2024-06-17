@@ -111,6 +111,7 @@
         </a>
       </li>
       <!-- End Dashboard Nav -->
+      @if ($deadlineNotPassed)
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('log-book')}}">
           <i class="bi bi-book"></i>
@@ -118,6 +119,7 @@
         </a>
       </li>
       <!-- End Log Book Nav -->
+      @endif
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('student-profile')}}">
           <i class="bi bi-person"></i>
@@ -146,10 +148,10 @@
       <div class="row">
         <!-- Left side columns -->
         <div class="col-lg-12">
-          <!-- Show message if employer profile is incomplete -->
+          <!-- Show message if student profile is incomplete -->
           @if($incompleteProfile)
           <div class="alert alert-warning text-center" role="alert">
-            {{$incompleteProfile}}
+            Please complete your profile information to apply for fieldworks.
           </div>
           @endif
           
@@ -297,10 +299,11 @@
                           <td>
                             @if ($fieldwork->status == 'accepted')
                               @if ($fieldwork->confirmed == 'no')
-                                @if (!$fieldwork->studentHasConfirmed())
+                                @if (!$fieldwork->studentHasConfirmed() && !$fieldwork->hasPassedDeadline())
                                   <form method="POST" action="{{ route('confirm.application') }}">
                                     @csrf
                                     <input type="hidden" name="fieldworkID" value="{{ $fieldwork->fieldworkID }}">
+                                    <input type="hidden" name="employerID" value="{{ $fieldwork->employerID }}">
                                     <input type="hidden" name="confirmed" value="yes">
                                     <button type="submit" class="btn btn-outline-primary btn-sm d-flex align-items-center">
                                       <i class="bi bi-check-circle-fill me-1"></i> Confirm
@@ -311,6 +314,7 @@
                                 <form method="POST" action="{{ route('confirm.application') }}">
                                   @csrf
                                   <input type="hidden" name="fieldworkID" value="{{ $fieldwork->fieldworkID }}">
+                                  <input type="hidden" name="employerID" value="{{ $fieldwork->employerID }}">
                                   <input type="hidden" name="confirmed" value="no">
                                   <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center">
                                     <i class="bi bi-x-circle-fill me-1"></i> Cancel

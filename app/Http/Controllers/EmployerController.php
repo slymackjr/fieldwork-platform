@@ -415,7 +415,7 @@ class EmployerController extends Controller
 
     private function validateImage($image)
     {
-        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
         $maxWidth = 300;
 
         $imageMimeType = $image->getMimeType();
@@ -423,13 +423,13 @@ class EmployerController extends Controller
 
         if (!in_array($imageMimeType, $allowedMimeTypes)) {
             throw ValidationException::withMessages([
-                'image' => 'Only JPEG, PNG, and GIF images are allowed.'
+                'image' => 'Only JPEG, PNG, JPG and GIF images are allowed.'
             ]);
         }
 
         if ($imageSize[0] != $maxWidth) {
             throw ValidationException::withMessages([
-                'image' => 'Image dimensions must be 300x150 pixels.'
+                'image' => 'Image dimensions must be 300 pixels wide.'
             ]);
         }
     }
