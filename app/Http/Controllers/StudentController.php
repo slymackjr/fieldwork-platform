@@ -504,44 +504,44 @@ class StudentController extends Controller
     return $pdf->download($fileName);
 } */
 
-public function generateReport(Request $request)
-{
-    $logID = $request->logID;
-    $logBook = LogBook::findOrFail($logID); // Retrieve a single log book instance
-    $studentID = $logBook->studentID;
-    $employerID = $logBook->employerID;
+    public function generateReport(Request $request)
+    {
+        $logID = $request->logID;
+        $logBook = LogBook::findOrFail($logID); // Retrieve a single log book instance
+        $studentID = $logBook->studentID;
+        $employerID = $logBook->employerID;
 
-    $student = Student::findOrFail($studentID);
-    $employer = Employer::findOrFail($employerID);
+        $student = Student::findOrFail($studentID);
+        $employer = Employer::findOrFail($employerID);
 
-    $attendance = Attendance::where('studentID', $studentID)
-        ->where('employerID', $employerID)
-        ->first();
-    $attendedDays = 0;
-    $attended = [];
-    for ($day = 1; $day <= 40; $day++) {
-        $dayField = 'day_' . $day;
-            $attended[$day] = $attendance->$dayField;
-            if ($attendance->$dayField === 'present') {
-                # code...
-                $attendedDays++; // Increment counter if day is 'present'
+        $attendance = Attendance::where('studentID', $studentID)
+            ->where('employerID', $employerID)
+            ->first();
+        $attendedDays = 0;
+        $attended = [];
+        for ($day = 1; $day <= 40; $day++) {
+            $dayField = 'day_' . $day;
+                $attended[$day] = $attendance->$dayField;
+                if ($attendance->$dayField === 'present') {
+                    # code...
+                    $attendedDays++; // Increment counter if day is 'present'
 
-            }
+                }
+        }
+        
+        // Create an array to hold log data for each day
+        $logs = [];
+        for ($day = 1; $day <= 40; $day++) {
+            $dayField = 'day_' . $day;
+                $logs[$day] = $logBook->$dayField;
+        }
+
+        $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attended','attendedDays'));
+
+        $fileName = 'logbook_report' . '.pdf';
+
+        return $pdf->download($fileName);
     }
-    
-    // Create an array to hold log data for each day
-    $logs = [];
-    for ($day = 1; $day <= 40; $day++) {
-        $dayField = 'day_' . $day;
-            $logs[$day] = $logBook->$dayField;
-    }
-
-    $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attended','attendedDays'));
-
-    $fileName = 'logbook_report' . '.pdf';
-
-    return $pdf->download($fileName);
-}
 
     public function report()
 {
