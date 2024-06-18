@@ -153,6 +153,58 @@
             Please complete your profile and field details to post fieldwork.
           </div>
           @endif
+          <!-- Display the success message -->
+        @if(session('success'))
+        <div class="alert alert-success text-center" id="success-alert">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        <!-- Display the error message -->
+        @if(session('error'))
+        <div class="alert alert-danger text-center" id="error-alert">
+            {{ session('error') }}
+        </div>
+        @endif
+
+        <!-- Display validation errors -->
+        @if ($errors->any())
+        <div class="alert alert-danger text-center" id="validation-errors">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <!-- Custom JS to hide success, error, and validation messages after 2 seconds -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successAlert = document.getElementById('success-alert');
+            const errorAlert = document.getElementById('error-alert');
+            const validationErrors = document.getElementById('validation-errors');
+
+            if (successAlert) {
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 2000);
+            }
+
+            if (errorAlert) {
+                setTimeout(() => {
+                    errorAlert.style.display = 'none';
+                }, 2000);
+            }
+
+            if (validationErrors) {
+                setTimeout(() => {
+                    validationErrors.style.display = 'none';
+                }, 2000);
+            }
+        });
+        </script>
+
           <div class="card text-center">
               <div class="card-body profile-card pt-4 d-flex flex-column align-items-center centered-profile-card" style="background-color: #f8f9fa;">
                   <i class="bi bi-building" style="font-size: 4rem; color: #0d6efd;"></i>
@@ -291,14 +343,14 @@
                                 <div class="row mb-3">
                                     <label for="officeID" class="col-md-4 col-lg-3 col-form-label">Office ID</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="officeID" type="text" class="form-control" id="officeID" value="{{ $employer->officeID }}">
+                                        <input name="officeID" type="number" class="form-control" id="officeID" value="{{ $employer->officeID }}">
                                     </div>
                                 </div>
         
                                 <div class="row mb-3">
                                     <label for="supervisorPhone" class="col-md-4 col-lg-3 col-form-label">Supervisor's Phone</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="supervisorPhone" type="text" class="form-control" id="supervisorPhone" value="{{ $employer->supervisorPhone }}">
+                                        <input name="supervisorPhone" type="number" class="form-control" id="supervisorPhone" value="{{ $employer->supervisorPhone }}">
                                     </div>
                                 </div>
         
@@ -356,39 +408,44 @@
                             <!-- Change Password Form -->
                             <form action="{{ route('employer.password.update') }}" method="POST">
                                 @csrf
-        
+
                                 <div class="row mb-3">
                                     <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="currentPassword" type="password" class="form-control" id="currentPassword">
+                                        <input name="currentPassword" type="password" class="form-control" id="currentPassword" required>
                                     </div>
                                 </div>
-        
+
                                 <div class="row mb-3">
                                     <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="newPassword" type="password" class="form-control" id="newPassword">
+                                        <input name="newPassword" type="password" class="form-control" id="newPassword" 
+                                            minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                                            title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters" required> 
                                     </div>
                                 </div>
-        
+
                                 <div class="row mb-3">
                                     <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                                     <div class="col-md-8 col-lg-9">
-                                        <input name="renewPassword" type="password" class="form-control" id="renewPassword">
+                                        <input name="renewPassword" type="password" class="form-control" id="renewPassword" 
+                                            minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                            title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters" required>
                                     </div>
                                 </div>
-        
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">Change Password</button>
                                 </div>
-                            </form><!-- End Change Password Form -->
+                            </form>
+                            <!-- End Change Password Form -->
                         </div>
                     </div><!-- End Bordered Tabs -->
                 </div>
             </div>
         </div>
         
-        <script>
+       {{--  <script>
             document.getElementById('supervisorSignature').addEventListener('change', function (event) {
                 validateImage(event.target);
             });
@@ -408,7 +465,7 @@
                     }
                 }
             }
-        </script>
+        </script> --}}
 
       </div>
   </section>

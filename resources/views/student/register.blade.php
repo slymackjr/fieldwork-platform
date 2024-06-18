@@ -23,12 +23,12 @@
             <div class="col-lg-6 col-md-6 infinity-form-container">					
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 infinity-form">
                     <!-- Company Logo -->
-                    <div class="text-center mb-3 mt-5">
+                    <div class="text-center mb-2 mt-2">
                         <a href="{{route('home')}}">
                             <img src="{{asset('img/logo-3.png')}}" width="500px">
                         </a>
                     </div>
-                    <div class="text-center mb-4">
+                    <div class="text-center mb-2">
                         <h4 class="text-warning">Welcome, Join our community</h4>
                         <h4>Create an account</h4>
                     </div>
@@ -47,18 +47,6 @@
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-envelope-o"></i></span>
                                     <input type="email" name="studentEmail" placeholder="Email Address" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-input mb-1">
-                                    <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="password" placeholder="Password" minlength="8" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-input mb-1">
-                                    <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" minlength="8" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -95,6 +83,18 @@
                                 <div class="form-input mb-1">
                                     <span><i class="fa fa-university"></i></span>
                                     <input type="text" name="university" placeholder="University" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-input mb-1">
+                                    <span><i class="fa fa-lock"></i></span>
+                                    <input type="password" name="password" placeholder="Password" minlength="8" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-input mb-1">
+                                    <span><i class="fa fa-lock"></i></span>
+                                    <input type="password" name="password_confirmation" placeholder="Confirm Password" minlength="8" required>
                                 </div>
                             </div>
                         </div>

@@ -7,18 +7,15 @@ use App\Models\Fieldwork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    /* public function index(Request $request)
 {
     $keyword = $request->input('keyword');
     $location = $request->input('location');
-    // Add a custom message to the Debugbar
-    //Debugbar::info('Hello from Debugbar!');
-     // Add data to the Debugbar
-     //$data = ['foo' => 'bar'];
-     //Debugbar::addMessage($data, 'Data');
+
     // Perform search query based on $keyword and $location
     $query = Employer::query();
 
@@ -33,9 +30,63 @@ class HomeController extends Controller
     $employers = $query->select('employerID', 'companyName', 'location', 'fieldworkTitle', 'applicationDeadline', 'companyLogo')
         ->get();
 
-    return view('home', compact('employers'));
+    // Filter employers to exclude those with incomplete profiles
+    $completeEmployers = $employers->filter(function ($employer) {
+        return !$this->checkIncompleteProfile($employer);
+    });
+
+    return view('home', ['employers' => $completeEmployers]);
+} */
+
+public function index(Request $request)
+{
+    $keyword = $request->input('keyword');
+    $location = $request->input('location');
+
+    // Perform search query based on $keyword and $location
+    $query = Employer::query();
+
+    if (!empty($keyword)) {
+        $query->whereRaw('LOWER(fieldworkTitle) LIKE ?', ['%' . strtolower($keyword) . '%']);
+    }
+
+    if (!empty($location)) {
+        $query->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($location) . '%']);
+    }
+
+    $employers = $query->get(); // Fetch all employers
+
+    // Filter employers to exclude those with incomplete profiles
+    $completeEmployers = $employers->filter(function ($employer) {
+        return !$this->checkIncompleteProfile($employer);
+    });
+
+    // Convert applicationDeadline to Carbon\Carbon instances
+    $completeEmployers->transform(function ($employer) {
+        $employer->applicationDeadline = Carbon::parse($employer->applicationDeadline);
+        return $employer;
+    });
+
+    return view('home', ['employers' => $completeEmployers]);
 }
 
+    private function checkIncompleteProfile($employer)
+    {
+        $requiredFields = [
+            'companyName', 'location', 'officeID', 'supervisorName', 'supervisorPhone', 'supervisorEmail',
+            'password', 'supervisorPosition', 'supervisorSignature', 'Muhuri', 'companyLogo',
+            'TIN'
+        ];
+
+        foreach ($requiredFields as $field) {
+            // Check if the field exists and is not null or an empty string
+            if (!isset($employer->$field) || empty($employer->$field)) {
+                return true;
+            }
+        }
+
+        return false; // Profile is complete
+    }
 
     public function contact()
     {

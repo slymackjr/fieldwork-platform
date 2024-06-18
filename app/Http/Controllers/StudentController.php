@@ -109,6 +109,16 @@ class StudentController extends Controller
         ]);
 
         Auth::guard('student')->login($student);
+        $request->session()->regenerate();
+
+        // Store the student ID and name in the session
+        $request->session()->put('student_id', $student->studentID);
+        $request->session()->put('user_type', 'student');
+        $request->session()->put('student_name', $student->studentName);
+        $request->session()->put('course', $student->course);
+        // Check if any required fields are missing
+        $incompleteProfile = $this->checkIncompleteProfile($student);
+        $request->session()->put('incompleteProfile',  $incompleteProfile);
 
         return redirect()->route('home')->with('success', 'Registration successful.');
     }
@@ -194,10 +204,15 @@ class StudentController extends Controller
     
         // Check if any required fields are missing
         $incompleteProfile = $this->checkIncompleteProfile($student);
+
+        $fieldwork = Fieldwork::where('studentID', $studentId)
+        ->where('status', 'accepted')
+        ->where('confirmed', 'yes')
+        ->first();
     
         // Fetch all log book entries for the student
         $logBooks = LogBook::where('studentID', $studentId)
-                            ->where('employerID', 1)
+                            ->where('employerID', $fieldwork->employerID)
                             ->first();
     
         // Pass the log book data and selected day to the view
@@ -221,19 +236,10 @@ class StudentController extends Controller
         // Retrieve selected day and log from the form submission
         $selectedDay = $request->input('selectedDay');
         $log = $request->input('log');
+        $logID = $request->input('logID');
 
         // Retrieve the log book entry for the selected day
-        $logBook = LogBook::where('studentID', 1)
-                        ->where('employerID', 1)
-                        ->first();
-
-        // If there's no existing log book entry, create a new one
-        if (!$logBook) {
-            $logBook = new LogBook();
-            $logBook->studentID = session('student_id');
-            $logBook->employerID = 1;
-            $logBook->save();
-        }
+        $logBook = LogBook::findOrFail($logID);
 
         // Update or create the log for the selected day
         $logBook->{"day_$selectedDay"} = $log;
@@ -466,13 +472,16 @@ class StudentController extends Controller
         return $pdf->download($fileName);
     } */
 
-    public function generateReport($studentID, $employerID)
+   /*  public function generateReport(Request $request)
 {
-    $student = Student::find($studentID);
-    $employer = Employer::find($employerID);
-    $logBooks = LogBook::where('studentID', $studentID)
-        ->where('employerID', $employerID)
-        ->get();
+    $logID = $request->logID;
+    $logBooks = LogBook::findOrFail($logID);
+    $studentID = $logBooks->studentID;
+    $employerID = $logBooks->employerID;
+
+    $student = Student::findOrFail($studentID);
+    $employer = Employer::findOrFail($employerID);
+
     $attendance = Attendance::where('studentID', $studentID)
         ->where('employerID', $employerID)
         ->first();
@@ -493,7 +502,38 @@ class StudentController extends Controller
     $fileName = 'logbook_report'.'.pdf';
 
     return $pdf->download($fileName);
+} */
+
+public function generateReport(Request $request)
+{
+    $logID = $request->logID;
+    $logBook = LogBook::findOrFail($logID); // Retrieve a single log book instance
+    $studentID = $logBook->studentID;
+    $employerID = $logBook->employerID;
+
+    $student = Student::findOrFail($studentID);
+    $employer = Employer::findOrFail($employerID);
+
+    $attendance = Attendance::where('studentID', $studentID)
+        ->where('employerID', $employerID)
+        ->first();
+    
+    // Create an array to hold log data for each day
+    $logs = [];
+    for ($day = 1; $day <= 40; $day++) {
+        $dayField = 'day_' . $day;
+        if (!empty($logBook->$dayField)) {
+            $logs[$day] = $logBook->$dayField;
+        }
+    }
+
+    $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attendance'));
+
+    $fileName = 'logbook_report' . '.pdf';
+
+    return $pdf->download($fileName);
 }
+
     public function report()
 {
 

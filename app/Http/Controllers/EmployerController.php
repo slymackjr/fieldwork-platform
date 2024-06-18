@@ -59,15 +59,16 @@ class EmployerController extends Controller
         'password' => Hash::make($request->password),
     ]);
 
-    // Fetch the newly created employer's ID
-    $employerID = $employer->employerID;
-
-    // Create attendance for the newly registered employer
-    $attendance = Attendance::create([
-        'employerID' => $employerID,
-    ]);
-
     Auth::guard('employer')->login($employer);
+
+    // Regenerate the session to prevent session fixation
+    $request->session()->regenerate();
+
+     // Store the employer ID and name in the session
+     $request->session()->put('employer_id', $employer->employerID);
+     $request->session()->put('user_type', 'employer');
+     $request->session()->put('employer_name', $employer->supervisorName);
+     $request->session()->put('employer_company', $employer->companyName);
 
     return redirect()->route('dashboard')->with('success', 'Registration successful.');
 }
@@ -138,13 +139,33 @@ class EmployerController extends Controller
     public function updateStatus(Request $request)
     {
         $fieldworkID = $request->fieldworkID;
+        $status = $request->status;
         $fieldwork = Fieldwork::find($fieldworkID);
+    
         if ($fieldwork) {
-            $fieldwork->status = $request->status;
+            $fieldwork->status = $status;
             $fieldwork->save();
+    
+            if ($status === 'accepted') {
+                $employerID = $fieldwork->employerID;
+                $studentID = $fieldwork->studentID;
+    
+                // Create attendance if not already exists
+                Attendance::firstOrCreate([
+                    'employerID' => $employerID,
+                    'studentID' => $studentID,
+                ]);
+            } elseif ($status === 'rejected') {
+                // Delete attendance if exists
+                Attendance::where('employerID', $fieldwork->employerID)
+                          ->where('studentID', $fieldwork->studentID)
+                          ->delete();
+            }
         }
+    
         return redirect()->route('dashboard');
     }
+
     public function login(Request $request)
     {
         // Validate the form data
@@ -262,8 +283,10 @@ class EmployerController extends Controller
         ->with('student')
         ->get();
 
+        // Check if any required fields are missing
+        $incompleteProfile = $this->checkIncompleteProfile($employer);
 
-        return view('admin.applicant-attendance', compact('fieldworks','employerName','employerCompany'));
+        return view('admin.applicant-attendance', compact('fieldworks','employerName','employerCompany','incompleteProfile'));
     }
 
 
@@ -435,22 +458,33 @@ class EmployerController extends Controller
     }
 
     public function changePassword(Request $request)
-    {
-        $employerID = session('employer_id');
-        $employer = Employer::findOrFail($employerID);
+{
+    $request->validate([
+        'currentPassword' => 'required',
+        'newPassword' => [
+            'required',
+            'string',
+            'min:8',
+            'regex:/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/'
+        ],
+        'renewPassword' => 'required|same:newPassword',
+    ], [
+        'newPassword.regex' => 'Password must be at least 8 characters long and include 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character.',
+        'renewPassword.same' => 'The new passwords do not match.',
+    ]);
 
-        if (!Hash::check($request->currentPassword, $employer->password)) {
-            return redirect()->back()->with('error', 'Current password does not match.');
-        }
+    $employerID = session('employer_id');
+    $employer = Employer::findOrFail($employerID);
 
-        if ($request->newpassword !== $request->renewpassword) {
-            return redirect()->back()->with('error', 'New passwords do not match.');
-        }
-
-        $employer->password = Hash::make($request->newpassword);
-        $employer->save();
-
-        return redirect()->route('profile')->with('success', 'Password changed successfully.');
+    if (!Hash::check($request->currentPassword, $employer->password)) {
+        return redirect()->back()->with('error', 'Current password does not match.');
     }
+
+    $employer->password = Hash::make($request->newPassword);
+    $employer->save();
+
+    return redirect()->route('profile')->with('success', 'Password changed successfully.');
+}
+
 
 }

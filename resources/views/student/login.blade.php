@@ -61,15 +61,6 @@
 							 <span><i class="fa fa-lock"></i></span>
 							 <input type="password" name="password" placeholder="Password" required>
 						 </div>
-						 <div class="row mb-3">
-							 <!-- Remember Checkbox -->
-							 <div class="col-auto d-flex align-items-center">
-								 <div class="form-check">
-									 <input type="checkbox" class="form-check-input" id="cb1" name="remember">
-									 <label class="form-check-label text-white" for="cb1">Remember me</label>
-								 </div>						
-							 </div>
-						 </div>
 						 <!-- Login Button -->
 						 <div class="mb-3"> 
 							 <button type="submit" class="btn btn-block">Login</button>

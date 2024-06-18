@@ -101,12 +101,14 @@
         </a>
       </li><!-- End Dashboard Nav -->
 
+      @if (!$incompleteProfile)
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ route('fieldwork-post.edit') }}">
           <i class="bi bi-credit-card"></i>
           <span>Fieldwork Post</span>
         </a>
       </li><!-- End Payment Nav -->
+      @endif
 
       <li class="nav-item">
         <a class="nav-link" href="{{route('applicant-attendance')}}">

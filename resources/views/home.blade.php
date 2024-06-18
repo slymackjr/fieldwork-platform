@@ -161,61 +161,61 @@
     <!-- header-end -->
      <!-- Display the success message -->
      @if(session('success'))
-     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-       <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-           <div class="modal-header">
-             <h5 class="modal-title" id="successModalLabel">Success</h5>
-             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-           </div>
-           <div class="modal-body">
-             {{ session('success') }}
-           </div>
-         </div>
-       </div>
-     </div>
-   @endif
+        <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ session('success') }}
+            </div>
+            </div>
+        </div>
+        </div>
+    @endif
 
-   <!-- Display the error message -->
-   @if(session('error'))
-     <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-       <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
-           <div class="modal-header">
-             <h5 class="modal-title" id="errorModalLabel">Error</h5>
-             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-           </div>
-           <div class="modal-body">
-             {{ session('error') }}
-           </div>
-         </div>
-       </div>
-     </div>
-   @endif
+    <!-- Display the error message -->
+    @if(session('error'))
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ session('error') }}
+            </div>
+            </div>
+        </div>
+        </div>
+    @endif
 
-   <!-- Custom JS to show modals and hide them after 2 seconds -->
-   <script>
-     document.addEventListener('DOMContentLoaded', function () {
-       const successModalElement = document.getElementById('successModal');
-       const errorModalElement = document.getElementById('errorModal');
-       
-       if (successModalElement) {
-         const successModal = new bootstrap.Modal(successModalElement);
-         successModal.show();
-         setTimeout(() => {
-           successModal.hide();
-         }, 2000);
-       }
+    <!-- Custom JS to show modals and hide them after 2 seconds -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const successModalElement = document.getElementById('successModal');
+        const errorModalElement = document.getElementById('errorModal');
+        
+        if (successModalElement) {
+            const successModal = new bootstrap.Modal(successModalElement);
+            successModal.show();
+            setTimeout(() => {
+            successModal.hide();
+            }, 2000);
+        }
 
-       if (errorModalElement) {
-         const errorModal = new bootstrap.Modal(errorModalElement);
-         errorModal.show();
-         setTimeout(() => {
-           errorModal.hide();
-         }, 2000);
-       }
-     });
-   </script>
+        if (errorModalElement) {
+            const errorModal = new bootstrap.Modal(errorModalElement);
+            errorModal.show();
+            setTimeout(() => {
+            errorModal.hide();
+            }, 2000);
+        }
+        });
+    </script>
  
     <!-- slider_area_start -->
     <div class="slider_area">

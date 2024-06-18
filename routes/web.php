@@ -32,8 +32,8 @@ Route::middleware(['student'])->group(function () {
     Route::post('/student-profile', [StudentController::class, 'updateStudentProfile'])->name('student-profile-update');
     Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');
     Route::get('/download/{path}', [StudentController::class, 'download'])->name('pdf.download')->where('path', '.*');
-    Route::get('/generate-report/{studentID}/{employerID}', [StudentController::class, 'generateReport'])->name('generateReport');
-    Route::get('/report', [StudentController::class, 'report'])->name('generateReport');
+    Route::post('/generate-report', [StudentController::class, 'generateReport'])->name('generateReport');
+    //Route::get('/report', [StudentController::class, 'report'])->name('generateReport');
     Route::get('/test', [StudentController::class, 'testView'])->name('test.view');
     Route::get('/student-logout', [StudentController::class, 'logout'])->name('student-logout');
 });
