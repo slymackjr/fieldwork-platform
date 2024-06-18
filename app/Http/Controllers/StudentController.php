@@ -517,17 +517,26 @@ public function generateReport(Request $request)
     $attendance = Attendance::where('studentID', $studentID)
         ->where('employerID', $employerID)
         ->first();
+    $attendedDays = 0;
+    $attended = [];
+    for ($day = 1; $day <= 40; $day++) {
+        $dayField = 'day_' . $day;
+            $attended[$day] = $attendance->$dayField;
+            if ($attendance->$dayField === 'present') {
+                # code...
+                $attendedDays++; // Increment counter if day is 'present'
+
+            }
+    }
     
     // Create an array to hold log data for each day
     $logs = [];
     for ($day = 1; $day <= 40; $day++) {
         $dayField = 'day_' . $day;
-        if (!empty($logBook->$dayField)) {
             $logs[$day] = $logBook->$dayField;
-        }
     }
 
-    $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attendance'));
+    $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attended','attendedDays'));
 
     $fileName = 'logbook_report' . '.pdf';
 
