@@ -33,8 +33,6 @@ Route::middleware(['student'])->group(function () {
     Route::post('/student-change-password', [StudentController::class, 'changePassword'])->name('student-change-password');
     Route::get('/download/{path}', [StudentController::class, 'download'])->name('pdf.download')->where('path', '.*');
     Route::post('/generate-report', [StudentController::class, 'generateReport'])->name('generateReport');
-    //Route::get('/report', [StudentController::class, 'report'])->name('generateReport');
-    Route::get('/test', [StudentController::class, 'testView'])->name('test.view');
     Route::get('/student-logout', [StudentController::class, 'logout'])->name('student-logout');
 });
 
@@ -56,7 +54,7 @@ Route::middleware(['employer'])->group(function () {
     Route::get('/post', [EmployerController::class, 'showPost'])->name('post');
     Route::get('/post-edit', [EmployerController::class, 'editPost'])->name('fieldwork-post.edit');
     Route::post('/post-edit', [EmployerController::class, 'updatePost'])->name('fieldwork-post.update');
-    Route::get('/profile', [EmployerController::class, 'showUsersProfile'])->name('profile');
+    Route::get('/profile', [EmployerController::class, 'showProfile'])->name('profile');
     Route::post('/profile/update', [EmployerController::class, 'updateProfile'])->name('employer.profile.update');
     Route::post('/profile/password', [EmployerController::class, 'changePassword'])->name('employer.password.update');
     Route::get('/confirm-applications', [EmployerController::class, 'showConfirmApplications'])->name('confirm-applications');

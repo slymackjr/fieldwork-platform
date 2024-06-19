@@ -351,7 +351,7 @@ class EmployerController extends Controller
         return redirect()->route('fieldwork-post.edit')->with('success', 'Fieldwork post updated successfully.');
     }
 
-    public function showUsersProfile()
+    public function showProfile()
     {
         $employerID = session('employer_id');
         $employer = Employer::findOrFail($employerID);

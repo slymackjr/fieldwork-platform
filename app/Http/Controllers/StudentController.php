@@ -445,65 +445,6 @@ class StudentController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
-   /*  public function generateReport($studentID, $employerID)
-    {
-        $student = Student::find($studentID);
-        $employer = Employer::find($employerID);
-        $logBooks = LogBook::where('studentID', $studentID)
-            ->where('employerID', $employerID)
-            ->get();
-        $attendance = Attendance::where('studentID', $studentID)
-            ->where('employerID', $employerID)
-            ->first();
-
-        $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logBooks', 'attendance'));
-
-        $fileName = 'logbook_report_' . $studentID . '_' . $employerID . '.pdf';
-        $filePath = storage_path('app/public/reports/' . $fileName);
-
-        Storage::disk('public')->put('reports/' . $fileName, $pdf->output());
-
-        Report::create([
-            'studentID' => $studentID,
-            'employerID' => $employerID,
-            'file_path' => 'reports/' . $fileName,
-        ]);
-
-        return $pdf->download($fileName);
-    } */
-
-   /*  public function generateReport(Request $request)
-{
-    $logID = $request->logID;
-    $logBooks = LogBook::findOrFail($logID);
-    $studentID = $logBooks->studentID;
-    $employerID = $logBooks->employerID;
-
-    $student = Student::findOrFail($studentID);
-    $employer = Employer::findOrFail($employerID);
-
-    $attendance = Attendance::where('studentID', $studentID)
-        ->where('employerID', $employerID)
-        ->first();
-
-    // Create an array to hold log data for each day
-    $logs = [];
-    foreach ($logBooks as $logBook) {
-        for ($day = 1; $day <= 40; $day++) {
-            $dayField = 'day_' . $day;
-            if (!empty($logBook->$dayField)) {
-                $logs[$day] = $logBook->$dayField;
-            }
-        }
-    }
-
-    $pdf = PDF::loadView('reports.logBook', compact('student', 'employer', 'logs', 'attendance'));
-
-    $fileName = 'logbook_report'.'.pdf';
-
-    return $pdf->download($fileName);
-} */
-
     public function generateReport(Request $request)
     {
         $logID = $request->logID;
@@ -542,24 +483,6 @@ class StudentController extends Controller
 
         return $pdf->download($fileName);
     }
-
-    public function report()
-{
-
-    $pdf = PDF::loadView('reports.test1');
-
-    $fileName = 'logbook_report'.'.pdf';
-
-    //Storage::disk('public')->put('reports/' . $fileName, $pdf->output());
-
-    return $pdf->download($fileName);
-}
-
-    public function testView()
-    {
-        return view('reports.test1');
-    }
-
     
 
 }
