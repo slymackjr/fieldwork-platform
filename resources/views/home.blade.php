@@ -342,7 +342,7 @@
                     <div class="searching_text">
                         <h3>Looking for a Fieldwork?</h3>
                         <p>We provide online instant Fieldwork requests where you can sharpen your skills and learn throughout experience </p>
-                        <a href="#" class="boxed-btn3">Browse Fieldwork</a>
+                        <a href="{{route('student-login')}}" class="boxed-btn3">Browse Fieldwork</a>
                     </div>
                 </div>
                 <div class="col-lg-5 offset-lg-1 col-md-6">
