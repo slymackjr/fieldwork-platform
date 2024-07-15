@@ -1,66 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<a name="readme-top"></a>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-## About Laravel
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/slymackjr/fieldwork-platform">
+    <img src="images/fieldwork-platform.png" alt="Logo">
+    <h3 align="center">Fieldwork Platform</h3>
+  </a>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+  <h3 align="center">Connecting Students with Practical Training Opportunities</h3>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  <p align="center">
+    Fieldwork Platform is an innovative online system designed to facilitate the connection between students seeking practical field training and employers offering such opportunities.
+    <br />
+    <a href="https://github.com/slymackjr/fieldwork-platform"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/slymackjr/fieldwork-platform/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/slymackjr/fieldwork-platform/issues">Request Feature</a>
+  </p>
+</div>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#introduction">Introduction</a>
+    </li>
+    <li>
+      <a href="#design-and-implementation">Design and Implementation</a>
+      <ul>
+        <li><a href="#user-experience-design">User Experience Design</a></li>
+        <li><a href="#user-interface-design">User Interface Design</a></li>
+        <li><a href="#database-system">Database System</a></li>
+        <li><a href="#logic-implementations">Logic Implementations</a></li>
+        <li><a href="#use-case-diagram">Use Case Diagram</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#conclusion">Conclusion</a>
+    </li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-## Learning Laravel
+<!-- INTRODUCTION -->
+## Introduction
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Overview
+The Fieldwork Platform is an innovative online system designed to facilitate the connection between students seeking practical field training and employers offering such opportunities. This platform aims to bridge the gap between academic learning and practical experience by providing a streamlined, user-friendly interface where students can explore various field training opportunities, apply for positions, and manage their applications effectively. Employers can easily post available positions, review student applications, and track the progress and attendance of students during the training period.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Features
+- **Student Registration and Profile Management:** Allows students to register, complete their profiles, and upload necessary documents.
+- **Field Training Opportunities:** Students can view and apply for multiple training opportunities.
+- **Employer Registration and Profile Management:** Enables employers to register, complete profiles, and post training opportunities.
+- **Application Management:** Employers can review, accept, or reject student applications.
+- **Attendance and Log Book Management:** Employers can record student attendance, and students can fill out and download their log books.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<!-- DESIGN AND IMPLEMENTATION -->
+## Design and Implementation
 
-## Laravel Sponsors
+### User Experience Design
+The user experience design of the Fieldwork Platform prioritizes ease of use and accessibility. Upon accessing the system, users are prompted to log in with their credentials. Students who are not yet registered can easily create an account, after which they can complete their profiles to gain full access to the platform's features.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### User Interface Design
+The user interface design of the Fieldwork Platform employs modern web technologies to deliver a visually appealing and functional experience. The client-side presentation is crafted using HTML for structure and CSS for styling, ensuring that the platform is both attractive and intuitive. The server-side logic is implemented using PHP, which handles the application logic and interacts with the database. This separation of concerns between client-side and server-side components ensures that the platform is responsive and efficient.
 
-### Premium Partners
+### Database System
+The database system design includes an Entity-Relationship Diagram (ERD) to model the data structure, ensuring that the platform can efficiently manage user information, field training opportunities, applications, and attendance records.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Logic Implementations
+- **Data Validation:** Ensures that all user inputs are properly validated before processing.
+- **Cookies and Query Strings:** Manages user sessions and navigation through cookies and query strings.
+- **OOP (Object-Oriented Programming):** Utilizes OOP principles to organize and structure the application logic.
+- **Error Exception Handling:** Implements robust error handling mechanisms to ensure smooth operation.
+- **File Handling:** Manages file uploads and downloads, particularly for student log books.
+- **Design Patterns:** Applies design patterns to enhance code reusability and maintainability.
+- **Security Aspects:** Implements security measures to protect user data, including password security and middleware integration to prevent unauthorized access.
 
-## Contributing
+### Use Case Diagram
+Below is the use case diagram illustrating the interactions between students and employers on the Fieldwork Platform:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![Use Case Diagram](images/fieldwork-platform-use-case-diagram.png)
 
-## Code of Conduct
+<!-- CONCLUSION -->
+## Conclusion
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The Fieldwork Platform provides a comprehensive solution for managing field training opportunities, connecting students with practical training experiences, and streamlining the application and monitoring process for employers. With a focus on user-friendly design, efficient data management, and robust security measures, the platform effectively bridges the gap between academic learning and practical field experience.
 
-## Security Vulnerabilities
+<!-- CONTACT -->
+## Contact
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Peter Patrick Wagalla - [LinkedIn](https://www.linkedin.com/in/peter-patrick-wagalla)  
+Jofrey Nyamasheki - [LinkedIn](https://www.linkedin.com/in/jofrey-nyamasheki-9bb8781ab)
 
-## License
+Project Link: [https://github.com/slymackjr/fieldwork-platform](https://github.com/slymackjr/fieldwork-platform)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+- [Choose an Open Source License](https://choosealicense.com)
+- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+- [Img Shields](https://shields.io)
+- [GitHub Pages](https://pages.github.com)
+- [Font Awesome](https://fontawesome.com)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/slymackjr/fieldwork-platform.svg?style=for-the-badge&color=4EA94B
+[contributors-url]: https://github.com/slymackjr/fieldwork-platform/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/slymackjr/fieldwork-platform.svg?style=for-the-badge
+[forks-url]: https://github.com/slymackjr/fieldwork-platform/network/members
+[stars-shield]: https://img.shields.io/github/stars/slymackjr/fieldwork-platform.svg?style=for-the-badge
+[stars-url]: https://github.com/slymackjr/fieldwork-platform/stargazers
+[issues-shield]: https://img.shields.io/github/issues/slymackjr/fieldwork-platform.svg?style=for-the-badge
+[issues-url]: https://github.com/slymackjr/fieldwork-platform/issues
+[license-shield]: https://img.shields.io/github/license/slymackjr/fieldwork-platform.svg?style=for-the-badge
+[license-url]: https://github.com/slymackjr/fieldwork-platform/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/jofrey-nyamasheki-9bb8781ab
