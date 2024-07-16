@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/slymackjr/fieldwork-platform">
-    <img src="images/fieldwork-platform.png" alt="Logo">
+    <img src="screenshots/logo.png" alt="Logo">
     <h3 align="center">Fieldwork Platform</h3>
   </a>
 
@@ -52,6 +52,7 @@
     </li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#figures">Figures</a></li>
   </ol>
 </details>
 
@@ -78,7 +79,10 @@ The user experience design of the Fieldwork Platform prioritizes ease of use and
 The user interface design of the Fieldwork Platform employs modern web technologies to deliver a visually appealing and functional experience. The client-side presentation is crafted using HTML for structure and CSS for styling, ensuring that the platform is both attractive and intuitive. The server-side logic is implemented using PHP, which handles the application logic and interacts with the database. This separation of concerns between client-side and server-side components ensures that the platform is responsive and efficient.
 
 ### Database System
-The database system design includes an Entity-Relationship Diagram (ERD) to model the data structure, ensuring that the platform can efficiently manage user information, field training opportunities, applications, and attendance records.
+The database system design includes an Entity-Relationship Diagram (ERD) to model the data structure, ensuring that the platform can efficiently manage user information, field training opportunities, applications, and attendance records. 
+
+![Entity Relationship Diagram](screenshots/Picture2.png)
+*Figure 1: Entity Relationship Diagram*
 
 ### Logic Implementations
 - **Data Validation:** Ensures that all user inputs are properly validated before processing.
@@ -92,7 +96,8 @@ The database system design includes an Entity-Relationship Diagram (ERD) to mode
 ### Use Case Diagram
 Below is the use case diagram illustrating the interactions between students and employers on the Fieldwork Platform:
 
-![Use Case Diagram](images/fieldwork-platform-use-case-diagram.png)
+![Use Case Diagram](screenshots/Picture1.png)
+*Figure 2: Use case Diagram*
 
 <!-- CONCLUSION -->
 ## Conclusion
@@ -115,6 +120,60 @@ Project Link: [https://github.com/slymackjr/fieldwork-platform](https://github.c
 - [Img Shields](https://shields.io)
 - [GitHub Pages](https://pages.github.com)
 - [Font Awesome](https://fontawesome.com)
+
+<!-- FIGURES -->
+## Figures
+
+Below are the figures representing various aspects of the Fieldwork Platform:
+
+
+![Home Page](screenshots/Picture4.png)
+*Figure 3: Home page*
+
+![Contact Page](screenshots/Picture5.png)
+*Figure 4: Contact Page*
+
+![Fieldwork Details Page](screenshots/Picture6.png)
+*Figure 5: Fieldwork Details Page*
+
+![Student Login Page](screenshots/Picture7.png)
+*Figure 6: Student Login Page*
+
+![Student Register Page](screenshots/Picture8.png)
+*Figure 7: Student Register Page*
+
+![Employer Login Page](screenshots/Picture9.png)
+*Figure 8: Employer Login Page*
+
+![Employer Register Page](screenshots/Picture10.png)
+*Figure 9: Employer Register Page*
+
+![Student Dashboard Page](screenshots/Picture14.png)
+*Figure 10: Student Dashboard Page*
+
+![Student Profile Page](screenshots/Picture12.png)
+*Figure 11: Student Profile Page*
+
+![Student Log Book Page](screenshots/Picture13.png)
+*Figure 12: Student Log Book Page*
+
+![Employer Dashboard Page](screenshots/Picture11.png)
+*Figure 13: Employer Dashboard Page*
+
+![Employer Profile Page](screenshots/Picture15.png)
+*Figure 14: Employer Profile Page*
+
+![Attendance Page](screenshots/Picture16.png)
+*Figure 15: Attendance Page*
+
+![Edit Attendance Page](screenshots/Picture17.png)
+*Figure 16: Edit Attendance Page*
+
+![Edit Fieldwork Post](screenshots/Picture18.png)
+*Figure 17: Edit Fieldwork Post*
+
+![Class Diagram](screenshots/Picture19.jpg)
+*Figure 18: Class diagram*
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
