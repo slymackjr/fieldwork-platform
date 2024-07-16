@@ -175,6 +175,9 @@ Below are the figures representing various aspects of the Fieldwork Platform:
 ![Class Diagram](screenshots/Picture19.jpg)
 *Figure 18: Class diagram*
 
+![Site Map](screenshots/Picture3.jpg)
+*Figure 19: Site Map*
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/slymackjr/fieldwork-platform.svg?style=for-the-badge&color=4EA94B
