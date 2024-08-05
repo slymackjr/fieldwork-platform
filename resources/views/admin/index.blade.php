@@ -173,11 +173,11 @@
               </script>
 
           <div class="row">
-            <div class="col-md-3">
+            <div class="col">
                 <!-- Overall Applicants Card -->
                 <div class="card info-card sales-card">
                     <div class="card-body">
-                        <h5 class="card-title">Overall Applications</h5>
+                        <h5 class="card-title">Overall</h5>
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-people"></i>
@@ -190,7 +190,7 @@
                 </div>
             </div><!-- End Overall Applicants Card -->
         
-            <div class="col-md-3">
+            <div class="col">
                 <!-- Accepted Applicants Card -->
                 <div class="card info-card revenue-card">
                     <div class="card-body">
@@ -207,7 +207,7 @@
                 </div>
             </div><!-- End Accepted Applicants Card -->
         
-            <div class="col-md-3">
+            <div class="col">
                 <!-- Confirmed Applicants Card -->
                 <div class="card info-card customers-card">
                     <div class="card-body">
@@ -224,11 +224,11 @@
                 </div>
             </div><!-- End Confirmed Applicants Card -->
         
-            <div class="col-md-3">
+            <div class="col">
                 <!-- Not Confirmed Applicants Card -->
                 <div class="card info-card customers-card">
                     <div class="card-body">
-                        <h5 class="card-title">Not Confirmed</h5>
+                        <h5 class="card-title">Rejected</h5>
                         <div class="d-flex align-items-center">
                             <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                 <i class="bi bi-x-circle"></i>
@@ -239,8 +239,8 @@
                         </div>
                     </div>
                 </div>
-            </div><!-- End Not Confirmed Applicants Card -->
-        </div>
+            </div><!-- End rejected Applicants Card -->
+          
         
           
             <!-- Overall Applicants Table -->

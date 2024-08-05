@@ -23,11 +23,11 @@
 
             <!-- FORM CONTAINER BEGIN -->
             <div class="col-lg-6 col-md-6 infinity-form-container">
-                <div class="col-lg-9 col-md-12 col-sm-9 col-xs-12 infinity-form">
+                <div class="col-lg-9 col-md-12 col-sm-12 col-12 infinity-form mx-auto">
                     <!-- Company Logo -->
                     <div class="text-center mb-3 mt-5">
                         <a href="{{route('home')}}">
-                            <img src="{{asset('img/logo-3.png')}}" width="500px">
+                            <img src="{{asset('img/logo-3.png')}}" class="img-fluid" style="max-width: 100%;">
                         </a>
                     </div>
                     <div class="text-center mb-4">
@@ -36,19 +36,19 @@
                     </div>
 
                     <!-- User Options -->
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-column flex-md-row justify-content-center">
                         <!-- Application Option -->
-                        <div class="card text-center m-2" style="width: 18rem;">
+                        <div class="card text-center m-2 flex-fill">
                             <div class="card-body">
-                                <i class="fa fa-file-text fa-5x text-warning"></i>
+                                <i class="fa fa-file-text fa-3x text-warning"></i>
                                 <h5 class="card-title mt-3">Applicant</h5>
                                 <a href="{{route('student-login')}}" class="btn btn-warning mt-2">Login Student</a>
                             </div>
                         </div>
                         <!-- Employer Option -->
-                        <div class="card text-center m-2" style="width: 18rem;">
+                        <div class="card text-center m-2 flex-fill">
                             <div class="card-body">
-                                <i class="fa fa-briefcase fa-5x text-warning"></i>
+                                <i class="fa fa-briefcase fa-3x text-warning"></i>
                                 <h5 class="card-title mt-3">Employer</h5>
                                 <a href="{{route('login')}}" class="btn btn-warning mt-2">Login Employer</a>
                             </div>

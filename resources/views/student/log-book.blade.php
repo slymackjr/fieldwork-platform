@@ -271,7 +271,7 @@
     
             .download-pdf-btn {
                 position: absolute;
-                top: 10px;
+                top: 1px;
                 right: 10px;
             }
         </style>
@@ -375,6 +375,13 @@
                                     <h6 class="log-book-title">Day's Log</h6>
                                     <div class="mb-3 log-book-day">
                                         <p id="selectedDayDisplay">Selected Day: Day {{ $selectedDay }}</p>
+                                        <form method="POST" action="{{ route('generateReport') }}" class="download-pdf-btn">
+                                            @csrf
+                                            <input type="hidden" name="logID" value="{{ $logBooks->logID }}">
+                                            <button type="submit" class="btn bg-success text-white">
+                                                <i class="bi bi-file-earmark-pdf"></i> PDF
+                                            </button>
+                                        </form>
                                         <form method="POST" action="{{ route('log-book.saveLog', ['selectedDay' => $selectedDay]) }}">
                                             @csrf
                                             <input type="hidden" name="selectedDay" value="{{ $selectedDay }}">
@@ -386,13 +393,6 @@
                                                     <i class="bi bi-journal-plus"></i> Save Log
                                                 </button>
                                             </div>
-                                        </form>
-                                        <form method="POST" action="{{ route('generateReport') }}" class="download-pdf-btn">
-                                            @csrf
-                                            <input type="hidden" name="logID" value="{{ $logBooks->logID }}">
-                                            <button type="submit" class="btn bg-success text-white">
-                                                <i class="bi bi-file-earmark-pdf"></i> Download PDF
-                                            </button>
                                         </form>
                                     </div>
                                 </div>

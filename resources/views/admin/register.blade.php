@@ -20,12 +20,12 @@
             <!-- IMAGE CONTAINER END -->
 
             <!-- FORM CONTAINER BEGIN -->
-            <div class="col-lg-6 col-md-6 infinity-form-container">					
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 infinity-form">
+            <div class="col-lg-6 col-md-6 infinity-form-container">
+                <div class="col-lg-10 col-md-12 col-sm-12 col-12 infinity-form mx-auto">
                     <!-- Company Logo -->
                     <div class="text-center mb-3 mt-5">
                         <a href="{{route('home')}}">
-                            <img src="{{asset('img/logo-3.png')}}" width="500px">
+                            <img src="{{asset('img/logo-3.png')}}" class="img-fluid" style="max-width: 100%;">
                         </a>
                     </div>
                     <div class="text-center mb-4">
@@ -37,38 +37,37 @@
                         @csrf
                         <div class="row">
                             <!-- Input Box -->
-                            <div class="col-md-6">
-                                <div class="form-input mb-1">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-input">
                                     <span><i class="fa fa-user-o"></i></span>
-                                    <input type="text" name="companyName" placeholder="Company Name" required>
+                                    <input type="text" name="companyName" placeholder="Company Name" class="form-control" required>
                                     @error('companyName')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-input mb-1">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-input">
                                     <span><i class="fa fa-envelope-o"></i></span>
-                                    <input type="email" name="supervisorEmail" placeholder="Supervisor Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required title="Please enter a valid email address (e.g., example@domain.com)">
+                                    <input type="email" name="supervisorEmail" placeholder="Supervisor Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address (e.g., example@domain.com)" class="form-control" required>
                                     @error('supervisorEmail')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-input mb-1">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-input">
                                     <span><i class="fa fa-user"></i></span>
-                                    <input type="text" name="supervisorName" placeholder="supervisor's Name" required>
+                                    <input type="text" name="supervisorName" placeholder="Supervisor's Name" class="form-control" required>
                                     @error('supervisorName')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>  
-                            <div class="col-md-6">
-                                <div class="form-input mb-1">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-input">
                                     <span><i class="fa fa-lock"></i></span>
-                                    <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                    title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters" required >
+                                    <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 characters" class="form-control" required>
                                     @error('password')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -78,7 +77,7 @@
                         </div>
                         <!-- Register Button -->
                         <div class="mb-3 text-center">
-                            <button type="submit" class="btn btn-block btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary btn-block">Register</button>
                         </div>
                         <div class="text-center mb-4 text-white">Already have an account?
                             <a class="login-link" href="{{ route('login') }}">Login here</a>
@@ -88,6 +87,6 @@
             </div>
             <!-- FORM CONTAINER END -->
         </div>
-    </div>	
+    </div>  
 </body>
 </html>
