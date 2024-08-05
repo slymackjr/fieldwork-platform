@@ -6,38 +6,10 @@ use App\Models\Employer;
 use App\Models\Fieldwork;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
-    /* public function index(Request $request)
-{
-    $keyword = $request->input('keyword');
-    $location = $request->input('location');
-
-    // Perform search query based on $keyword and $location
-    $query = Employer::query();
-
-    if (!empty($keyword)) {
-        $query->whereRaw('LOWER(fieldworkTitle) LIKE ?', ['%' . strtolower($keyword) . '%']);
-    }
-
-    if (!empty($location)) {
-        $query->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($location) . '%']);
-    }
-
-    $employers = $query->select('employerID', 'companyName', 'location', 'fieldworkTitle', 'applicationDeadline', 'companyLogo')
-        ->get();
-
-    // Filter employers to exclude those with incomplete profiles
-    $completeEmployers = $employers->filter(function ($employer) {
-        return !$this->checkIncompleteProfile($employer);
-    });
-
-    return view('home', ['employers' => $completeEmployers]);
-} */
-
 public function index(Request $request)
 {
     $keyword = $request->input('keyword');

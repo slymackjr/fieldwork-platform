@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
 use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Employer;
@@ -340,24 +339,26 @@ class StudentController extends Controller
 
     private function validateImage($image)
     {
-        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif','image/jpg'];
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
         $maxWidth = 300;
 
+        // Check the image MIME type
         $imageMimeType = $image->getMimeType();
-        $imageSize = getimagesize($image);
-
         if (!in_array($imageMimeType, $allowedMimeTypes)) {
             throw ValidationException::withMessages([
-                'image' => 'Only JPEG, PNG, JPG and GIF images are allowed.'
+                'image' => 'Only JPEG, PNG, JPG, and GIF images are allowed.'
             ]);
         }
 
-        if ($imageSize[0] != $maxWidth) {
+        // Check the image dimensions
+        $imageSize = getimagesize($image);
+        if ($imageSize === false || $imageSize[0] != $maxWidth) {
             throw ValidationException::withMessages([
                 'image' => 'Image dimensions must be 300 pixels wide.'
             ]);
         }
     }
+
 
     public function download($path)
     {

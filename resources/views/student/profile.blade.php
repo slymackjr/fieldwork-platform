@@ -135,24 +135,42 @@
           </div>
         @endif
 
-        <!-- Custom JS to hide success and error messages after 2 seconds -->
-        <script>
-          document.addEventListener('DOMContentLoaded', function () {
+         <!-- Display validation errors -->
+         @if ($errors->any())
+         <div class="alert alert-danger text-center" id="validation-errors">
+             <ul>
+                 @foreach ($errors->all() as $error)
+                     <li>{{ $error }}</li>
+                 @endforeach
+             </ul>
+         </div>
+         @endif
+
+       <!-- Custom JS to hide success, error, and validation messages after 2 seconds -->
+       <script>
+        document.addEventListener('DOMContentLoaded', function () {
             const successAlert = document.getElementById('success-alert');
             const errorAlert = document.getElementById('error-alert');
+            const validationErrors = document.getElementById('validation-errors');
 
             if (successAlert) {
-              setTimeout(() => {
-                successAlert.style.display = 'none';
-              }, 2000);
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 2000);
             }
 
             if (errorAlert) {
-              setTimeout(() => {
-                errorAlert.style.display = 'none';
-              }, 2000);
+                setTimeout(() => {
+                    errorAlert.style.display = 'none';
+                }, 2000);
             }
-          });
+
+            if (validationErrors) {
+                setTimeout(() => {
+                    validationErrors.style.display = 'none';
+                }, 2000);
+            }
+        });
         </script>
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
