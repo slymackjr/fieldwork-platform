@@ -96,6 +96,9 @@
                                         <ul id="navigation">
                                             <li><a href="{{ route('home') }}">Home</a></li>
                                             <li><a href="{{ route('contact') }}">Contact</a></li>
+                                            <li>
+                                                </html>
+                                            </li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -227,6 +230,11 @@
                             <h5 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".2s">Get your Fieldwork listed</h5>
                             <h3 class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".3s">Find your preferred volunteering work</h3>
                             <p class="wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".4s">We provide online applications and fieldwork for capable individuals with quick approval that suit your term length in <script>document.write(new Date().getFullYear());</script></p>
+                            <div class="sldier_btn wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".5s">
+                                @if (!session('user_type'))
+                                <a href="{{route('user-type')}}" class="boxed-btn3">Login</a>
+                                @endif                                
+                            </div>
                         </div>
                     </div>
                 </div>

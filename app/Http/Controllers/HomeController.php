@@ -93,6 +93,11 @@ public function index(Request $request)
         return view('contact');
     }
 
+    public function userType()
+    {
+        return view('user-type');
+    }
+
     public function fieldworkDetails($employerID)
     {
         $employer = Employer::findOrFail($employerID);
